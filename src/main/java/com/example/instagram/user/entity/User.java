@@ -17,7 +17,7 @@ public class User extends BaseEntity {                      // 생성/수정 시
 
     @Id                                                     // 기본키(PK) 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY)     // MySQL 의 AUTO_INCREMENT 전략과 호환
-    @Column(name = "user_id")
+//    @Column(name = "user_id")
     private Long id;
 
     // erDiagram 요구사항 : UNIQUE / NOT NULL + 길이 제한으로 저장공간/유효성 1차 방어
