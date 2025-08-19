@@ -14,6 +14,7 @@ public class UserResponseDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
+    // MapperClass..?, 정적 메서드 from, of, 정적 팩토리 메서드..
     public UserResponseDto(Long id,
                            String username, String email,
                            LocalDateTime createdAt, LocalDateTime updatedAt

@@ -28,12 +28,13 @@ public class Profile extends BaseEntity {       // Profile : 주인 @MapsId로 P
      * @MapsId: 연관된 User의 PK를 이 엔티티의 PK로 "공유"한다.
      */
 
-    @OneToOne(fetch = FetchType.LAZY)           // 1:1 관계, 지연로딩으로 N+1 및 불필요 조인 방지
+    @OneToOne
+//    @OneToOne(fetch = FetchType.LAZY)           // 1:1 관계, 지연로딩으로 N+1 및 불필요 조인 방지
     @MapsId                                     // 연관 엔티티(USER)의 PK를 이 엔티티의 PK로 ''공유'' (user_id = PK = FK)
     @JoinColumn(name = "user_id")               // 외래키 컬럼명 명시 <- users의 PK(=id)를 자동 참조
     private User user;
 
-    @Column(length = 50)
+    @Column(length = 50)                        ///  UK
     private String displayName;                 // 공개용 닉네임 (로그인 아이디와 분리)
 
     /**
@@ -57,7 +58,7 @@ public class Profile extends BaseEntity {       // Profile : 주인 @MapsId로 P
      * */
 
     @Lob
-    @Column(name = "content", columnDefinition = "TEXT")        // 자기소개가 길어질 수 있어 CLOB 매핑
+    @Column(name = "content", columnDefinition = "LONGTEXT")    // 자기소개가 길어질 수 있어 CLOB 매핑   - 수정 : TEXT -> LONGTEXT
     private String bio;                                         // 자기소개
 
     @Column(length = 255)
@@ -80,7 +81,7 @@ public class Profile extends BaseEntity {       // Profile : 주인 @MapsId로 P
     }
 
     // 프로필 내부 세터 메서드
-    public void _setUser(User user) {
+    public void setUser(User user) {
         this.user = user;
         this.userId = (user == null ? null : user.getId());
     }

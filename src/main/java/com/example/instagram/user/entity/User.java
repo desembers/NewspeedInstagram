@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")                                      // 테이블명을 명시해 스키마 충돌 및 가독성 개선
 public class User extends BaseEntity {                      // 생성/수정 시각 공통 필드(BaseEntity) 를 상속
 
-    // User  비주인 / 부모 역할
-    // Profile 주인 / 자식, PK=FK 공유
+    // User  비주인    / 부모 역할
+    // Profile 주인   / 자식, PK=FK 공유
 
     @Id                                                     // 기본키(PK) 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY)     // MySQL 의 AUTO_INCREMENT 전략과 호환
 //    @Column(name = "user_id")
     private Long id;
 
-    // erDiagram 요구사항 : UNIQUE / NOT NULL + 길이 제한으로 저장공간/유효성 1차 방어
-    @Column(nullable = false, unique = true, length = 30)           // 사용자 이름 UK
+    // erDiagram 요구사항 :  / NOT NULL + 길이 제한으로 저장공간/유효성 1차 방어
+    @Column(nullable = false, unique = true, length = 30)           // 사용자 이름 동명이인 가능성 UK는 피하기
     private String username;
 
     // 로그인 식별 이메일은 중복 불가 UK
@@ -50,7 +50,7 @@ public class User extends BaseEntity {                      // 생성/수정 시
      * - optional=false: 도메인 의도(항상 존재)를 모델에 표현
      */
     @OneToOne(mappedBy = "user",
-            fetch = FetchType.LAZY,
+//            fetch = FetchType.LAZY,       // 1:1에서는 Lazy 불필요, 자동으로 eager로 설정.
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             optional = false)
@@ -62,11 +62,11 @@ public class User extends BaseEntity {                      // 생성/수정 시
     public void setProfile(Profile p) {
         // 기존 연관 끊기
         if (this.profile != null && this.profile.getUser() == this) {
-            this.profile._setUser(null);
+            this.profile.setUser(null);
         }
         this.profile = p;
         if (p != null && p.getUser() != this) {
-            p._setUser(this);
+            p.setUser(this);
         }
     }
 
