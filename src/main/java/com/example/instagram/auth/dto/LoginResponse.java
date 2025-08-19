@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class LoginResponse {
 
-    private Long id;
-    private String email;
-    private String accessToken;
+    private final Long id;
+    private final String email;
+    private final String accessToken;
 //    private String refreshToken; -> 추후 작업
 
     public LoginResponse(Long id, String email, String accessToken) {

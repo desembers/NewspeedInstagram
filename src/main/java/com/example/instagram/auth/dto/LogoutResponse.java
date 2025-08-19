@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public class LogoutResponse {
 
-    private Long id;
-    private String email;
+    private final long id;
+    private final String email;
 
     public LogoutResponse(Long id, String email) {
         this.id = id;
