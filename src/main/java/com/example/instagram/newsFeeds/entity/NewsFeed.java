@@ -1,0 +1,28 @@
+package com.example.instagram.newsFeeds.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+
+@Entity
+@Getter
+@NoArgsConstructor
+public class NewsFeed extends BaseEntity {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String content;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_id", nullable = false)
+    private User user;
+
+    public NewsFeed(String content, User user) {
+        this.content = content;
+        this.user = user;
+    }
+
+    public void updateNewsFeed(String content){
+        this.content=content;
+    }
+}
