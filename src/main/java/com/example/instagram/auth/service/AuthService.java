@@ -1,5 +1,6 @@
 package com.example.instagram.auth.service;
 
+import com.example.instagram.auth.JwtTokenProvider;
 import com.example.instagram.auth.dto.LoginRequest;
 import com.example.instagram.auth.dto.LoginResponse;
 import com.example.instagram.auth.dto.SignupRequest;
@@ -19,6 +20,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     // 회원가입
     @Transactional
@@ -46,6 +48,8 @@ public class AuthService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
-        return new LoginResponse(user.getId(), user.getEmail());
+        String accessToken = jwtTokenProvider.getAccessToken(user.getId());
+
+        return new LoginResponse(user.getId(), user.getEmail(), accessToken);
     }
 }
