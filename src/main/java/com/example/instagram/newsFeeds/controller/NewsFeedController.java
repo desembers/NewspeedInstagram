@@ -3,10 +3,10 @@ package com.example.instagram.newsFeeds.controller;
 import com.example.instagram.newsFeeds.dto.*;
 import com.example.instagram.newsFeeds.service.NewsFeedService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class NewsFeedController {
     }
 
     @GetMapping("/newsFeeds")
-    public ResponseEntity<List<NewsFeedGetResponse>> getNewsFeeds(Pageable pageable){
+    public ResponseEntity<Page<NewsFeedGetResponse>> getNewsFeeds(Pageable pageable){
         return ResponseEntity.ok(newsFeedService.findAll(pageable));
     }
 
