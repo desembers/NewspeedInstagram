@@ -16,5 +16,6 @@ public class ProfileUpdateRequestDto {
     @Pattern(regexp = "^$|^https?://.+", message = "웹사이트는 http(s):// 로 시작해야 합니다.")
     private String website;
 
+    ///  문자열도 주의해보기 @Pattern
     private String birthdate;
 }

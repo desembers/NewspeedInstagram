@@ -47,7 +47,7 @@ public class UserService {
                 .map(this::toDto)
                 .collect(Collectors
                         .toList());
-    }
+    }                                               // 스트림 주의 : 대용량 데이터에는 주의.
 
     @Transactional(readOnly = true)
     public UserResponseDto findOne(Long id) {

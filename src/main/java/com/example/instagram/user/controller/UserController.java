@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController                  // JSON API 컨트롤러
 @RequiredArgsConstructor            // 의존성(서비스) 생성자 주입
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -23,20 +24,20 @@ public class UserController {
 
     /// 회원가입 USERS 리소스 생성
     /// 사용자 인증 회원가입 - "/auth/signup"
-    @PostMapping("/users/signup")
+    @PostMapping("/signup")
     public ResponseEntity<UserResponseDto> signup(
             @Valid @RequestBody UserSaveRequestDto dto) {         // @Valid: DTO의 Bean Validation을 트리거
         return ResponseEntity.ok(userService.save(dto));
     }
 
     // 유저 목록 조회(관리/테스트 용)
-    @GetMapping("/users")
+    @GetMapping()
     public ResponseEntity<List<UserResponseDto>> findAll() {
         return ResponseEntity.ok(userService.findAll());
     }
 
     // 개별 유저 상세
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<UserResponseDto> findOne(
             @PathVariable Long userId
     ) {
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     /// 프로필 조회: GET /users/{usersId}/profiles
-    @GetMapping("/users/{userId}/profiles")
+    @GetMapping("/{userId}/profiles")
     public ResponseEntity<ProfileResponseDto> findProfile(
             @PathVariable Long userId
     ) {
@@ -52,7 +53,7 @@ public class UserController {
     }
 
     // 본인 정보 수정(전체 교체 의미로 PUT 선택)
-    @PutMapping("/users/me")
+    @PutMapping("/me")
     public ResponseEntity<UserResponseDto> update(
 
             // 세션에 저장된 로그인 사용자 식별자 사용
@@ -64,7 +65,7 @@ public class UserController {
     }
 
     // 본인 계정 삭제
-    @DeleteMapping("/users/me")
+    @DeleteMapping("/me")
     public ResponseEntity<Void> delete(
 
             // 세션에 저장된 로그인 사용자 식별자 사용
