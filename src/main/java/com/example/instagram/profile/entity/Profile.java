@@ -14,9 +14,19 @@ import java.time.LocalDate;
 @Table(name = "profiles")                       // 테이블명 명시
 public class Profile extends BaseEntity {       // Profile : 주인 @MapsId로 PK를 User의 PK와 공유)
 
+    /**
+     * 공유 PK(Shared PK) 핵심:
+     * - 이 엔티티의 PK가 곧 FK(user_id)이다.
+     * - 즉, 프로필은 유저 없이 존재할 수 없다.
+     */
+
     @Id
     @Column(name = "user_id")                   // 프로필의 PK가 사용자 PK와 동일(공유 PK)
     private Long userId;
+
+    /**
+     * @MapsId: 연관된 User의 PK를 이 엔티티의 PK로 "공유"한다.
+     */
 
     @OneToOne(fetch = FetchType.LAZY)           // 1:1 관계, 지연로딩으로 N+1 및 불필요 조인 방지
     @MapsId                                     // 연관 엔티티(USER)의 PK를 이 엔티티의 PK로 ''공유'' (user_id = PK = FK)
@@ -67,6 +77,12 @@ public class Profile extends BaseEntity {       // Profile : 주인 @MapsId로 P
         this.bio = bio;
         this.website = website;
         this.birthdate = birthdate;
+    }
+
+    // 프로필 내부 세터 메서드
+    public void _setUser(User user) {
+        this.user = user;
+        this.userId = (user == null ? null : user.getId());
     }
 
     // 만든 이유 : 변경 로직 캡슐화(Setter 대신)

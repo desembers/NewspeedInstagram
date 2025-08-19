@@ -21,11 +21,11 @@ public class UserController {
 
     /// 회원가입 USERS 리소스 생성
     /// 사용자 인증 회원가입 - "/auth/signup"
-//    @PostMapping("/users/signup")
-//    public ResponseEntity<UserResponseDto> signup(
-//            @Valid @RequestBody UserSaveRequestDto dto) {         // @Valid: DTO의 Bean Validation을 트리거
-//        return ResponseEntity.ok(userService.save(dto));
-//    }
+    @PostMapping("/users/signup")
+    public ResponseEntity<UserResponseDto> signup(
+            @Valid @RequestBody UserSaveRequestDto dto) {         // @Valid: DTO의 Bean Validation을 트리거
+        return ResponseEntity.ok(userService.save(dto));
+    }
 
     // 유저 목록 조회(관리/테스트 용)
     @GetMapping("/users")

@@ -1,4 +1,4 @@
-package com.example.instagram.service;
+package com.example.instagram.profile.service;
 
 import com.example.instagram.profile.dto.request.ProfileSaveRequestDto;
 import com.example.instagram.profile.dto.request.ProfileUpdateRequestDto;

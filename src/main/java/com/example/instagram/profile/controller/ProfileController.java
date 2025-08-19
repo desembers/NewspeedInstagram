@@ -1,12 +1,10 @@
 package com.example.instagram.profile.controller;
 
 import com.example.instagram.common.consts.Const;
-import com.example.instagram.profile.dto.ProfileDtos;
 import com.example.instagram.profile.dto.request.ProfileSaveRequestDto;
 import com.example.instagram.profile.dto.request.ProfileUpdateRequestDto;
 import com.example.instagram.profile.dto.response.ProfileResponseDto;
-import com.example.instagram.service.ProfileService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.instagram.profile.service.ProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
