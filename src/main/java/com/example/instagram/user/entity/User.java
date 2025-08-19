@@ -22,7 +22,7 @@ public class User extends BaseEntity {                      // 생성/수정 시
 
     // erDiagram 요구사항 :  / NOT NULL + 길이 제한으로 저장공간/유효성 1차 방어
     @Column(nullable = false, unique = true, length = 30)           // 사용자 이름 동명이인 가능성 UK는 피하기
-    private String username;
+    private String userName;
 
     // 로그인 식별 이메일은 중복 불가 UK
     @Column(nullable = false, unique = true, length = 255)          // 사용자 이메일 UK
@@ -33,11 +33,11 @@ public class User extends BaseEntity {                      // 생성/수정 시
     private String password;
 
     // 도메인 규칙을 강제하기 위해 의미있는 생성자 제공(필수 필드만을 구성)
-    public User(String username,
+    public User(String userName,
                 String email,
                 String password
     ) {
-        this.username = username;
+        this.userName = userName;
         this.email    = email;
         this.password = password;
     }
@@ -90,7 +90,7 @@ public class User extends BaseEntity {                      // 생성/수정 시
                        String email,
                        String password
     ) {
-        this.username = username;
+        this.userName = username;
         this.email    = email;
         this.password = password;
     }

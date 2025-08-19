@@ -123,7 +123,7 @@ public class UserService {
     private UserResponseDto toDto(User user) {
         return new UserResponseDto(
                 user.getId(),
-                user.getUsername(),
+                user.getUserName(),
                 user.getEmail(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
