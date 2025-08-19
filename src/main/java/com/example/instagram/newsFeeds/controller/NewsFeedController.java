@@ -5,6 +5,8 @@ import com.example.instagram.newsFeeds.service.NewsFeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +25,8 @@ public class NewsFeedController {
     }
 
     @GetMapping("/newsFeeds")
-    public ResponseEntity<Page<NewsFeedGetResponse>> getNewsFeeds(Pageable pageable){
+    public ResponseEntity<Page<NewsFeedGetResponse>> getNewsFeeds(
+            @PageableDefault(size=10, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(newsFeedService.findAll(pageable));
     }
 

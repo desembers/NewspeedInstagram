@@ -37,18 +37,16 @@ public class NewsFeedService {
         );
     }
 
-    @Transactional(readOnly = true) //뉴스피드 조회 생성
-    public Page<NewsFeedGetResponse> findAll(
-            @PageableDefault(size=10, sort="createdAt", direction = Sort.Direction.DESC)Pageable pageable
-            ) {
-        return newsFeedRepository.findAllByOrderByCreatedAtDesc(pageable)
-            .map(newsFeed -> new NewsFeedGetResponse(
-                newsFeed.getId(),
-                newsFeed.getUser().getId(),
-                newsFeed.getContent(),
-                newsFeed.getCreatedAt(),
-                newsFeed.getModifiedAt()
-        ));
+    @Transactional(readOnly = true)
+    public Page<NewsFeedGetResponse> findAll(Pageable pageable) {
+        return newsFeedRepository.findAll(pageable)
+                .map(newsFeed -> new NewsFeedGetResponse(
+                        newsFeed.getId(),
+                        newsFeed.getUser().getId(),
+                        newsFeed.getContent(),
+                        newsFeed.getCreatedAt(),
+                        newsFeed.getModifiedAt()
+                ));
     }
 
     @Transactional
