@@ -1,14 +1,17 @@
 package com.example.instagram.newsFeeds.service;
 
 import com.example.instagram.newsFeeds.Repository.NewsFeedRepository;
+import com.example.instagram.newsFeeds.Repository.UserRepository;
 import com.example.instagram.newsFeeds.dto.*;
 import com.example.instagram.newsFeeds.entity.NewsFeed;
+import com.example.instagram.newsFeeds.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,21 +38,18 @@ public class NewsFeedService {
     }
 
     @Transactional(readOnly = true) //뉴스피드 조회 생성
-    public List<NewsFeedGetResponse> findAllNewsFeeds() {
-        List<NewsFeed> newsFeeds = newsFeedRepository.findAll();
-        List<NewsFeedGetResponse> dtos = new ArrayList<>();
+    public List<NewsFeedGetResponse> findAll(
+            @PageableDefault(size=10, sort="createdAt", direction = Sort.Direction.DESC)Pageable pageable
+            ) {
+        Page<NewsFeed> newsFeeds = newsFeedRepository.findAllByOrderByCreatedAtDesc(pageable);
 
-        for (NewsFeed newsFeed : newsFeeds) {
-            NewsFeedGetResponse newsFeedGetResponse = new NewsFeedGetResponse(
-                    newsFeed.getId(),
-                    newsFeed.getUser().getId(),
-                    newsFeed.getContent(),
-                    newsFeed.getCreatedAt(),
-                    newsFeed.getModifiedAt()
-            );
-            dtos.add(newsFeedGetResponse);
-        }
-        return dtos;
+        return newsFeeds.map(newsFeed -> new NewsFeedGetResponse(
+                newsFeed.getId(),
+                newsFeed.getUser().getId(),
+                newsFeed.getContent(),
+                newsFeed.getCreatedAt(),
+                newsFeed.getModifiedAt()
+        )).toList();
     }
 
     @Transactional

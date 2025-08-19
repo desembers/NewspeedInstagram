@@ -14,7 +14,7 @@ public class NewsFeedSaveResponse {
 
     public NewsFeedSaveResponse(Long id, Long authorId, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
-        AuthorId = authorId;
+        this.AuthorId = authorId;
         this.content = content;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;

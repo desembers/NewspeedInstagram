@@ -3,9 +3,9 @@ package com.example.instagram.newsFeeds.controller;
 import com.example.instagram.newsFeeds.dto.*;
 import com.example.instagram.newsFeeds.service.NewsFeedService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -16,14 +16,15 @@ public class NewsFeedController {
     @PostMapping("/newsFeeds")
     public ResponseEntity<NewsFeedSaveResponse> saveNewsFeed(
             @RequestBody NewsFeedSaveRequest request,
-            @AuthenticationPrincipal CustomUserDetails userDetails // Security 에서 로그인한 사용자
+            @AuthenticationPrincipal CustomUserDetails userDetails // Security에서 로그인한 사용자
     ){
-        return ResponseEntity.ok(newsFeedService.save(request,userDetails.getUserId()));
+        //Long testUserId = 1L; // 임시 테스트용 유저 ID
+        return ResponseEntity.ok(newsFeedService.save(request,userDetails.getUser().getId()));
     }
 
     @GetMapping("/newsFeeds")
-    public ResponseEntity<List<NewsFeedGetResponse>> getNewsFeeds(){
-        return ResponseEntity.ok(newsFeedService.findAllNewsFeeds());
+    public ResponseEntity<List<NewsFeedGetResponse>> getNewsFeeds(Pageable pageable){
+        return ResponseEntity.ok(newsFeedService.findAll(pageable));
     }
 
     @PatchMapping("/newsFeeds/{newsFeedId}")

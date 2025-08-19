@@ -6,14 +6,14 @@ import java.time.LocalDateTime;
 @Getter
 public class NewsFeedGetResponse {
     private final Long id;
-    private final String authorId;
+    private final Long authorId;
     private final String content;
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
     public NewsFeedGetResponse(
             Long id,
-            String authorId,
+            Long authorId,
             String content,
             LocalDateTime createdAt,
             LocalDateTime modifiedAt)
