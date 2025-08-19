@@ -38,6 +38,8 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
     // 암호화 의존성 추가
     implementation 'at.favre.lib:bcrypt:0.10.2'
+    // Validation 추가
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {
