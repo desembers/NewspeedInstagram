@@ -25,19 +25,44 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'at.favre.lib:bcrypt:0.9.0'
-    implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
-    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'mysql:mysql-connector-java:8.3.0'
-    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    // JWT
+    implementation 'org.springframework.boot:spring-boot-starter-security' // JWT 필터/인가 설정을 위한 Security
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'                        // JWT 생성/파싱 API
+    runtimeOnly   'io.jsonwebtoken:jjwt-impl:0.11.5'                        // JWT 구현체 (runtimeOnly 권장)
+    runtimeOnly   'io.jsonwebtoken:jjwt-jackson:0.11.5'                     // JWT에서 Jackson 사용 (JSON 직렬화/역직렬화)
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // Web (JSON은 Spring MVC + Jackson이 기본 제공)
+    implementation 'org.springframework.boot:spring-boot-starter-web'       // Spring MVC + Jackson(ObjectMapper)
+
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  // JPA + Hibernate
+    // [주의] 같은 starter를 중복 선언하지 마세요 (현재 프로젝트에 2번 들어가 있었음)
+
+
+    // DB Driver
+    // runtimeOnly 'mysql:mysql-connector-java:8.3.0'                        // [기존] 레거시 좌표(가능하긴 하나)
+    runtimeOnly 'com.mysql:mysql-connector-j'                                // [권장] Boot 3.x 권장 좌표. 버전은 Spring Boot BOM이 관리
+
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation' // Bean Validation (jakarta.validation + hibernate-validator)
+    // implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final' // [삭제 권장] starter가 관리
+    // implementation 'jakarta.validation:jakarta.validation-api:3.0.2'         // [삭제 권장] starter가 관리
+
+    // 암호화(비밀번호 해시)
+    // implementation 'at.favre.lib:bcrypt:0.9.0'                             // [현재] 사용 중
+    implementation 'at.favre.lib:bcrypt:0.10.2'                               // [권장] 버그픽스/개선 포함 최신 안정판으로 업데이트
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'                                    // 컴파일 시에만 필요
+    annotationProcessor 'org.projectlombok:lombok'                            // 애너테이션 처리기
+
+    // (선택) 설정 암호화, 캐시/세션/토큰 블랙리스트
+    // implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'   // [선택] yml 속성(예: DB PW, JWT 시크릿) 암호화
+    // implementation 'org.springframework.boot:spring-boot-starter-data-redis'     // [선택] 토큰 블랙리스트/캐시/세션 공유 용도
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'   // JUnit + Spring Test
+    testImplementation 'org.springframework.security:spring-security-test'   // [권장] Security 컨텍스트/withMockUser 등 테스트
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
