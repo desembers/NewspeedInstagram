@@ -1,9 +1,10 @@
 package com.example.instagram.newsFeeds.entity;
 
+import com.example.instagram.common.entity.BaseEntity;
+import com.example.instagram.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 
 @Entity
 @Getter
