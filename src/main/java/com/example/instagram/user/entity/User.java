@@ -51,8 +51,8 @@ public class User extends BaseEntity {                      // 생성/수정 시
      */
     @OneToOne(mappedBy = "user",
 //            fetch = FetchType.LAZY,       // 1:1에서는 Lazy 불필요, 자동으로 eager로 설정.
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
+//            cascade = CascadeType.ALL,      // 오류 의심 : 유저 엔티티랑 프로필 엔티티를 인식을 못하는 오류???
+//            orphanRemoval = true,           // 전이, 고아제거 부분 주석처리 후 오류 잡음..
             optional = false)
     private Profile profile;
 
