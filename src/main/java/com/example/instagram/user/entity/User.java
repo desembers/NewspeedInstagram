@@ -50,9 +50,9 @@ public class User extends BaseEntity {                      // 생성/수정 시
      * - optional=false: 도메인 의도(항상 존재)를 모델에 표현
      */
     @OneToOne(mappedBy = "user",
-//            fetch = FetchType.LAZY,       // 1:1에서는 Lazy 불필요, 자동으로 eager로 설정.
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
+            fetch = FetchType.LAZY,       // 1:1에서는 Lazy 불필요, 자동으로 eager로 설정.
+//            cascade = CascadeType.ALL,  // 엔티티 인식 문제로 우섡 주석 처리
+//            orphanRemoval = true,
             optional = false)
     private Profile profile;
 

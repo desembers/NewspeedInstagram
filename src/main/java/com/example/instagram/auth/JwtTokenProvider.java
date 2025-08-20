@@ -31,7 +31,7 @@ public class JwtTokenProvider {
                 .setSubject(userId.toString())
                 .setId(UUID.randomUUID().toString())    // 토큰마다 매번 고유 ID(jti) 부여
                 .claim("userId", userId)
-                .signWith(key, SignatureAlgorithm.ES512)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .setExpiration(expirationDate)
                 .compact();
     }
