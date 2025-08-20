@@ -3,16 +3,14 @@ package com.example.instagram.newsFeeds.service;
 import com.example.instagram.common.exception.InValidException;
 import com.example.instagram.common.exception.UnauthorizedAccessException;
 import com.example.instagram.newsFeeds.Repository.NewsFeedRepository;
-import com.example.instagram.newsFeeds.Repository.UserRepository;
 import com.example.instagram.newsFeeds.dto.*;
 import com.example.instagram.newsFeeds.entity.NewsFeed;
-import com.example.instagram.newsFeeds.entity.User;
+import com.example.instagram.user.entity.User;
+import com.example.instagram.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -37,7 +35,7 @@ public class NewsFeedService {
                 savedNewsFeed.getUser().getId(),
                 savedNewsFeed.getContent(),
                 savedNewsFeed.getCreatedAt(),
-                savedNewsFeed.getModifiedAt()
+                savedNewsFeed.getUpdatedAt()
         );
     }
 
@@ -49,7 +47,7 @@ public class NewsFeedService {
                         newsFeed.getUser().getId(),
                         newsFeed.getContent(),
                         newsFeed.getCreatedAt(),
-                        newsFeed.getModifiedAt()
+                        newsFeed.getUpdatedAt()
                 ));
     }
 
@@ -71,7 +69,7 @@ public class NewsFeedService {
                 newsFeed.getUser().getId(),
                 newsFeed.getContent(),
                 newsFeed.getCreatedAt(),
-                newsFeed.getModifiedAt()
+                newsFeed.getUpdatedAt()
         );
     }
 
