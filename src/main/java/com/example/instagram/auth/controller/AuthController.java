@@ -3,8 +3,6 @@ package com.example.instagram.auth.controller;
 import com.example.instagram.auth.annotation.Auth;
 import com.example.instagram.auth.dto.*;
 import com.example.instagram.auth.service.AuthService;
-import com.example.instagram.user.entity.User;
-import com.example.instagram.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
