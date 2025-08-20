@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {     // CRUD + 페이징/정렬 기본 제공
     boolean existsByEmail(String email);                                // 회원가입 시 이메일 중복 빠른 검증
-    boolean existsByUsername(String username);                          // 사용자명 중복 검증
+    boolean existsByUserName(String userName);                          // 사용자명 중복 검증
     Optional<User> findByEmail(String email);                           // 로그인/인증 시 이메일로 조회
 }

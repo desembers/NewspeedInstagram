@@ -26,7 +26,7 @@ public class UserService {
         // DB unique 제약 전에 애플리케이션 레벨에서 빠른 에러 반환
         if (userRepository.existsByEmail(dto.getEmail()))
             throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
-        if (userRepository.existsByUsername(dto.getUsername()))
+        if (userRepository.existsByUserName(dto.getUsername()))
             throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
 
         // 비밀번호는 절대 평문 저장 금지 → Bcrypt로 해시
