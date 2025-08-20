@@ -5,9 +5,10 @@ import com.example.instagram.profile.dto.request.ProfileSaveRequestDto;
 import com.example.instagram.profile.dto.request.ProfileUpdateRequestDto;
 import com.example.instagram.profile.dto.response.ProfileResponseDto;
 import com.example.instagram.profile.service.ProfileService;
-import jakarta.validation.Valid;
+//import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +23,7 @@ public class ProfileController {
     @PostMapping("/me/profiles")
     public ResponseEntity<ProfileResponseDto> create(
             @SessionAttribute(name = Const.LOGIN_USER) Long userId,         // 세션에서 인증 사용자 식별자 주입
-            @Valid @RequestBody ProfileSaveRequestDto dto
+            @Validated @RequestBody ProfileSaveRequestDto dto
     ) {
         return ResponseEntity.ok(profileService.create(userId, dto));
     }
@@ -53,7 +54,7 @@ public class ProfileController {
     @PatchMapping("/me/profiles")
     public ResponseEntity<ProfileResponseDto> update(
             @SessionAttribute(name = Const.LOGIN_USER) Long userId,     // 세션.. 바이바이
-            @Valid @RequestBody ProfileUpdateRequestDto dto
+            @Validated @RequestBody ProfileUpdateRequestDto dto
     ) {
         return ResponseEntity.ok(profileService.update(userId, dto));
     }
