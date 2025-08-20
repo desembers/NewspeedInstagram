@@ -1,6 +1,8 @@
 package com.example.instagram.user.service;
 
 import com.example.instagram.common.config.PasswordEncoder;
+import com.example.instagram.common.exception.InVaidEmailFromatException;
+import com.example.instagram.common.exception.InValidException;
 import com.example.instagram.user.dto.request.UserSaveRequestDto;
 import com.example.instagram.user.dto.request.UserUpdateRequestDto;
 import com.example.instagram.user.dto.response.UserResponseDto;
@@ -28,6 +30,8 @@ public class UserService {
             throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
         if (userRepository.existsByUsername(dto.getUsername()))
             throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
+        if(!dto.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
+            throw new InVaidEmailFromatException("이메일 형식을 맞추시오.");
 
         // 비밀번호는 절대 평문 저장 금지 → Bcrypt로 해시
         String encoded = passwordEncoder.encode(dto.getPassword());
