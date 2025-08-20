@@ -9,13 +9,13 @@ public class NewsFeedPatchResponse {
     private final Long authorId;
     private final String content;
     private final LocalDateTime createAt;
-    private final LocalDateTime modifiedAt;
+    private final LocalDateTime updatedAt;
 
-    public NewsFeedPatchResponse(Long id, Long authorId, String content, LocalDateTime createAt, LocalDateTime modifiedAt) {
+    public NewsFeedPatchResponse(Long id, Long authorId, String content, LocalDateTime createAt, LocalDateTime updatedAt) {
         this.id = id;
         this.authorId = authorId;
         this.content = content;
         this.createAt = createAt;
-        this.modifiedAt = modifiedAt;
+        this.updatedAt = updatedAt;
     }
 }

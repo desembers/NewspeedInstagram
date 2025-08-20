@@ -1,18 +1,20 @@
 package com.example.instagram.newsFeeds.service;
 
+import com.example.instagram.common.exception.InValidException;
+import com.example.instagram.common.exception.UnauthorizedAccessException;
 import com.example.instagram.newsFeeds.Repository.NewsFeedRepository;
-import com.example.instagram.newsFeeds.Repository.UserRepository;
 import com.example.instagram.newsFeeds.dto.*;
 import com.example.instagram.newsFeeds.entity.NewsFeed;
-import com.example.instagram.newsFeeds.entity.User;
+import com.example.instagram.user.entity.User;
+import com.example.instagram.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class NewsFeedService {
                 savedNewsFeed.getUser().getId(),
                 savedNewsFeed.getContent(),
                 savedNewsFeed.getCreatedAt(),
-                savedNewsFeed.getModifiedAt()
+                savedNewsFeed.getUpdatedAt()
         );
     }
 
@@ -45,7 +47,7 @@ public class NewsFeedService {
                         newsFeed.getUser().getId(),
                         newsFeed.getContent(),
                         newsFeed.getCreatedAt(),
-                        newsFeed.getModifiedAt()
+                        newsFeed.getUpdatedAt()
                 ));
     }
 
@@ -54,13 +56,20 @@ public class NewsFeedService {
         NewsFeed newsFeed = newsFeedRepository.findById(newsFeedId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 일정입니다.")
         );
+
+        //수정내용 불일치 -> 본인이 수정할수 있도록 설정 (그렇지 않으면 들어갈수 있습니다)
+        if(!(newsFeed.getContent().equals(request.getContent()))) {
+            throw new UnauthorizedAccessException("게시글은 본인이 수정할수 있습니다.");
+        }
+
+
         newsFeed.updateNewsFeed(request.getContent());
         return new NewsFeedPatchResponse(
                 newsFeed.getId(),
                 newsFeed.getUser().getId(),
                 newsFeed.getContent(),
                 newsFeed.getCreatedAt(),
-                newsFeed.getModifiedAt()
+                newsFeed.getUpdatedAt()
         );
     }
 
