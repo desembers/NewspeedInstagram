@@ -20,25 +20,26 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;  // Bcrypt 해시 책임 분리(테스트 / 교체 용이)
 
-    @Transactional                                  // 쓰기 로직은 트랜잭션 경계 내에서 원자성 보장
-    public UserResponseDto save(UserSaveRequestDto dto) {
-
-        // DB unique 제약 전에 애플리케이션 레벨에서 빠른 에러 반환
-        if (userRepository.existsByEmail(dto.getEmail()))
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
-        if (userRepository.existsByUsername(dto.getUsername()))
-            throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
-
-        // 비밀번호는 절대 평문 저장 금지 → Bcrypt로 해시
-        String encoded = passwordEncoder.encode(dto.getPassword());
-        User user = new User(
-                dto.getUsername(),
-                dto.getEmail(),
-                encoded
-        );
-        userRepository.save(user);
-        return toDto(user);
-    }
+    /// userService: 유저 회원가입이 있기 때문에 유저 생성 부분 불필요. 주석처리하
+//    @Transactional                                  // 쓰기 로직은 트랜잭션 경계 내에서 원자성 보장
+//    public UserResponseDto save(UserSaveRequestDto dto) {
+//
+//        // DB unique 제약 전에 애플리케이션 레벨에서 빠른 에러 반환
+//        if (userRepository.existsByEmail(dto.getEmail()))
+//            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+//        if (userRepository.existsByUsername(dto.getUsername()))
+//            throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
+//
+//        // 비밀번호는 절대 평문 저장 금지 → Bcrypt로 해시
+//        String encoded = passwordEncoder.encode(dto.getPassword());
+//        User user = new User(
+//                dto.getUsername(),
+//                dto.getEmail(),
+//                encoded
+//        );
+//        userRepository.save(user);
+//        return toDto(user);
+//    }
 
     @Transactional(readOnly = true)                 // 스냅샷 / 더티체킹 최적화
     public List<UserResponseDto> findAll() {
