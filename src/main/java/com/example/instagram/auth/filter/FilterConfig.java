@@ -2,6 +2,7 @@ package com.example.instagram.auth.filter;
 
 import com.example.instagram.auth.JwtTokenProvider;
 import com.example.instagram.auth.config.AuthArgumentResolver;
+import com.example.instagram.auth.service.TokenValidCheckService;
 import jakarta.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +16,11 @@ import java.util.List;
 public class FilterConfig implements WebMvcConfigurer {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final TokenValidCheckService tokenValidCheckService;
 
-    public FilterConfig(JwtTokenProvider jwtTokenProvider) {
+    public FilterConfig(JwtTokenProvider jwtTokenProvider, TokenValidCheckService tokenValidCheckService) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.tokenValidCheckService = tokenValidCheckService;
     }
 
     @Override
@@ -28,9 +31,9 @@ public class FilterConfig implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean<Filter> addJwtFilter() {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
-        filterRegistrationBean.setFilter(new JwtFilter(jwtTokenProvider));  // Filter 등록
-        filterRegistrationBean.setOrder(1);                                 // Filter 순서 설정
-        filterRegistrationBean.addUrlPatterns("/*");                        // 전체 URL에 Filter 적용
+        filterRegistrationBean.setFilter(new JwtFilter(jwtTokenProvider, tokenValidCheckService));  // JwtFilter 생성자에 tokenValidCheckService를 인자로 추가
+        filterRegistrationBean.setOrder(1);                                                         // Filter 순서 설정
+        filterRegistrationBean.addUrlPatterns("/*");                                                // 전체 URL에 Filter 적용
 
         return filterRegistrationBean;
     }
