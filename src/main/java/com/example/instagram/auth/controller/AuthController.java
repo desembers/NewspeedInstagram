@@ -4,8 +4,11 @@ import com.example.instagram.auth.annotation.Auth;
 import com.example.instagram.auth.dto.*;
 import com.example.instagram.auth.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +23,12 @@ public class AuthController {
     // 회원가입
     @PostMapping("/auth/signup")
     public ResponseEntity<SignupResponse> signup(
-            @RequestBody SignupRequest request
+            @Valid @RequestBody SignupRequest request, BindingResult result
     ) {
+        if (result.hasErrors()) {   // 유효성 검사 실패 시 에러코드 400 반환
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         SignupResponse response = authService.signup(request);
         return ResponseEntity.ok(response);
     }
