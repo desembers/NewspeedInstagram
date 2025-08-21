@@ -44,10 +44,8 @@ public class JwtFilter implements Filter {
             String authorization = httpRequest.getHeader("Authorization");
             //"Bearer ..."
 
-
-            // 로그인하지 않은 사용자인 경우
             if (authorization == null || !authorization.startsWith("Bearer ")) {
-                throw new RuntimeException("로그인 해주세요.");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 해주세요.");
             }
 
             // 인증을 처리해서 token이 있는 경우
