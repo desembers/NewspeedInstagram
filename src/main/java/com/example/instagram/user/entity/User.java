@@ -32,6 +32,12 @@ public class User extends BaseEntity {                      // 생성/수정 시
     @Column(nullable = false, length = 100)
     private String password;
 
+    private boolean deleted = false;    // Soft Delete용 플래그
+
+    public void withdraw() {
+        this.deleted = true;
+    }
+
     // 도메인 규칙을 강제하기 위해 의미있는 생성자 제공(필수 필드만을 구성)
     public User(String userName,
                 String email,
@@ -50,9 +56,9 @@ public class User extends BaseEntity {                      // 생성/수정 시
      * - optional=false: 도메인 의도(항상 존재)를 모델에 표현
      */
     @OneToOne(mappedBy = "user",
-//            fetch = FetchType.LAZY,       // 1:1에서는 Lazy 불필요, 자동으로 eager로 설정.
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
+            fetch = FetchType.LAZY,       // 1:1에서는 Lazy 불필요, 자동으로 eager로 설정.
+//            cascade = CascadeType.ALL,  // 엔티티 인식 문제로 우선 주석 처리!
+//            orphanRemoval = true,
             optional = false)
     private Profile profile;
 

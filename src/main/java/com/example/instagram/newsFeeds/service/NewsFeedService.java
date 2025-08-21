@@ -79,4 +79,3 @@ public class NewsFeedService {
         newsFeedRepository.deleteById(newsFeedId);
     }
 }
-

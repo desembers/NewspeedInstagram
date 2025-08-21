@@ -1,6 +1,7 @@
 package com.example.instagram.auth.filter;
 
 import com.example.instagram.auth.JwtTokenProvider;
+import com.example.instagram.auth.service.TokenValidCheckService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,9 +14,14 @@ public class JwtFilter implements Filter {
     private static final String[] WHITE_LIST = {"/", "/auth/signup", "/auth/login"};
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final TokenValidCheckService tokenValidCheckService;
 
-    public JwtFilter(JwtTokenProvider jwtTokenProvider) {
+    public JwtFilter(
+            JwtTokenProvider jwtTokenProvider,
+            TokenValidCheckService tokenValidCheckService
+    ) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.tokenValidCheckService = tokenValidCheckService;
     }
 
     @Override
@@ -44,6 +50,12 @@ public class JwtFilter implements Filter {
 
             // 인증을 처리해서 token이 있는 경우
             String accessToken = authorization.substring(7);
+
+            // 토큰 유효성 체크 (db에 저장된 만료된 토큰인지 확인)
+            if (!tokenValidCheckService.isValid(accessToken)) {
+                throw new RuntimeException("만료되었거나 윺효하지 않은 토근입니다.");
+            }
+
             Claims claims = jwtTokenProvider.getClaims(accessToken);
             Long userId = ((Number)claims.get("userId")).longValue();
 

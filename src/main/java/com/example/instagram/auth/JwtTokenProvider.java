@@ -6,7 +6,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -32,7 +31,7 @@ public class JwtTokenProvider {
                 .setSubject(userId.toString())
                 .setId(UUID.randomUUID().toString())    // 토큰마다 매번 고유 ID(jti) 부여
                 .claim("userId", userId)
-                .signWith(key, SignatureAlgorithm.ES512)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .setExpiration(expirationDate)
                 .compact();
     }
