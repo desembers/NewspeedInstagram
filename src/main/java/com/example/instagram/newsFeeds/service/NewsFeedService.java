@@ -7,6 +7,7 @@ import com.example.instagram.newsFeeds.entity.NewsFeed;
 import com.example.instagram.user.entity.User;
 import com.example.instagram.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -72,10 +73,18 @@ public class NewsFeedService {
 
     @Transactional
     public void deleteNewsFeed(Long newsFeedId){
-        boolean b = newsFeedRepository.existsById(newsFeedId);
-        if(!b){
-            throw new IllegalArgumentException("존재하지 않는 포스트입니다.");
+        NewsFeed newsFeed = newsFeedRepository.findById(newsFeedId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+
+        // FK 관계 고려: 필요 시 연관 엔티티 null 처리
+        // 예: newsFeed.setUser(null);
+        newsFeed.setUser(null);
+
+        try {
+            newsFeedRepository.delete(newsFeed);
+            newsFeedRepository.flush(); // 즉시 DB에 반영
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("삭제할 수 없습니다. FK 제약 조건을 확인하세요.", e);
         }
-        newsFeedRepository.deleteById(newsFeedId);
     }
 }
