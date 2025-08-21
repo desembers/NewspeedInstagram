@@ -12,6 +12,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequiredArgsConstructor
 public class NewsFeedController {
@@ -22,14 +24,17 @@ public class NewsFeedController {
             @RequestBody NewsFeedSaveRequest request,
             @Auth AuthUser authUser // Security에서 로그인한 사용자
     ){
-        Long testUserId = 1L; // 임시 테스트용 유저 ID
         return ResponseEntity.ok(newsFeedService.save(request, authUser.getId()));    // AuthUser 객체를 생성하고 @Auth 어노테이션으로 주입
     }
 
-    @GetMapping("/newsFeeds")
-    public ResponseEntity<Page<NewsFeedGetResponse>> getNewsFeeds(
-            @PageableDefault(size=10, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(newsFeedService.findAll(pageable));
+    @GetMapping("/newsFeeds")           //기간별 조회
+    public ResponseEntity<Page<NewsFeedGetResponse>> getNewsFeedsByPeriod(
+            @RequestParam LocalDateTime start,
+            @RequestParam LocalDateTime end,
+            @PageableDefault(size = 0, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
+    ){
+        Page<NewsFeedGetResponse> result = newsFeedService.getNewsFeedsByPeriod(start, end, pageable);
+        return ResponseEntity.ok(result);
     }
 
     @PatchMapping("/newsFeeds/{newsFeedId}")

@@ -39,16 +39,16 @@ public class NewsFeedService {
         );
     }
 
-    @Transactional(readOnly = true)
-    public Page<NewsFeedGetResponse> findAll(Pageable pageable) {
-        return newsFeedRepository.findAll(pageable)
-                .map(newsFeed -> new NewsFeedGetResponse(
-                        newsFeed.getId(),
-                        newsFeed.getUser().getId(),
-                        newsFeed.getContent(),
-                        newsFeed.getCreatedAt(),
-                        newsFeed.getUpdatedAt()
-                ));
+    @Transactional(readOnly = true)                     //기간별 조회
+    public Page<NewsFeedGetResponse> getNewsFeedsByPeriod(LocalDateTime start, LocalDateTime end, Pageable pageable){
+        Page<NewsFeed> newsFeeds = newsFeedRepository.findByUpdatedAtBetween(start,end,pageable);
+        return newsFeeds.map(newsFeed -> new NewsFeedGetResponse(
+                newsFeed.getId(),
+                newsFeed.getUser().getId(),
+                newsFeed.getContent(),
+                newsFeed.getCreatedAt(),
+                newsFeed.getUpdatedAt()
+        ));
     }
 
     @Transactional
