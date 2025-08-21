@@ -1,5 +1,7 @@
 package com.example.instagram.profile.controller;
 
+import com.example.instagram.auth.annotation.Auth;
+import com.example.instagram.auth.dto.AuthUser;
 import com.example.instagram.common.consts.Const;
 import com.example.instagram.profile.dto.request.ProfileSaveRequestDto;
 import com.example.instagram.profile.dto.request.ProfileUpdateRequestDto;
@@ -53,9 +55,9 @@ public class ProfileController {
     // 일부 필드만 수정 가능하도록 PATCH 채택
     @PatchMapping("/me/profiles")
     public ResponseEntity<ProfileResponseDto> update(
-            @SessionAttribute(name = Const.LOGIN_USER) Long userId,     // 세션.. 바이바이
+            @Auth AuthUser authUser,
             @Validated @RequestBody ProfileUpdateRequestDto dto
     ) {
-        return ResponseEntity.ok(profileService.update(userId, dto));
+        return ResponseEntity.ok(profileService.update(authUser.getId(), dto));
     }
 }
