@@ -6,7 +6,9 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.PatternMatchUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
@@ -53,7 +55,7 @@ public class JwtFilter implements Filter {
 
             // 토큰 유효성 체크 (db에 저장된 만료된 토큰인지 확인)
             if (!tokenValidCheckService.isValid(accessToken)) {
-                throw new RuntimeException("만료되었거나 윺효하지 않은 토근입니다.");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "만료되었거나 유효하지 않은 토근입니다.");
             }
 
             Claims claims = jwtTokenProvider.getClaims(accessToken);
