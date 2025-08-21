@@ -1,5 +1,7 @@
 package com.example.instagram.profile.controller;
 
+import com.example.instagram.auth.annotation.Auth;
+import com.example.instagram.auth.dto.AuthUser;
 import com.example.instagram.common.consts.Const;
 import com.example.instagram.profile.dto.request.ProfileSaveRequestDto;
 import com.example.instagram.profile.dto.request.ProfileUpdateRequestDto;
@@ -22,10 +24,10 @@ public class ProfileController {
     // 사용자 프로필 최초 생성 : URI 를 "/users/me/profiles" 로 하는 이유는 인증 주체와 강하게 결합되었다는 의미.
     @PostMapping("/me/profiles")
     public ResponseEntity<ProfileResponseDto> create(
-            @SessionAttribute(name = Const.LOGIN_USER) Long userId,         // 세션에서 인증 사용자 식별자 주입
+            @Auth AuthUser authUser,
             @Validated @RequestBody ProfileSaveRequestDto dto
     ) {
-        return ResponseEntity.ok(profileService.create(userId, dto));
+        return ResponseEntity.ok(profileService.create(authUser.getId(), dto));
     }
 
     ///  특정 유저의 프로필 조회
@@ -53,9 +55,9 @@ public class ProfileController {
     // 일부 필드만 수정 가능하도록 PATCH 채택
     @PatchMapping("/me/profiles")
     public ResponseEntity<ProfileResponseDto> update(
-            @SessionAttribute(name = Const.LOGIN_USER) Long userId,     // 세션.. 바이바이
+            @Auth AuthUser authUser,
             @Validated @RequestBody ProfileUpdateRequestDto dto
     ) {
-        return ResponseEntity.ok(profileService.update(userId, dto));
+        return ResponseEntity.ok(profileService.update(authUser.getId(), dto));
     }
 }
