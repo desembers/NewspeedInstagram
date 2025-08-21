@@ -19,7 +19,7 @@ import java.util.List;
 @RestController                  // JSON API 컨트롤러
 @RequiredArgsConstructor            // 의존성(서비스) 생성자 주입
 @RequestMapping("/users")
-public class UserController {   //test
+public class UserController {
 
     private final UserService userService;
     private final ProfileService profileService;
