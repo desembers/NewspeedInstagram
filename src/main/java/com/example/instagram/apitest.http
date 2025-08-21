@@ -1,0 +1,66 @@
+@base = http://localhost:8080
+@userId = 1
+
+### 회원가입
+# @name signup
+POST {{base}}/users/signup
+Content-Type: application/json
+
+{
+  "username": "test1",
+  "email": "test1@example.com",
+  "password": "pass1234"
+}
+
+### 로그인 (세션 쿠키 확보)
+# @name login
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test1@example.com",
+  "password": "pass1234"
+}
+
+> {%
+    // 응답의 Set-Cookie 헤더에서 JSESSIONID를 꺼내 다음 요청에 재사용
+    const setCookie = response.headers['Set-Cookie'];
+    if (setCookie && setCookie.length) {
+        const m = setCookie[0].match(/JSESSIONID=([^;]+)/);
+        if (m) client.global.set("jsession", m[1]);
+    }
+%}
+
+### 개별 유저 조회 (세션 불필요)
+GET {{base}}/users/{{userId}}
+
+### 내 프로필 생성 (세션 필요)
+POST {{base}}/users/me/profiles
+Content-Type: application/json
+Cookie: JSESSIONID={{jsession}}
+
+{
+  "displayName": "홍길동",
+  "bio": "안녕하세요!",
+  "website": "https://example.com",
+  "birthdate": "1990-01-01"
+}
+
+### 특정 유저 프로필 조회 (공개)
+GET {{base}}/users/{{userId}}/profiles
+
+### 내 프로필 수정 (세션 필요)
+PATCH {{base}}/users/me/profiles
+Content-Type: application/json
+Cookie: JSESSIONID={{jsession}}
+
+{
+  "displayName": "길동 홍",
+  "bio": "소개 수정",
+  "website": "https://ex.com",
+  "birthdate": "1991-02-02"
+}
+
+### 로그아웃 (세션 종료)
+POST {{base}}/auth/logout
+Cookie: JSESSIONID={{jsession}}

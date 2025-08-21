@@ -22,27 +22,27 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;  // Bcrypt 해시 책임 분리(테스트 / 교체 용이)
 
-    @Transactional                                  // 쓰기 로직은 트랜잭션 경계 내에서 원자성 보장
-    public UserResponseDto save(UserSaveRequestDto dto) {
-
-        // DB unique 제약 전에 애플리케이션 레벨에서 빠른 에러 반환
-        if (userRepository.existsByEmail(dto.getEmail()))
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
-        if (userRepository.existsByUsername(dto.getUsername()))
-            throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
-        if(!dto.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
-            throw new InVaidEmailFromatException("이메일 형식을 맞추시오.");
-
-        // 비밀번호는 절대 평문 저장 금지 → Bcrypt로 해시
-        String encoded = passwordEncoder.encode(dto.getPassword());
-        User user = new User(
-                dto.getUsername(),
-                dto.getEmail(),
-                encoded
-        );
-        userRepository.save(user);
-        return toDto(user);
-    }
+//    @Transactional                                  // 쓰기 로직은 트랜잭션 경계 내에서 원자성 보장
+//    public UserResponseDto save(UserSaveRequestDto dto) {
+//
+//        // DB unique 제약 전에 애플리케이션 레벨에서 빠른 에러 반환
+//        if (userRepository.existsByEmail(dto.getEmail()))
+//            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+//        if (userRepository.existsByUserName(dto.getUsername()))
+//            throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
+//        if(!dto.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
+//            throw new InVaidEmailFromatException("이메일 형식을 맞추시오.");
+//
+//        // 비밀번호는 절대 평문 저장 금지 → Bcrypt로 해시
+//        String encoded = passwordEncoder.encode(dto.getPassword());
+//        User user = new User(
+//                dto.getUsername(),
+//                dto.getEmail(),
+//                encoded
+//        );
+//        userRepository.save(user);
+//        return toDto(user);
+//    }
 
     @Transactional(readOnly = true)                 // 스냅샷 / 더티체킹 최적화
     public List<UserResponseDto> findAll() {
@@ -73,10 +73,10 @@ public class UserService {
         return toDto(user);
     }
 
-    @Transactional
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);      // 실제 삭제가 도메인 규칙이라면 soft-delete 대안도 고려
-    }
+//    @Transactional
+//    public void deleteById(Long id) {
+//        userRepository.deleteById(id);      // 실제 삭제가 도메인 규칙이라면 soft-delete 대안도 고려
+//    }
 
     /***
      * [아래 UserResponseDto 로 변환하는 이유]
@@ -127,7 +127,7 @@ public class UserService {
     private UserResponseDto toDto(User user) {
         return new UserResponseDto(
                 user.getId(),
-                user.getUsername(),
+                user.getUserName(),
                 user.getEmail(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
