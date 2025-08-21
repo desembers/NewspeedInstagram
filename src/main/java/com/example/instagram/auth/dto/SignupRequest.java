@@ -3,12 +3,14 @@ package com.example.instagram.auth.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
 public class SignupRequest {
 
     @NotBlank(message = "사용자 이름은 필수 입력값입니다.")
+    @Size(min = 2, max = 30, message = "사용자 이름은 2~30자입니다.")
     private String userName;    // 카멜케이스 준수하도록 수정 및 통일
 
     @Email(message = "이메일 형식이 올바르지 않습니다.")
