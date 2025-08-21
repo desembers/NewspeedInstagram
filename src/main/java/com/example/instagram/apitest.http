@@ -1,0 +1,66 @@
+@base = http://localhost:8080
+@userId = 6
+@token = {{login.response.body.accessToken}}
+
+### 회원가입
+# @name signup
+POST {{base}}/users/signup
+Content-Type: application/json
+
+{
+  "username": "test1",
+  "email": "test1@example.com",
+  "password": "pass1234!"
+}
+
+### 로그인(JWT 발급)
+# @name login
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test1@example.com",
+  "password": "pass1234!"
+}
+
+### 공개: 특정 유저 프로필 조회
+GET {{base}}/users/{{userId}}/profiles
+
+### 내 프로필 생성(인증 필요)
+POST {{base}}/users/me/profiles
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "displayName": "홍길동",
+  "bio": "안녕하세요!",
+  "website": "https://example.com",
+  "birthdate": "1990-01-01"
+}
+
+### 내 프로필 수정(인증 필요)
+PATCH {{base}}/users/me/profiles
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "displayName": "길동 홍",
+  "bio": "소개 수정",
+  "website": "https://ex.com",
+  "birthdate": "1991-02-02"
+}
+
+### 뉴스피드 작성(인증 필요)
+POST {{base}}/newsFeeds
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "content": "첫 글!"
+}
+
+### 뉴스피드 기간조회(공개)
+GET {{base}}/newsFeeds?start=2025-08-01T00:00:00&end=2025-08-31T23:59:59
+
+### 뉴스피드 수정/삭제(본인만)
+# PATCH/DELETE 시 path의 {newsFeedId}에 실제 ID 입력
