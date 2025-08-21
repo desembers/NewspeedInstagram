@@ -10,8 +10,6 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 
 public interface NewsFeedRepository extends JpaRepository<NewsFeed,Long> {
-    Page<NewsFeed> findAllByOrderByUpdatedAtDesc (Pageable pageable);
-
     @Query(value = "SELECT n FROM NewsFeed n WHERE n.updatedAt BETWEEN :start And :end",
             countQuery = "SELECT count(n) FROM NewsFeed n WHERE n.updatedAt BETWEEN :start AND :end")
     Page<NewsFeed> findByUpdatedAtBetween(@Param("start") LocalDateTime start,
