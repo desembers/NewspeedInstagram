@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequiredArgsConstructor
 public class NewsFeedController {
@@ -18,17 +20,21 @@ public class NewsFeedController {
 
     @PostMapping("/newsFeeds")
     public ResponseEntity<NewsFeedSaveResponse> saveNewsFeed(
-            @RequestBody NewsFeedSaveRequest request,
-            @AuthenticationPrincipal CustomUserDetails userDetails // Security에서 로그인한 사용자
+            @RequestBody NewsFeedSaveRequest request
+//            @AuthenticationPrincipal CustomUserDetails userDetails // Security에서 로그인한 사용자
     ){
-        //Long testUserId = 1L; // 임시 테스트용 유저 ID
-        return ResponseEntity.ok(newsFeedService.save(request,userDetails.getUser().getId()));
+        Long testUserId = 1L; // 임시 테스트용 유저 ID
+        return ResponseEntity.ok(newsFeedService.save(request,testUserId));
     }
 
-    @GetMapping("/newsFeeds")
-    public ResponseEntity<Page<NewsFeedGetResponse>> getNewsFeeds(
-            @PageableDefault(size=10, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(newsFeedService.findAll(pageable));
+    @GetMapping("/newsFeeds")           //기간별 조회
+    public ResponseEntity<Page<NewsFeedGetResponse>> getNewsFeedsByPeriod(
+            @RequestParam LocalDateTime start,
+            @RequestParam LocalDateTime end,
+            @PageableDefault(size = 0, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
+            ){
+        Page<NewsFeedGetResponse> result = newsFeedService.getNewsFeedsByPeriod(start, end, pageable);
+        return ResponseEntity.ok(result);
     }
 
     @PatchMapping("/newsFeeds/{newsFeedId}")
