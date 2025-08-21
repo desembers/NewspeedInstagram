@@ -36,7 +36,7 @@ public class AuthController {
     // 로그인
     @PostMapping("/auth/login")
     public ResponseEntity<LoginResponse> login(
-            @RequestBody LoginRequest request
+            @Valid @RequestBody LoginRequest request
     ) {
         LoginResponse response = authService.login(request);
         return ResponseEntity.ok(response);
@@ -54,7 +54,7 @@ public class AuthController {
     @DeleteMapping("/auth/withdraw")
     public ResponseEntity<Void> withdraw(
             @Auth AuthUser authUser,    // 토큰에서 추된 사용자 ID를 자동으로 주입받음
-            @RequestBody WithdrawRequest request
+            @Valid @RequestBody WithdrawRequest request
     ) {
         authService.withdraw(authUser.getId(), request);    // authUser.getId()를 통해 인증된 사용자 ID를 서비스로 전달
         return ResponseEntity.ok().build();
