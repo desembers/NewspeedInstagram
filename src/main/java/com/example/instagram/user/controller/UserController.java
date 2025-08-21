@@ -1,5 +1,7 @@
 package com.example.instagram.user.controller;
 
+import com.example.instagram.auth.annotation.Auth;
+import com.example.instagram.auth.dto.AuthUser;
 import com.example.instagram.common.consts.Const;
 import com.example.instagram.profile.dto.response.ProfileResponseDto;
 import com.example.instagram.profile.service.ProfileService;
@@ -55,13 +57,10 @@ public class UserController {   //test
     // 본인 정보 수정(전체 교체 의미로 PUT 선택)
     @PutMapping("/me")
     public ResponseEntity<UserResponseDto> update(
-
-            // 세션에 저장된 로그인 사용자 식별자 사용
-            @SessionAttribute(name = Const.LOGIN_USER) Long userId,
-
+            @Auth AuthUser authUser,
             @Valid @RequestBody UserUpdateRequestDto dto
     ) {
-        return ResponseEntity.ok(userService.update(userId, dto));
+        return ResponseEntity.ok(userService.update(authUser.getId(), dto));
     }
 
 //    // 본인 계정 삭제
