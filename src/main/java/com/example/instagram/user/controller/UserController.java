@@ -5,7 +5,6 @@ import com.example.instagram.auth.dto.AuthUser;
 import com.example.instagram.common.consts.Const;
 import com.example.instagram.profile.dto.response.ProfileResponseDto;
 import com.example.instagram.profile.service.ProfileService;
-import com.example.instagram.user.dto.request.UserSaveRequestDto;
 import com.example.instagram.user.dto.request.UserUpdateRequestDto;
 import com.example.instagram.user.dto.response.UserResponseDto;
 import com.example.instagram.user.service.UserService;
