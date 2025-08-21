@@ -1,9 +1,7 @@
 package com.example.instagram.comment.repository;
 
-import com.example.instagram.comment.dto.response.CommentResponse;
 import com.example.instagram.comment.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
