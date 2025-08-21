@@ -9,7 +9,8 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 public class NewsFeed extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
