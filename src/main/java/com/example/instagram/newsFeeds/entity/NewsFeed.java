@@ -5,9 +5,11 @@ import com.example.instagram.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class NewsFeed extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +17,7 @@ public class NewsFeed extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name="user_id", nullable = true)
     private User user;
 
     public NewsFeed(String content, User user) {
