@@ -19,7 +19,7 @@ POST http://localhost:8080/auth/signup
 Content-Type: application/json
 
 {
-  "email": "test8@example.com",
+  "email": "test01@example.com",
   "password": "0000aaAA!",
   "userName": "애플망고"
 }
@@ -101,13 +101,13 @@ Content-Type: application/json
 ###
 # @name getMyProfile
 # 내 프로필 조회
-GET http://localhost:8080/users/me/profiles
+GET http://localhost:8080/users/{userId}/profiles
 Authorization: Bearer {access_token}
 
 ###
 # @name updateMyProfile
 # 내 프로필 수정 (부분 업데이트)
-PATCH http://localhost:8080/users/me/profiles
+PATCH http://localhost:8080/users/me
 Authorization: Bearer {access_token}
 Content-Type: application/json
 
@@ -119,7 +119,7 @@ Content-Type: application/json
 ###
 # @name deleteMyProfile
 # 내 프로필 삭제
-DELETE http://localhost:8080/users/me/profiles
+DELETE http://localhost:8080/users/me
 Authorization: Bearer {access_token}
 
 ###
