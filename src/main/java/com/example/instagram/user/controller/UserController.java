@@ -17,18 +17,18 @@ import java.util.List;
 @RestController                  // JSON API 컨트롤러
 @RequiredArgsConstructor            // 의존성(서비스) 생성자 주입
 @RequestMapping("/users")
-public class UserController {
+public class UserController {   //test
 
     private final UserService userService;
     private final ProfileService profileService;
 
-    /// 회원가입 USERS 리소스 생성
-    /// 사용자 인증 회원가입 - "/auth/signup"
-    @PostMapping("/signup")
-    public ResponseEntity<UserResponseDto> signup(
-            @Valid @RequestBody UserSaveRequestDto dto) {         // @Valid: DTO의 Bean Validation을 트리거
-        return ResponseEntity.ok(userService.save(dto));
-    }
+//    /// 회원가입 USERS 리소스 생성
+//    /// 사용자 인증 회원가입 - "/auth/signup"
+//    @PostMapping("/signup")
+//    public ResponseEntity<UserResponseDto> signup(
+//            @Valid @RequestBody UserSaveRequestDto dto) {         // @Valid: DTO의 Bean Validation을 트리거
+//        return ResponseEntity.ok(userService.save(dto));
+//    }
 
     // 유저 목록 조회(관리/테스트 용)
     @GetMapping()
@@ -64,14 +64,14 @@ public class UserController {
         return ResponseEntity.ok(userService.update(userId, dto));
     }
 
-    // 본인 계정 삭제
-    @DeleteMapping("/me")
-    public ResponseEntity<Void> delete(
-
-            // 세션에 저장된 로그인 사용자 식별자 사용
-            @SessionAttribute(name = Const.LOGIN_USER) Long userId
-    ) {
-        userService.deleteById(userId);
-        return ResponseEntity.ok().build();
-    }
+//    // 본인 계정 삭제
+//    @DeleteMapping("/me")
+//    public ResponseEntity<Void> delete(
+//
+//            // 세션에 저장된 로그인 사용자 식별자 사용
+//            @SessionAttribute(name = Const.LOGIN_USER) Long userId
+//    ) {
+//        userService.deleteById(userId);
+//        return ResponseEntity.ok().build();
+//    }
 }
