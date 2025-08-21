@@ -1,6 +1,8 @@
 package com.example.instagram.profile.service;
 
 import com.example.instagram.common.exception.InValidException;
+import com.example.instagram.common.exception.InValidPasswordException;
+import com.example.instagram.common.exception.InValidPasswordFormatException;
 import com.example.instagram.profile.dto.request.ProfileSaveRequestDto;
 import com.example.instagram.profile.dto.request.ProfileUpdateRequestDto;
 import com.example.instagram.profile.dto.response.ProfileResponseDto;
@@ -70,17 +72,17 @@ public class ProfileService {
 
         //비밀번호와 닉네임이 일치하면 예외처리 해주기
         if(profile.getUser().getPassword().equals(dto.getDisplayName())) {
-            throw new InValidException("동일한 비밀번호로 수정하였습니다.");
+            throw new InValidPasswordException("동일한 비밀번호로 수정하였습니다.");
         }
 
         //비밀번호 입력해주지 않으면 안전하게 false값(NPE방지)
         if(StringUtils.isBlank(profile.getUser().getPassword())) {
-            throw new InValidException("비밀번호를 입력하지 않았습니다.");
+            throw new InValidPasswordException("비밀번호를 입력하지 않았습니다.");
         }
 
         //비밀번호 입력 형식 최소 8자 이상, 영문 + 숫자 + 특수문자 포함
         if(profile.getUser().getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$")) {
-            throw new InValidException("비밀번호 형식에 맞지 않습니다.");
+            throw new InValidPasswordFormatException("비밀번호 형식에 맞지 않습니다.");
         }
 
         return toDto(profile);
