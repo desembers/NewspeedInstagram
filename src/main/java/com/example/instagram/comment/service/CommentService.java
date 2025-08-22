@@ -23,10 +23,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-    private CommentRepository commentRepository;
-    private ProfileRepository profileRepository;
-    private NewsFeedRepository newsFeedRepository;
-    private UserRepository userRepository;
+    private final CommentRepository commentRepository;
+    private final ProfileRepository profileRepository;
+    private final NewsFeedRepository newsFeedRepository;
+    private final UserRepository userRepository;
 
 
     @Transactional

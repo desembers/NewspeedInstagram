@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
 
-      private CommentService commentService;
+      private final CommentService commentService;
 
       @PostMapping("/newsFeeds/{feedId}/comments")
       public ResponseEntity<CommentResponse> save(
