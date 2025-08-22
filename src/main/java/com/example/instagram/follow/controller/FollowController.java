@@ -48,7 +48,7 @@ public class FollowController {
 
 
     //언팔
-    @DeleteMapping("/{followersUserId}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFollow(@Auth AuthUser authUser, @PathVariable Long id){
             followService.deleteFollow(authUser, id);
             return ResponseEntity.noContent().build();
