@@ -55,12 +55,10 @@ public class NewsFeedService {
         NewsFeed newsFeed = newsFeedRepository.findById(newsFeedId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 일정입니다.")
         );
-
         //수정내용 불일치 -> 본인이 수정할수 있도록 설정 (그렇지 않으면 들어갈수 있습니다)
         if (!newsFeed.getUser().getId().equals(authUser.getId())) {
             throw new UnauthorizedAccessException("게시글은 본인만 수정할 수 있습니다.");
         }
-
 
         newsFeed.updateNewsFeed(request.getContent());
         return new NewsFeedPatchResponse(
@@ -81,6 +79,7 @@ public class NewsFeedService {
         // 예: newsFeed.setUser(null);
 
         try {
+            newsFeed.removeUser();
             newsFeedRepository.delete(newsFeed);
             newsFeedRepository.flush(); // 즉시 DB에 반영
         } catch (DataIntegrityViolationException e) {

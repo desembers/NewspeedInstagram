@@ -35,4 +35,9 @@ public class NewsFeed extends BaseEntity {
     public void updateNewsFeed(String content){
         this.content=content;
     }
+
+    //FK 제약때문에 게시물 삭제 안될 시 사용
+    public void removeUser() {
+        this.user = null;
+    }
 }
