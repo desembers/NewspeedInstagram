@@ -28,6 +28,7 @@ public class FollowService {
         if (fromUserId.equals(toUserId)) {
             throw new IllegalArgumentException("본인의 계정은 팔로우 할 수 없습니다");
         }
+
         if (followRepository.existsByFromUser_IdAndToUser_Id(fromUserId, toUserId)) {
             throw new DuplicatedFollowException("이미 팔로우 된 계정입니다.", HttpStatus.BAD_REQUEST);
         }
