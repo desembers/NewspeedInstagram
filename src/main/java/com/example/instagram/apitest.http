@@ -36,12 +36,17 @@ Content-Type: application/json
   "password": "0000aaAA2!"
 }
 
+> {%
+client.global.set("token", response.body.accessToken);
+client.log(`Client id: ${client.global.get("token")}`);
+%}
+
 
 ### 로그아웃
 # @name logout
 # "token" : " " 사이에 있는 token 을 bearer 한 칸 띄어 쓰기 {access_token} 자리에 붙여넣기
 POST http://localhost:8080/auth/logout
-Authorization: Bearer {access_token}
+Authorization: Bearer {{token}}
 
 
 /// 여기까지 확인 완료
@@ -55,13 +60,13 @@ Authorization: Bearer {access_token}
 # @name get_me
 # 내 정보 조회
 GET http://localhost:8080/users/me
-Authorization: Bearer {access_token}
+Authorization: Bearer {{token}}
 
 ###
 # @name update_me
 # 내 정보 수정 (예: userName 변경)
 PATCH http://localhost:8080/users/me
-Authorization: Bearer {access_token}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -72,13 +77,13 @@ Content-Type: application/json
 # @name delete_me
 # 회원 탈퇴 (연관 데이터 제약/삭제 순서 확인)
 DELETE http://localhost:8080/users/me
-Authorization: Bearer {access_token}
+Authorization: Bearer {{token}}
 
 ###
 # @name getUserById
 # 특정 사용자 조회 — 아래 예시는 userId=1, 필요 시 숫자만 바꿔 사용
 GET http://localhost:8080/users/1
-Authorization: Bearer {access_token}
+Authorization: Bearer {{token}}
 
 
 # =================================================================
@@ -89,7 +94,7 @@ Authorization: Bearer {access_token}
 # @name createProfile
 # 프로필 최초 생성
 POST http://localhost:8080/users/me/profiles
-Authorization: Bearer {access_token}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -102,13 +107,13 @@ Content-Type: application/json
 # @name getMyProfile
 # 내 프로필 조회
 GET http://localhost:8080/users/{userId}/profiles
-Authorization: Bearer {access_token}
+Authorization: Bearer {{token}}
 
 ###
 # @name updateMyProfile
 # 내 프로필 수정 (부분 업데이트)
 PATCH http://localhost:8080/users/me
-Authorization: Bearer {access_token}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -120,11 +125,11 @@ Content-Type: application/json
 # @name deleteMyProfile
 # 내 프로필 삭제
 DELETE http://localhost:8080/users/me
-Authorization: Bearer {access_token}
+Authorization: Bearer {{token}}
 
 ###
 # @name getProfileByUser
 # 특정 유저의 프로필 열람 — 아래 예시는 userId=1
 GET http://localhost:8080/users/1/profiles
-Authorization: Bearer {token}
+Authorization: Bearer {{token}}
 
