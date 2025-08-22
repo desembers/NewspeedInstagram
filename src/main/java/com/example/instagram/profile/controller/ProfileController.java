@@ -41,12 +41,19 @@ public class ProfileController {
 //    }
 
     /// version 2
-    // GET /users/{usersId}/profiles  특정 유저의 프로필 조회
-    @GetMapping("/{usersId}/profiles")
+    // GET /users/{userId}/profiles  특정 유저의 프로필 조회
+    @GetMapping("/{userId:0-9+}/profiles")
     public ResponseEntity<ProfileResponseDto> findProfile(          // 특정 유저의 프로필을 찾겠다!
             @PathVariable Long usersId
     ) {
         return ResponseEntity.ok(profileService.findByUserId(usersId));
+    }
+
+    @GetMapping("/me/profiles")
+    public ResponseEntity<ProfileResponseDto> myProfile(          // 특정 유저의 프로필을 찾겠다!
+        @Auth AuthUser authUser
+    ) {
+        return ResponseEntity.ok(profileService.findByUserId(authUser.getId()));
     }
 
 
