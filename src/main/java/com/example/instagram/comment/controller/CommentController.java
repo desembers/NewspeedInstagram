@@ -6,6 +6,7 @@ import com.example.instagram.comment.dto.request.CommentSaveRequestDto;
 import com.example.instagram.comment.dto.request.CommentUpdateRequestDto;
 import com.example.instagram.comment.dto.response.CommentResponse;
 import com.example.instagram.comment.service.CommentService;
+import com.example.instagram.newsFeeds.dto.NewsFeedGetResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,23 +19,30 @@ public class CommentController {
 
       private CommentService commentService;
 
-      @PostMapping("/comment/{instagramId}")
+      @PostMapping("/newsFeeds/{feedId}/comments")
       public ResponseEntity<CommentResponse> save(
               @Auth AuthUser authUser,
-              @PathVariable long instagramId,
+              @PathVariable Long feedId,
               @RequestBody CommentSaveRequestDto requestDto
               ) {
-          return ResponseEntity.ok(commentService.save(authUser.getId(), instagramId , requestDto));
+          return ResponseEntity.ok(commentService.save(authUser.getId(), feedId , requestDto));
       }
 
-      @GetMapping("/comments/{userId}")
+      @GetMapping("/users/{userid}/comments")
       public ResponseEntity<List<CommentResponse>> findId(
               @PathVariable long userid
       )  {
-          return ResponseEntity.ok(commentService.findById(userid));
+          return ResponseEntity.ok(commentService.findByUserId(userid));
       }
 
-      @PutMapping("/comment/{commentId}")
+      @GetMapping("/newsFeeds/{newsFeedId}/comments")
+      public ResponseEntity<List<CommentResponse>> findByNewsFeedId(
+              @PathVariable Long newsFeedId
+      ) {
+            return ResponseEntity.ok(commentService.findByNewsFeedId(newsFeedId));
+      }
+
+      @PutMapping("/newsFeeds/comments/{commentid}")
       public ResponseEntity<CommentResponse> update(
               @Auth AuthUser authUser,
               @PathVariable long commentid,
@@ -43,7 +51,7 @@ public class CommentController {
           return ResponseEntity.ok(commentService.update(authUser.getId(), commentid, requestDto));
       }
 
-      @DeleteMapping("/comment/{commentId}")
+      @DeleteMapping("/newsFeeds/comments/{commentId}")
       public void delete(
               @Auth AuthUser authUser,
               @PathVariable long commentId
