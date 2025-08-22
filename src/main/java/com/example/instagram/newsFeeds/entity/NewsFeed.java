@@ -35,6 +35,4 @@ public class NewsFeed extends BaseEntity {
     public void updateNewsFeed(String content){
         this.content=content;
     }
-
-
 }

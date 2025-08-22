@@ -5,7 +5,7 @@ spring:
     password: ${PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: update    # 처음 스키마 자동 생성/수정: create / create-drop / update 중 택1
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect

@@ -10,7 +10,6 @@ import com.example.instagram.profile.repository.ProfileRepository;
 import com.example.instagram.user.entity.User;
 import com.example.instagram.user.repository.UserRepository;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
