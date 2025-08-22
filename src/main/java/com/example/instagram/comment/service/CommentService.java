@@ -5,6 +5,8 @@ import com.example.instagram.comment.dto.request.CommentUpdateRequestDto;
 import com.example.instagram.comment.dto.response.CommentResponse;
 import com.example.instagram.comment.entity.Comment;
 import com.example.instagram.comment.repository.CommentRepository;
+import com.example.instagram.newsFeeds.Repository.NewsFeedRepository;
+import com.example.instagram.newsFeeds.entity.NewsFeed;
 import com.example.instagram.profile.entity.Profile;
 import com.example.instagram.profile.repository.ProfileRepository;
 import com.example.instagram.user.entity.User;
@@ -23,22 +25,24 @@ import java.util.stream.Collectors;
 public class CommentService {
     private CommentRepository commentRepository;
     private ProfileRepository profileRepository;
+    private NewsFeedRepository newsFeedRepository;
     private UserRepository userRepository;
 
 
     @Transactional
-    public CommentResponse save(long userId, long instagramId ,CommentSaveRequestDto requestDto) {
-        Profile profile = profileRepository.findById(userId).orElseThrow(
+    public CommentResponse save(long userId, long feedId ,CommentSaveRequestDto requestDto) {
+        NewsFeed newsfeed = newsFeedRepository.findById(feedId).orElseThrow(
                 () -> new IllegalArgumentException("해당일정이 존재하지 않습니다."));
 
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
 
-        Comment comment = new Comment(profile, user, requestDto.getText());
+        Comment comment = new Comment(newsfeed, user, requestDto.getText());
         commentRepository.save(comment);
         return new CommentResponse(
                 comment.getId(),
                 user.getId(),
+                comment.getNewsFeed().getId(),
                 comment.getText(),
                 comment.getCreatedAt(),
                 comment.getUpdatedAt()
@@ -47,12 +51,13 @@ public class CommentService {
 
     // Soft Delete 제외 조회
     @Transactional(readOnly = true)
-    public List<CommentResponse> findById(long userId) {
+    public List<CommentResponse> findByUserId(long userId) {
         List<Comment> comments = commentRepository.findByUserIdAndDeletedFalse(userId);
         return comments.stream()
                 .map(comment -> new CommentResponse(
                         comment.getId(),
                         comment.getUser().getId(),
+                        comment.getNewsFeed().getId(),
                         comment.getText(),
                         comment.getCreatedAt(),
                         comment.getUpdatedAt()
@@ -68,6 +73,7 @@ public class CommentService {
         return new CommentResponse(
                 comment.getId(),
                 comment.getUser().getId(),
+                comment.getNewsFeed().getId(),
                 comment.getText(),
                 comment.getCreatedAt(),
                 comment.getUpdatedAt()
@@ -87,6 +93,7 @@ public class CommentService {
         return new CommentResponse(
                 comment.getId(),
                 comment.getUser().getId(),
+                comment.getNewsFeed().getId(),
                 comment.getText(),
                 comment.getCreatedAt(),
                 comment.getUpdatedAt()
@@ -103,5 +110,19 @@ public class CommentService {
         }
         comment.softDelete(); // deleted = true
         commentRepository.save(comment); // DB 업데이트
+    }
+
+    @Transactional(readOnly = true)
+    public List<CommentResponse> findByNewsFeedId(Long newsFeedId) {
+        List<Comment> comments = commentRepository.findAllByNewsFeed_Id_AndDeletedFalse(newsFeedId);
+
+        return  comments.stream().map(comment -> new CommentResponse(
+                comment.getId(),
+                comment.getUser().getId(),
+                comment.getNewsFeed().getId(),
+                comment.getText(),
+                comment.getCreatedAt(),
+                comment.getUpdatedAt()
+        )).collect(Collectors.toList());
     }
 }

@@ -12,5 +12,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByUserId(Long userId);    // Soft Delete로 사용 X
 
     List<Comment> findByUserIdAndDeletedFalse(Long userId); // Soft Delete 제외 조회
-    Optional<Comment> findByIdAndDeletedFalse(Long id);     // Soft Delete 제외 단건 조회
+    Optional<Comment> findByIdAndDeletedFalse(Long id);     // Soft Delete// 제외 단건 조회
+    List<Comment> findAllByNewsFeed_Id_AndDeletedFalse(Long newFeedId);
+
 }
