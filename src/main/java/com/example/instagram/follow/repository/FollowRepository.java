@@ -1,10 +1,14 @@
 package com.example.instagram.follow.repository;
 
 import com.example.instagram.follow.entity.Follow;
+import com.example.instagram.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FollowRepository extends JpaRepository<Follow, Long> {
+import java.util.List;
 
-    boolean existsByFromIdAndToId(Long fromId, Long toId);
+public interface FollowRepository extends JpaRepository<Follow, Long> {
+    boolean existsByFrom_IdAndTo_Id(Long fromUser, Long toUser);
     void deletByFromIdAndToId(Long fromId, Long toId);
+    List<Follow> findAllByFromUser(User fromUser);
+    List<Follow> findAllByToUser(User toUser);
 }
