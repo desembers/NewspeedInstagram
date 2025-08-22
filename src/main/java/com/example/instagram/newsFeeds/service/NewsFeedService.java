@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.instagram.auth.dto.AuthUser;
@@ -48,7 +49,7 @@ public class NewsFeedService {
                 () -> new UnauthorizedAccessException("존재하지 않는 유저아이디입니다.")
         );
         List<Follow> followings = followRepository.findAllByFromUser(user);
-        List<User> users = followings.stream().map(e -> e.getToUser()).toList();
+        List<User> users = new ArrayList<>(followings.stream().map(e -> e.getToUser()).toList());
         users.add(user);
         Page<NewsFeed> newsFeeds = newsFeedRepository.findByUpdatedAtBetweenAndDeletedFalseAndUserIn(start,end, users, pageable);
         return newsFeeds.map(newsFeed -> new NewsFeedGetResponse(
@@ -63,7 +64,7 @@ public class NewsFeedService {
     @Transactional
     public NewsFeedPatchResponse updateNewsFeed(Long newsFeedId, NewsFeedPatchRequest request, AuthUser authUser){
         NewsFeed newsFeed = newsFeedRepository.findByIdAndDeletedFalse(newsFeedId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 일정입니다.")
+                () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
         //수정내용 불일치 -> 본인이 수정할수 있도록 설정 (그렇지 않으면 들어갈수 있습니다)
         if (!newsFeed.getUser().getId().equals(authUser.getId())) {
