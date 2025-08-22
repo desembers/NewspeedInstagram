@@ -1,8 +1,5 @@
 package com.example.instagram.follow.service;
 
-import com.example.instagram.follow.dto.FollowRequest;
-import com.example.instagram.follow.dto.FollowResponse;
-import com.example.instagram.follow.entity.Follow;
 import com.example.instagram.follow.repository.FollowRepository;
 import com.example.instagram.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +14,17 @@ public class FollowService {
 
     @Transactional
     public void follow(User fromUser, User toUser) {
+        if (fromUser == null || toUser == null) {
+            throw new IllegalArgumentException("팔로우 대상이 유효하지 않습니다.");
+        }
+
+        if (fromUser.getId().equals(toUser.getId())) {
+            throw new IllegalArgumentException("본인의 계정은 팔로우 할 수 없습니다");
+        }
+    }
+    boolean exists = followRepository.existsByFromIdAndToId(fromUser.getId(toUser.getId()));
+    if (exists) return;
+
+    followRepository.save(new Follow(fromUser, fromId));
     }
 }
