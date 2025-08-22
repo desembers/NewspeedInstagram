@@ -34,6 +34,7 @@ public class User extends BaseEntity {                      // 생성/수정 시
 
     private boolean deleted = false;    // Soft Delete용 플래그
 
+    // 회원 탈퇴 - AuthService
     public void withdraw() {
         this.deleted = true;
     }
