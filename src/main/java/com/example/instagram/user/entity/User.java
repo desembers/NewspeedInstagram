@@ -86,11 +86,11 @@ public class User extends BaseEntity {                      // 생성/수정 시
 //        return new User(id); }
 
     // 변경 로직을 엔티티 내부로 캡슐화(Setter 남용 방지)
-    public void update(String username,
+    public void update(String userName,
                        String email,
                        String password
     ) {
-        this.userName = username;
+        this.userName = userName;
         this.email    = email;
         this.password = password;
     }
