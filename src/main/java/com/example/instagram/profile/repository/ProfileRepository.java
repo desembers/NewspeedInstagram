@@ -12,6 +12,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     boolean existsByUserId(Long userId);       // 중복 생성 방지
     Optional<Profile> findByUserId(Long userId);
 
-    // 프로필 삭제
-    void deleteByUserId(Long userId);
+    // Soft Delete 적용
+    boolean existsByUserIdAndDeletedFalse(Long userId);
+    Optional<Profile> findByUserIdAndDeletedFalse(Long userId);
 }
