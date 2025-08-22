@@ -22,13 +22,14 @@ public class Comment extends BaseEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profil_id")    // 단수로 통일
+    @JoinColumn(name = "profile_id")    // 단수로 통일
     private Profile profile;
 
-    public Comment(Profile profile,User user, String text) {
+    public Comment(Profile profile, User user, String text) {
+        this.profile = profile;
+        this.user = user;
         this.text = text;
     }
-
 
     public void update(String text) {
         this.text = text;
