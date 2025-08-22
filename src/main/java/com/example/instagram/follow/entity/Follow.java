@@ -1,5 +1,6 @@
 package com.example.instagram.follow.entity;
 
+import com.example.instagram.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +14,9 @@ import java.util.Objects;
 @Table(
         name = "follows",
         uniqueConstraints = @UniqueConstraint(
-                columnNames = {"from_user", "to_user"}
+                columnNames = {"from_user_id", "to_user_id"}
         )
 )
-
 public class Follow {
 
     @Id
@@ -25,19 +25,21 @@ public class Follow {
     private Long id;
 
     //팔로우 함
-    @Column(name = "from_user_id", nullable = false)
-    private Long fromUser;
+    @ManyToOne
+    @JoinColumn(name = "from_user_id", nullable = false)
+    private User fromUser;
 
     //팔로우 받음
-    @Column(name = "to_user_id", nullable = false)
-        private Long toUser;
+    @ManyToOne
+    @JoinColumn(name = "to_user_id", nullable = false)
+    private User toUser;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    private Follow(Long fromUser, Long toUser) {
+    private Follow(User fromUser, User toUser) {
 
-        if (Objects.equals(fromUser, toUser)) {
+        if (fromUser.getId().equals(toUser.getId())) {
             throw new IllegalArgumentException("자신의 계정을 팔로우 할 수 없습니다.");
         }
 
@@ -45,7 +47,7 @@ public class Follow {
         this.toUser = toUser; //팔로우 받는 사람
     }
 
-    public static Follow of(Long fromUser, Long toUser) {
+    public static Follow of(User fromUser, User toUser) {
         return new Follow(fromUser, toUser);
     }
 

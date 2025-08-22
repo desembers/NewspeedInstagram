@@ -4,6 +4,7 @@ import com.example.instagram.common.exception.InVaidEmailFromatException;
 import com.example.instagram.common.exception.InValidPasswordException;
 import com.example.instagram.common.exception.InValidPasswordFormatException;
 import com.example.instagram.common.exception.UnauthorizedAccessException;
+import com.example.instagram.follow.exception.DuplicatedFollowException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedAccessException.class)
     public ResponseEntity<String> handleUnauthorizedAccessException(UnauthorizedAccessException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DuplicatedFollowException.class)
+    public ResponseEntity<String> handleDuplicatedFollowException(DuplicatedFollowException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
 }
