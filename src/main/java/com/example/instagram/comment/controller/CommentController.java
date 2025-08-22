@@ -5,16 +5,16 @@ import com.example.instagram.auth.dto.AuthUser;
 import com.example.instagram.comment.dto.request.CommentSaveRequestDto;
 import com.example.instagram.comment.dto.request.CommentUpdateRequestDto;
 import com.example.instagram.comment.dto.response.CommentResponse;
-import com.example.instagram.comment.repository.CommentRepository;
 import com.example.instagram.comment.service.CommentService;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-public class CommentCotroller {
+@RequiredArgsConstructor
+public class CommentController {
 
       private CommentService commentService;
 
@@ -27,14 +27,14 @@ public class CommentCotroller {
           return ResponseEntity.ok(commentService.save(authUser.getId(), instagramId , requestDto));
       }
 
-      @GetMapping("/comments/{userid}")
+      @GetMapping("/comments/{userId}")
       public ResponseEntity<List<CommentResponse>> findId(
               @PathVariable long userid
       )  {
           return ResponseEntity.ok(commentService.findById(userid));
       }
 
-      @PutMapping("/comment/{commentid}")
+      @PutMapping("/comment/{commentId}")
       public ResponseEntity<CommentResponse> update(
               @Auth AuthUser authUser,
               @PathVariable long commentid,
