@@ -19,9 +19,9 @@ POST http://localhost:8080/auth/signup
 Content-Type: application/json
 
 {
-  "email": "test01@example.com",
+  "email": "test2@example.com",
   "password": "0000aaAA!",
-  "userName": "애플망고"
+  "userName": "애플"
 }
 
 
@@ -32,8 +32,8 @@ POST http://localhost:8080/auth/login
 Content-Type: application/json
 
 {
-  "email": "test6@example.com",
-  "password": "0000aaAA2!"
+  "email": "test2@example.com",
+  "password": "0000aaAA!"
 }
 
 > {%
@@ -48,6 +48,15 @@ client.log(`Client id: ${client.global.get("token")}`);
 POST http://localhost:8080/auth/logout
 Authorization: Bearer {{token}}
 
+
+###
+# @withdraw
+DELETE http://localhost:8080/auth/withdraw
+Content-Type: application/json
+Authorization: Bearer
+{
+  "password": "0000aaAA!"
+}
 
 /// 여기까지 확인 완료
 
