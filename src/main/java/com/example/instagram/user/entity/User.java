@@ -59,7 +59,7 @@ public class User extends BaseEntity {                      // 생성/수정 시
     /**
      * 편의 메서드: 양방향 연결 일관성 유지
      */
-    public void setProfile(Profile p) {
+    private void setProfile(Profile p) {
         // 기존 연관 끊기
         if (this.profile != null && this.profile.getUser() == this) {
             this.profile.setUser(null);
