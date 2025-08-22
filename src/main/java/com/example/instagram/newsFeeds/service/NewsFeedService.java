@@ -7,7 +7,6 @@ import com.example.instagram.newsFeeds.entity.NewsFeed;
 import com.example.instagram.user.entity.User;
 import com.example.instagram.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,8 +44,8 @@ public class NewsFeedService {
         User user = userRepository.findById(authUser.getId()).orElseThrow(
                 () -> new UnauthorizedAccessException("존재하지 않는 유저아이디입니다.")
         );
-        List<Follow> followings = followRepository.findAllByFrom(user);
-        List<User> users = followings.stream().map(e -> e.getTo()).toList();
+        List<Follow> followings = followRepository.findAllByFromUser(user);
+        List<User> users = followings.stream().map(e -> e.getToUser()).toList();
         users.add(user);
         Page<NewsFeed> newsFeeds = newsFeedRepository.findByUpdatedAtBetweenAndDeletedFalseAndUserIn(start,end, users, pageable);
         return newsFeeds.map(newsFeed -> new NewsFeedGetResponse(
