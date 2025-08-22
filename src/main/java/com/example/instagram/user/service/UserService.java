@@ -64,7 +64,7 @@ public class UserService {
 
         String encoded = passwordEncoder.encode(dto.getPassword());
         user.update(                                                // 엔티티 메서드로 변경 캡슐화
-                dto.getUsername(),
+                dto.getUserName(),
                 dto.getEmail(),
                 encoded);
         return toDto(user);
