@@ -18,11 +18,11 @@ public class Comment extends BaseEntity {
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")    // 단수로 통일
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profiles_id")
+    @JoinColumn(name = "profil_id")    // 단수로 통일
     private Profile profile;
 
     public Comment(Profile profile,User user, String text) {
