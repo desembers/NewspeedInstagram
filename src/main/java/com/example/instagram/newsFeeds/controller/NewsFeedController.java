@@ -44,9 +44,10 @@ public class NewsFeedController {
     @PatchMapping("/newsFeeds/{newsFeedId}")
     public ResponseEntity<NewsFeedPatchResponse> updateNewsFeed(
             @RequestBody NewsFeedPatchRequest request,
-            @PathVariable Long newsFeedId
+            @PathVariable Long newsFeedId,
+            @Auth AuthUser authUser
     ){
-        return ResponseEntity.ok(newsFeedService.updateNewsFeed(newsFeedId,request));
+        return ResponseEntity.ok(newsFeedService.updateNewsFeed(newsFeedId,request,authUser));
     }
 
     @DeleteMapping("/newsfeeds/{newsFeedId}")
