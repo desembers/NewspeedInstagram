@@ -78,11 +78,6 @@ public class ProfileService {
             throw new InValidPasswordException("비밀번호를 입력하지 않았습니다.");
         }
 
-        //비밀번호 입력 형식 최소 8자 이상, 영문 + 숫자 + 특수문자 포함
-        if(profile.getUser().getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$")) {
-            throw new InValidPasswordFormatException("비밀번호 형식에 맞지 않습니다.");
-        }
-
         return toDto(profile);
     }
 
