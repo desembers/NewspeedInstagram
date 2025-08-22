@@ -126,5 +126,5 @@ Authorization: Bearer {access_token}
 # @name getProfileByUser
 # 특정 유저의 프로필 열람 — 아래 예시는 userId=1
 GET http://localhost:8080/users/1/profiles
-Authorization: Bearer {access_token}
+Authorization: Bearer {token}
 
