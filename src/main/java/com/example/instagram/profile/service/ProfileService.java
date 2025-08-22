@@ -17,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
-import static java.lang.Integer.parseInt;
-
 @Service
 @RequiredArgsConstructor                                // 불변 의존성 final 주입 + 테스트 용이
 public class ProfileService {
@@ -28,7 +26,7 @@ public class ProfileService {
 
     @Transactional
     public ProfileResponseDto create(Long userId, ProfileSaveRequestDto dto) {
-        if (profileRepository.existsByUserId(userId)) {             // 프로필과 유저는 1:1 (공유)구조, 프로필 중복 생성 방지
+        if (profileRepository.existsByUserIdAndDeletedFalse(userId)) {             // 프로필과 유저는 1:1 (공유)구조, 프로필 중복 생성 방지
             throw new IllegalArgumentException("이미 프로필이 존재합니다.");
         }
 
@@ -54,14 +52,14 @@ public class ProfileService {
 
     @Transactional(readOnly = true)
     public ProfileResponseDto findByUserId(Long userId) {
-        Profile profile = profileRepository.findByUserId(userId)
+        Profile profile = profileRepository.findByUserIdAndDeletedFalse(userId)
                 .orElseThrow(() -> new IllegalArgumentException("프로필이 존재하지 않습니다."));
         return toDto(profile);
     }
 
     @Transactional
     public ProfileResponseDto update(Long userId, ProfileUpdateRequestDto dto) {
-        Profile profile = profileRepository.findByUserId(userId)
+        Profile profile = profileRepository.findByUserIdAndDeletedFalse(userId)
                 .orElseThrow(() -> new IllegalArgumentException("프로필이 존재하지 않습니다."));
         profile.update(
                 dto.getDisplayName(),
@@ -88,16 +86,33 @@ public class ProfileService {
         return toDto(profile);
     }
 
-    private ProfileResponseDto toDto(Profile p) {
+    // Service 계층
+    @Transactional
+    public void deleteByUserId(Long userId) {
+        // 프로필 객체 조회
+        Profile profile = profileRepository.findByUserIdAndDeletedFalse(userId).orElseThrow(
+                () -> new IllegalArgumentException("프로필이 존재하지 않습니다."));
+
+        // 2) Soft Delete 적용
+        profile.softDelete();
+        profileRepository.save(profile);
+    }
+
+    private ProfileResponseDto toDto(Profile profile) {
         return new ProfileResponseDto(
-                p.getUserId(), p.getDisplayName(), p.getBio(), p.getWebsite(),
-                p.getBirthdate(), p.getCreatedAt(), p.getUpdatedAt()
+                profile.getUserId(),
+                profile.getDisplayName(),
+                profile.getBio(),
+                profile.getWebsite(),
+                profile.getBirthdate(),
+                profile.getCreatedAt(),
+                profile.getUpdatedAt()
         );
     }
 
-    private LocalDate parseDate(String s) {
+    private LocalDate parseDate(String string) {
 
         // 사용 이유 : Null / 빈 문자 허용
-        return (s == null || s.isBlank()) ? null : LocalDate.parse(s);     // 삼항연산자
+        return (string == null || string.isBlank()) ? null : LocalDate.parse(string);     // 삼항연산자
     }
 }

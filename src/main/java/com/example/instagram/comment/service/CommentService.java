@@ -9,8 +9,7 @@ import com.example.instagram.profile.entity.Profile;
 import com.example.instagram.profile.repository.ProfileRepository;
 import com.example.instagram.user.entity.User;
 import com.example.instagram.user.repository.UserRepository;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class CommentService {
     private CommentRepository commentRepository;
     private ProfileRepository profileRepository;
@@ -46,9 +45,10 @@ public class CommentService {
         );
     }
 
-    @Transactional
+    // Soft Delete 제외 조회
+    @Transactional(readOnly = true)
     public List<CommentResponse> findById(long userId) {
-        List<Comment> comments = commentRepository.findByUserId(userId);
+        List<Comment> comments = commentRepository.findByUserIdAndDeletedFalse(userId);
         return comments.stream()
                 .map(comment -> new CommentResponse(
                         comment.getId(),
@@ -60,9 +60,9 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public CommentResponse findOne(long id) {
-        Comment comment = commentRepository.findById(id).orElseThrow(
+        Comment comment = commentRepository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
 
         return new CommentResponse(
@@ -76,7 +76,7 @@ public class CommentService {
 
     @Transactional
     public CommentResponse update(long commentId, long userId, CommentUpdateRequestDto reqeustDto) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
+        Comment comment = commentRepository.findByIdAndDeletedFalse(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당댓글이 존재하지 않습니다"));
         //str.equals(str2) -> str이 null이면 NPE발생
         //Object.equals(str, str2) -> 둘둥 하나가 null이어도 안전하게 반환 (null-safe방식)
@@ -95,12 +95,13 @@ public class CommentService {
 
     @Transactional
     public void delete(long commentId, long userId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
+        Comment comment = commentRepository.findByIdAndDeletedFalse(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글에 존재하지 않습니다."));
 
         if (!Objects.equals(comment.getUser().getId(), userId)) {
             throw new IllegalArgumentException("본인이 작성한 댓글만 삭제할수 있습니다.");
         }
-        commentRepository.delete(comment);
+        comment.softDelete(); // deleted = true
+        commentRepository.save(comment); // DB 업데이트
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,23 +30,28 @@ public class NewsFeedController {
 
     @GetMapping("/newsFeeds")           //기간별 조회
     public ResponseEntity<Page<NewsFeedGetResponse>> getNewsFeedsByPeriod(
-            @RequestParam LocalDateTime start,
-            @RequestParam LocalDateTime end,
-            @PageableDefault(size = 0, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
+            @Auth AuthUser authUser,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+            @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
     ){
-        Page<NewsFeedGetResponse> result = newsFeedService.getNewsFeedsByPeriod(start, end, pageable);
+        LocalDateTime startDate = start != null ? start : LocalDateTime.MIN;
+        LocalDateTime endDate = end != null ? end : LocalDateTime.now();
+
+        Page<NewsFeedGetResponse> result = newsFeedService.getNewsFeedsByPeriod(authUser, startDate, endDate, pageable);
         return ResponseEntity.ok(result);
     }
 
     @PatchMapping("/newsFeeds/{newsFeedId}")
     public ResponseEntity<NewsFeedPatchResponse> updateNewsFeed(
             @RequestBody NewsFeedPatchRequest request,
-            @PathVariable Long newsFeedId
+            @PathVariable Long newsFeedId,
+            @Auth AuthUser authUser
     ){
-        return ResponseEntity.ok(newsFeedService.updateNewsFeed(newsFeedId,request));
+        return ResponseEntity.ok(newsFeedService.updateNewsFeed(newsFeedId,request,authUser));
     }
 
-    @DeleteMapping("/newsFeeds/{newsFeedId}")
+    @DeleteMapping("/newsfeeds/{newsFeedId}")
     public void deleteNewsFeed(
             @PathVariable Long newsFeedId
     ){

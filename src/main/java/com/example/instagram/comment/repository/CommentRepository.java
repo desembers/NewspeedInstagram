@@ -1,14 +1,16 @@
 package com.example.instagram.comment.repository;
 
-import com.example.instagram.comment.dto.response.CommentResponse;
 import com.example.instagram.comment.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByUserId(long userId);
+    List<Comment> findByUserId(Long userId);    // Soft Delete로 사용 X
+
+    List<Comment> findByUserIdAndDeletedFalse(Long userId); // Soft Delete 제외 조회
+    Optional<Comment> findByIdAndDeletedFalse(Long id);     // Soft Delete 제외 단건 조회
 }

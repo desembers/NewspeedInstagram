@@ -4,15 +4,12 @@ import com.example.instagram.common.entity.BaseEntity;
 import com.example.instagram.profile.entity.Profile;
 import com.example.instagram.user.entity.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +18,18 @@ public class Comment extends BaseEntity {
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")    // 단수로 통일
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profiles_id")
+    @JoinColumn(name = "profile_id")    // 단수로 통일
     private Profile profile;
 
-    public Comment(Profile profile,User user, String text) {
+    public Comment(Profile profile, User user, String text) {
+        this.profile = profile;
+        this.user = user;
         this.text = text;
     }
-
 
     public void update(String text) {
         this.text = text;

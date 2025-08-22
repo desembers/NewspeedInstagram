@@ -13,11 +13,23 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
-    @CreatedDate
+    @CreatedDate`
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    // Soft Delete
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;  // <-- 필드 추가
+
+    public void softDelete() {
+        this.deleted = true;
+    }
+
+    public void restore() {  // 복원용 메서드
+        this.deleted = false;
+    }
 }

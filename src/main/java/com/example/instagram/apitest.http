@@ -1,68 +1,129 @@
-@base = http://localhost:8080
-@userId = 1
+# ============================================================
+# NewspeedInstagram — API 테스트 안내
+# ------------------------------------------------------------
+# 사용 방법(권장 순서):
+#  1) 회원가입 signup  →  2) 로그인 login(JWT 발급)  →  3) 이후 요청 실행
+# ------------------------------------------------------------
+# 중요:
+#  - 여기서 받은 JWT/민감정보는 절대 커밋하지 마세요!
+# ============================================================
+
+# -----------------------------------------------------------------
+# [Auth] 회원가입 / 로그인 / 로그아웃
+# -----------------------------------------------------------------
 
 ### 회원가입
 # @name signup
-POST {{base}}/users/signup
+# 회원가입 (중복이면 400/409 가능 → email 바꿔 테스트)
+POST http://localhost:8080/auth/signup
 Content-Type: application/json
 
 {
-  "username": "test1",
-  "email": "test1@example.com",
-  "password": "pass1234"
+  "email": "test01@example.com",
+  "password": "0000aaAA!",
+  "userName": "애플망고"
 }
 
-### 로그인 (세션 쿠키 확보)
+
+### 로그인(JWT 발급)
 # @name login
-POST {{base}}/auth/login
+# 로그인 성공 시 access token을 전역 변수에 저장해 이후 Authorization 헤더에서 사용
+POST http://localhost:8080/auth/login
 Content-Type: application/json
 
 {
-  "email": "test1@example.com",
-  "password": "pass1234"
+  "email": "test6@example.com",
+  "password": "0000aaAA2!"
 }
 
-> {%
-    // 응답의 Set-Cookie 헤더에서 JSESSIONID를 꺼내 다음 요청에 재사용
-    const setCookie = response.headers['Set-Cookie'];
-    if (setCookie && setCookie.length) {
-        const m = setCookie[0].match(/JSESSIONID=([^;]+)/);
-        if (m) client.global.set("jsession", m[1]);
-    }
-%}
 
-### 개별 유저 조회 (세션 불필요)
-GET {{base}}/users/{{userId}}
+### 로그아웃
+# @name logout
+# "token" : " " 사이에 있는 token 을 bearer 한 칸 띄어 쓰기 {access_token} 자리에 붙여넣기
+POST http://localhost:8080/auth/logout
+Authorization: Bearer {access_token}
 
-### 내 프로필 생성 (세션 필요)
-POST {{base}}/users/me/profiles
+
+/// 여기까지 확인 완료
+
+
+# =================================================================
+# Users (사용자) — 내 정보(me) 기준
+# =================================================================
+
+###
+# @name get_me
+# 내 정보 조회
+GET http://localhost:8080/users/me
+Authorization: Bearer {access_token}
+
+###
+# @name update_me
+# 내 정보 수정 (예: userName 변경)
+PATCH http://localhost:8080/users/me
+Authorization: Bearer {access_token}
 Content-Type: application/json
-Cookie: JSESSIONID={{jsession}}
 
 {
-  "displayName": "홍길동",
-  "bio": "안녕하세요!",
-  "website": "https://example.com",
-  "birthdate": "1990-01-01"
+  "userName": "애플망고"
 }
 
-### 특정 유저 프로필 조회 (공개)
-GET {{base}}/users/{{userId}}/profiles
+###
+# @name delete_me
+# 회원 탈퇴 (연관 데이터 제약/삭제 순서 확인)
+DELETE http://localhost:8080/users/me
+Authorization: Bearer {access_token}
 
-### 내 프로필 수정 (세션 필요)
-PATCH {{base}}/users/me/profiles
+###
+# @name getUserById
+# 특정 사용자 조회 — 아래 예시는 userId=1, 필요 시 숫자만 바꿔 사용
+GET http://localhost:8080/users/1
+Authorization: Bearer {access_token}
+
+
+# =================================================================
+# Profiles (프로필) — 1:1 가정
+# =================================================================
+
+###
+# @name createProfile
+# 프로필 최초 생성
+POST http://localhost:8080/users/me/profiles
+Authorization: Bearer {access_token}
 Content-Type: application/json
-Cookie: JSESSIONID={{jsession}}
 
 {
-  "displayName": "길동 홍",
-  "bio": "소개 수정",
-  "website": "https://ex.com",
-  "birthdate": "1991-02-02"
+  "displayName": "애플망고",
+  "bio": "Hello Newspeed!",
+  "website": "https://example.com"
 }
 
-### 로그아웃 (세션 종료)
-POST {{base}}/auth/logout
-Cookie: JSESSIONID={{jsession}}
+###
+# @name getMyProfile
+# 내 프로필 조회
+GET http://localhost:8080/users/{userId}/profiles
+Authorization: Bearer {access_token}
 
-#
+###
+# @name updateMyProfile
+# 내 프로필 수정 (부분 업데이트)
+PATCH http://localhost:8080/users/me
+Authorization: Bearer {access_token}
+Content-Type: application/json
+
+{
+  "displayName": "애플망고(수정)",
+  "bio": "수정된 소개글"
+}
+
+###
+# @name deleteMyProfile
+# 내 프로필 삭제
+DELETE http://localhost:8080/users/me
+Authorization: Bearer {access_token}
+
+###
+# @name getProfileByUser
+# 특정 유저의 프로필 열람 — 아래 예시는 userId=1
+GET http://localhost:8080/users/1/profiles
+Authorization: Bearer {access_token}

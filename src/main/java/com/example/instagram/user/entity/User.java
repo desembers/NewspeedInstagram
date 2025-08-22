@@ -32,12 +32,6 @@ public class User extends BaseEntity {                      // 생성/수정 시
     @Column(nullable = false, length = 100)
     private String password;
 
-    private boolean deleted = false;    // Soft Delete용 플래그
-
-    public void withdraw() {
-        this.deleted = true;
-    }
-
     // 도메인 규칙을 강제하기 위해 의미있는 생성자 제공(필수 필드만을 구성)
     public User(String userName,
                 String email,
@@ -65,7 +59,7 @@ public class User extends BaseEntity {                      // 생성/수정 시
     /**
      * 편의 메서드: 양방향 연결 일관성 유지
      */
-    public void setProfile(Profile p) {
+    private void setProfile(Profile p) {
         // 기존 연관 끊기
         if (this.profile != null && this.profile.getUser() == this) {
             this.profile.setUser(null);
