@@ -1,0 +1,18 @@
+package com.example.instagram.follow.dto;
+
+import lombok.Getter;
+
+import java.awt.print.Pageable;
+
+@Getter
+public class FollowResponse {
+
+    private final Long id;
+    private final String userName;
+
+    public FollowResponse(Long id, String userName) {
+        this.id = id;
+        this.userName = userName;
+
+    }
+}
