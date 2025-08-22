@@ -6,6 +6,7 @@ import com.example.instagram.follow.dto.FollowRequest;
 import com.example.instagram.follow.dto.FollowResponse;
 import com.example.instagram.follow.service.FollowService;
 import com.example.instagram.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.HttpStatus;
@@ -24,36 +25,33 @@ public class FollowController {
 
     //팔로우
     @PostMapping
-    public ResponseEntity<Void> follow(@Auth AuthUser authUser, @RequestBody FollowRequest dto) {
-        followService.follow(fromUser, toUser);
+    public ResponseEntity<Void> follow(
+            @Auth AuthUser authUser,
+            @Valid @RequestBody FollowRequest dto) {
+        followService.follow(authUser.getId(), dto.getUserId();
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     //팔로잉
-    @GetMapping("/{userName}/following")
+    @GetMapping("/following")
     public ResponseEntity<List<FollowResponse>> getFollowingList(
-            @PathVariable String userName,
-            Authentication auth) {
-        Long profileOwner = Long.parseLong(userId);
-        Long requester = Long.parseLong(auth.getName());
-        return ResponseEntity.ok(following.followingList(profilOwner, request));
+            @Auth AuthUser authUser) {
+        return ResponseEntity.ok(followService.following.authUser);
     }
 
     //팔로워
-    @GetMapping("/{userName}/followers")
+    @GetMapping("/followers")
     public ResponseEntity<List<FollowResponse>> getFollowerList(
-            @PathVariable String userName,
-            Authentication auth) {
-
-        Long profileOwner = userService.findOne(userId);
-        Long request = userService.findOne(auth.getName());
-        return ResponseEntity.ok(followService.followingList(profilOwner, request));
+            @Auth AuthUser authUser) {
+        return ResponseEntity.ok(followService.followers.authUser);
     }
 
 
     //언팔
-    @DeleteMapping("/{frandName}")
-    public ResponseEntity<Void> deleteFollow(@Auth AuthUser authUser, @PathVariable String frindName){
+    @DeleteMapping("/{followingUserId}")
+    public ResponseEntity<Void> deleteFollow(
+            @Auth AuthUser authUser,
+            @PathVariable String frindName){
         followService.deleteFollow(fromUser, toUser);
         return ResponseEntity.noContent().build();
     }

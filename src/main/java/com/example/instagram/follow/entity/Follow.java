@@ -1,5 +1,6 @@
 package com.example.instagram.follow.entity;
 
+import com.example.instagram.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +26,17 @@ public class Follow {
     private Long id;
 
     //팔로우 함
+    @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "from_user_id", nullable = false)
-    private Long fromUser;
+    private User fromUser;
+
+    @JoinColumn(name = "from"
+    privateUser fr)
 
     //팔로우 받음
+    @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "to_user_id", nullable = false)
-    private Long toUser;
+    private User toUser;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

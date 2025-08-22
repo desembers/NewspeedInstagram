@@ -20,4 +20,6 @@ public class NewsFeedSaveResponse {
         this.updatedAt = updatedAt;
     }
 
+    // 정적 팩토리 메서드
+    public static NewsFeedSaveResponse newsFeedSaveResponse() {}
 }

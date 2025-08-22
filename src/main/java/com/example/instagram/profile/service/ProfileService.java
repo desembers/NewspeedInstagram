@@ -57,6 +57,8 @@ public class ProfileService {
         return toDto(profile);
     }
 
+    private getProfile(LOng UserId)
+
     @Transactional
     public ProfileResponseDto update(Long userId, ProfileUpdateRequestDto dto) {
         Profile profile = profileRepository.findByUserId(userId)
@@ -68,6 +70,8 @@ public class ProfileService {
                 parseDate(dto.getBirthdate())
         );
 
+
+///  dto로 넘겨서 컨트롤러에서 검증하고 하면,,
         //비밀번호와 닉네임이 일치하면 예외처리 해주기
         if(profile.getUser().getPassword().equals(dto.getDisplayName())) {
             throw new InValidPasswordException("동일한 비밀번호로 수정하였습니다.");

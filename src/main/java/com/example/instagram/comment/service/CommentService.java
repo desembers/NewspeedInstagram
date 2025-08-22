@@ -5,6 +5,8 @@ import com.example.instagram.comment.dto.request.CommentUpdateRequestDto;
 import com.example.instagram.comment.dto.response.CommentResponse;
 import com.example.instagram.comment.entity.Comment;
 import com.example.instagram.comment.repository.CommentRepository;
+import com.example.instagram.newsFeeds.Repository.NewsFeedRepository;
+import com.example.instagram.newsFeeds.entity.NewsFeed;
 import com.example.instagram.profile.entity.Profile;
 import com.example.instagram.profile.repository.ProfileRepository;
 import com.example.instagram.user.entity.User;
@@ -24,10 +26,14 @@ public class CommentService {
     private CommentRepository commentRepository;
     private ProfileRepository profileRepository;
     private UserRepository userRepository;
-
+    private NewsFeedRepository newsFeedRepository;
+/// private ExtProfileRepository profileRepository
 
     @Transactional
     public CommentResponse save(long userId, long instagramId ,CommentSaveRequestDto requestDto) {
+        // 유효성 검증
+        NewsFeed feed =
+
         Profile profile = profileRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("해당일정이 존재하지 않습니다."));
 

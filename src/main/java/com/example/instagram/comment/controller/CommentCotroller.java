@@ -18,7 +18,7 @@ public class CommentCotroller {
 
       private CommentService commentService;
 
-      @PostMapping("/comment/{instagramId}")
+      @PostMapping("/newsFeeds/{newsFeedId}/comment")
       public ResponseEntity<CommentResponse> save(
               @Auth AuthUser authUser,
               @PathVariable long instagramId,
@@ -27,14 +27,14 @@ public class CommentCotroller {
           return ResponseEntity.ok(commentService.save(authUser.getId(), instagramId , requestDto));
       }
 
-      @GetMapping("/comments/{userid}")
+      @GetMapping("/users/{userId}/comments")
       public ResponseEntity<List<CommentResponse>> findId(
               @PathVariable long userid
       )  {
           return ResponseEntity.ok(commentService.findById(userid));
       }
 
-      @PutMapping("/comment/{commentid}")
+      @PutMapping("/newsFeeds/{usersId}/comments")
       public ResponseEntity<CommentResponse> update(
               @Auth AuthUser authUser,
               @PathVariable long commentid,

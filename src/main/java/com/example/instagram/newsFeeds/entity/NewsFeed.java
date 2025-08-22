@@ -16,8 +16,12 @@ public class NewsFeed extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable = true)
+    @JoinColumn(name="user_id", nullable = true, insertable=false, updatable=false)     // 튜터님 피드백 insertable=false, updatable=false)
     private User user;
+
+    // 추가하는 이유??
+//    @Column(name="user_id")
+//    private Long userId;
 
     public NewsFeed(String content, User user) {
         this.content = content;
