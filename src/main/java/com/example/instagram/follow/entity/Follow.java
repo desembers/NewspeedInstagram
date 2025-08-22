@@ -41,8 +41,8 @@ public class Follow {
             throw new IllegalArgumentException("자신의 계정을 팔로우 할 수 없습니다.");
         }
 
-        this.fromUser = fromUser;
-        this.toUser = toUser;
+        this.fromUser = fromUser; // 팔로우보내는 사람
+        this.toUser = toUser; //팔로우 받는 사람
     }
 
     public static Follow of(Long fromUser, Long toUser) {

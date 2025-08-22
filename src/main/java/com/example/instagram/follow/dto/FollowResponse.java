@@ -2,8 +2,6 @@ package com.example.instagram.follow.dto;
 
 import lombok.Getter;
 
-import java.awt.print.Pageable;
-
 @Getter
 public class FollowResponse {
 
