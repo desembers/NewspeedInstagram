@@ -16,16 +16,16 @@ public class CommentCotroller {
 
       private CommentService commentService;
 
-      @PostMapping("/comment/{instagramId}")
+      @PostMapping("/newsFeeds/{feedId}/comments")
       public ResponseEntity<CommentResponse> save(
               @SessionAttribute(name = "LOGIN_USER") long userId,
-              @PathVariable long instagramId,
+              @PathVariable Long feedId,
               @RequestBody CommentSaveRequestDto requestDto
               ) {
-          return ResponseEntity.ok(commentService.save(userId, instagramId , requestDto));
+          return ResponseEntity.ok(commentService.save(userId, feedId , requestDto));
       }
 
-      @GetMapping("/comments/{userid}")
+      @GetMapping("/users/{userid}/comments")
       public ResponseEntity<List<CommentResponse>> findId(
               @PathVariable long userid
       )  {

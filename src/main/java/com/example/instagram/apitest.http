@@ -64,3 +64,5 @@ Cookie: JSESSIONID={{jsession}}
 ### 로그아웃 (세션 종료)
 POST {{base}}/auth/logout
 Cookie: JSESSIONID={{jsession}}
+
+#
