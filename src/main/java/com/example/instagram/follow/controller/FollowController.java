@@ -32,7 +32,9 @@ public class FollowController {
 
     //팔로잉
     @GetMapping("/{userName}/following")
-    public ResponseEntity<List<FollowResponse>> getFollowingList(@PathVariable String userName, Authentication auth) {
+    public ResponseEntity<List<FollowResponse>> getFollowingList(
+            @PathVariable String userName,
+            Authentication auth) {
         User progileOwner = userService.findOne(userName);
         User request = userService.findOne(auth.getName());
         return ResponseEntity.ok(following.followingList(profilOwner, request));
@@ -40,10 +42,15 @@ public class FollowController {
 
     //팔로워
     @GetMapping("/{userName}/followers")
-    public ResponseEntity<List<FollowResponse>> getFollowingList(@PathVariable String userName, Authentication auth) {
-        User progileOwner = userService.findOne(userName);
-        User request = userService.findOne(auth.getName());
-        return ResponseEntity.ok(following.followingList(profilOwner, request));
+    public ResponseEntity<List<FollowResponse>> getFollowerList(
+            @PathVariable String userName,
+            Authentication auth) {
+
+        Long progileOwner = userService.findOne(userId);
+        Long request = userService.findOne(auth.getName());
+        return ResponseEntity.ok(followService.followingList(profilOwner, request));
+    }
+
 
     //언팔
     @DeleteMapping("/{frandName}")
