@@ -128,9 +128,3 @@ Authorization: Bearer {access_token}
 GET http://localhost:8080/users/1/profiles
 Authorization: Bearer {access_token}
 
-
-POST http://localhost:8080/newsFeeds/4/comments
-Authorization: Bearer {{token}}}
-{
-    "text" : "댓글입니다!!!"
-}
