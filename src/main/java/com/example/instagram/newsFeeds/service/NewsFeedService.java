@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
+import com.example.instagram.auth.dto.AuthUser;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class NewsFeedService {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 유저입니다.")
         );
-        NewsFeed newsFeed = new NewsFeed(request.getContent(), user);
+        NewsFeed newsFeed = NewsFeed.of(request.getContent(), user);
         NewsFeed savedNewsFeed = newsFeedRepository.save(newsFeed);
         return new NewsFeedSaveResponse(
                 savedNewsFeed.getId(),
@@ -50,13 +51,13 @@ public class NewsFeedService {
     }
 
     @Transactional
-    public NewsFeedPatchResponse updateNewsFeed(Long newsFeedId, NewsFeedPatchRequest request){
+    public NewsFeedPatchResponse updateNewsFeed(Long newsFeedId, NewsFeedPatchRequest request, AuthUser authUser){
         NewsFeed newsFeed = newsFeedRepository.findById(newsFeedId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 일정입니다.")
         );
 
         //수정내용 불일치 -> 본인이 수정할수 있도록 설정 (그렇지 않으면 들어갈수 있습니다)
-        if(!(newsFeed.getContent().equals(request.getContent()))) {
+        if(!(newsFeed.getId().equals(authUser.getId()))) {
             throw new UnauthorizedAccessException("게시글은 본인이 수정할수 있습니다.");
         }
 
@@ -78,7 +79,6 @@ public class NewsFeedService {
 
         // FK 관계 고려: 필요 시 연관 엔티티 null 처리
         // 예: newsFeed.setUser(null);
-        newsFeed.setUser(null);
 
         try {
             newsFeedRepository.delete(newsFeed);

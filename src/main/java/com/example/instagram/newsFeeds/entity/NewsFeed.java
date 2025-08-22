@@ -3,14 +3,13 @@ package com.example.instagram.newsFeeds.entity;
 import com.example.instagram.common.entity.BaseEntity;
 import com.example.instagram.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NewsFeed extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +22,14 @@ public class NewsFeed extends BaseEntity {
     public NewsFeed(String content, User user) {
         this.content = content;
         this.user = user;
+    }
+
+    // 정적 팩토리 메서드
+    public static NewsFeed of(String content, User user) {
+        NewsFeed newsFeed = new NewsFeed();
+        newsFeed.content = content;
+        newsFeed.user = user;
+        return newsFeed;
     }
 
     public void updateNewsFeed(String content){
