@@ -1,5 +1,7 @@
 package com.example.instagram.follow.controller;
 
+import com.example.instagram.auth.annotation.Auth;
+import com.example.instagram.auth.dto.AuthUser;
 import com.example.instagram.follow.dto.FollowRequest;
 import com.example.instagram.follow.dto.FollowResponse;
 import com.example.instagram.follow.service.FollowService;
@@ -23,9 +25,7 @@ public class FollowController {
 
     //팔로우
     @PostMapping
-    public ResponseEntity<Void> follow(Authentication authentication, @RequestBody FollowRequest dto) {
-        Long fromUser = userService.findOne(authentication.getName());
-        User toUser = userService.findOne(dto.getUserName());
+    public ResponseEntity<Void> follow(@Auth AuthUser authUser, @RequestBody FollowRequest dto) {
         followService.follow(fromUser, toUser);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -35,8 +35,8 @@ public class FollowController {
     public ResponseEntity<List<FollowResponse>> getFollowingList(
             @PathVariable String userName,
             Authentication auth) {
-        User progileOwner = userService.findOne(userName);
-        User request = userService.findOne(auth.getName());
+        Long profileOwner = Long.parseLong(userId);
+        Long requester = Long.parseLong(auth.getName());
         return ResponseEntity.ok(following.followingList(profilOwner, request));
     }
 
@@ -46,7 +46,7 @@ public class FollowController {
             @PathVariable String userName,
             Authentication auth) {
 
-        Long progileOwner = userService.findOne(userId);
+        Long profileOwner = userService.findOne(userId);
         Long request = userService.findOne(auth.getName());
         return ResponseEntity.ok(followService.followingList(profilOwner, request));
     }
@@ -55,7 +55,7 @@ public class FollowController {
     //언팔
     @DeleteMapping("/{frandName}")
     public ResponseEntity<Void> deleteFollow(Authentication authentication, @PathVariable String frindName){
-            Long fromUser = userService.findOne(authentication.getName());
+            User fromUser = userService.findOne(authentication.getName());
             User toUser = userService.findOne(dto.getUserName());
             followService.follow(fromUser, toUser);
             return ResponseEntity.noContent().build();
