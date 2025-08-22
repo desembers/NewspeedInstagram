@@ -5,7 +5,6 @@ import com.example.instagram.auth.dto.AuthUser;
 import com.example.instagram.follow.dto.FollowRequest;
 import com.example.instagram.follow.dto.FollowResponse;
 import com.example.instagram.follow.service.FollowService;
-import com.example.instagram.user.entity.User;
 import com.example.instagram.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -54,10 +53,8 @@ public class FollowController {
 
     //언팔
     @DeleteMapping("/{frandName}")
-    public ResponseEntity<Void> deleteFollow(Authentication authentication, @PathVariable String frindName){
-            User fromUser = userService.findOne(authentication.getName());
-            User toUser = userService.findOne(dto.getUserName());
-            followService.follow(fromUser, toUser);
+    public ResponseEntity<Void> deleteFollow(@Auth AuthUser authUser, @PathVariable String frindName){
+            followService.deleteFollow(fromUser, toUser);
             return ResponseEntity.noContent().build();
         }
 }
