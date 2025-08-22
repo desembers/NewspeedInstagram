@@ -53,14 +53,13 @@ public class JwtFilter implements Filter {
 
             // 토큰 유효성 체크 (db에 저장된 만료된 토큰인지 확인)
             if (!tokenValidCheckService.isValid(accessToken)) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "만료되었거나 유효하지 않은 토근입니다.");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "만료되었거나 유효하지 않은 토큰입니다.");
             }
 
             Claims claims = jwtTokenProvider.getClaims(accessToken);
-            Long userId = ((Number)claims.get("userId")).longValue();
+            Long userId = ((Number) claims.get("userId")).longValue();
 
             httpRequest.setAttribute("userId", userId);
-
         }
 
         // 1번경우 : whiteListURL에 등록된 URL 요청이면 바로 chain.doFilter()

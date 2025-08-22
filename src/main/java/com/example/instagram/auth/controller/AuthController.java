@@ -25,7 +25,7 @@ public class AuthController {
     public ResponseEntity<SignupResponse> signup(
             @Valid @RequestBody SignupRequest request, BindingResult result
     ) {
-        if (result.hasErrors()) {   // 유효성 검사 실패 시 에러코드 400 반환
+        if (result.hasErrors()) {    // 유효성 검사 실패 시 에러코드 400 반환
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -53,7 +53,7 @@ public class AuthController {
     // 회원탈퇴
     @DeleteMapping("/auth/withdraw")
     public ResponseEntity<Void> withdraw(
-            @Auth AuthUser authUser,    // 토큰에서 추된 사용자 ID를 자동으로 주입받음
+            @Auth AuthUser authUser,    // 토큰에서 추가된 사용자 ID를 자동으로 주입받음
             @Valid @RequestBody WithdrawRequest request
     ) {
         authService.withdraw(authUser.getId(), request);    // authUser.getId()를 통해 인증된 사용자 ID를 서비스로 전달

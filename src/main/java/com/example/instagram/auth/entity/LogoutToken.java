@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,5 +26,4 @@ public class LogoutToken extends BaseEntity {
     public static LogoutToken create(String token, LocalDateTime expiredAt) {
         return new LogoutToken(token, expiredAt);
     }
-
 }
