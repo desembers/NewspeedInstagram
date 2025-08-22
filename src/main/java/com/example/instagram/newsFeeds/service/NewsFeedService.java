@@ -40,7 +40,7 @@ public class NewsFeedService {
 
     @Transactional(readOnly = true)                     //기간별 조회
     public Page<NewsFeedGetResponse> getNewsFeedsByPeriod(LocalDateTime start, LocalDateTime end, Pageable pageable){
-        Page<NewsFeed> newsFeeds = newsFeedRepository.findByUpdatedAtBetween(start,end,pageable);
+        Page<NewsFeed> newsFeeds = newsFeedRepository.findByUpdatedAtBetweenAndDeletedFalse(start,end,pageable);
         return newsFeeds.map(newsFeed -> new NewsFeedGetResponse(
                 newsFeed.getId(),
                 newsFeed.getUser().getId(),
@@ -52,7 +52,7 @@ public class NewsFeedService {
 
     @Transactional
     public NewsFeedPatchResponse updateNewsFeed(Long newsFeedId, NewsFeedPatchRequest request, AuthUser authUser){
-        NewsFeed newsFeed = newsFeedRepository.findById(newsFeedId).orElseThrow(
+        NewsFeed newsFeed = newsFeedRepository.findByIdAndDeletedFalse(newsFeedId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 일정입니다.")
         );
         //수정내용 불일치 -> 본인이 수정할수 있도록 설정 (그렇지 않으면 들어갈수 있습니다)
@@ -72,9 +72,14 @@ public class NewsFeedService {
 
     @Transactional
     public void deleteNewsFeed(Long newsFeedId){
-        NewsFeed newsFeed = newsFeedRepository.findById(newsFeedId)
+        NewsFeed newsFeed = newsFeedRepository.findByIdAndDeletedFalse(newsFeedId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 
+        // Soft Delete
+        newsFeed.softDelete();      // deleted = true
+        newsFeedRepository.save(newsFeed); // DB 업데이트
+
+        /* Soft Delete 이므로 FK 관계 고려할 필요 X
         // FK 관계 고려: 필요 시 연관 엔티티 null 처리
         // 예: newsFeed.setUser(null);
 
@@ -84,6 +89,6 @@ public class NewsFeedService {
             newsFeedRepository.flush(); // 즉시 DB에 반영
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("삭제할 수 없습니다. FK 제약 조건을 확인하세요.", e);
-        }
+        }*/
     }
 }

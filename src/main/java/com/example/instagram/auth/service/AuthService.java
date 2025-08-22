@@ -73,7 +73,7 @@ public class AuthService {
 
         }
         // Soft Delete
-        user.withdraw();
-        userRepository.save(user);
+        user.softDelete();      // deleted = true
+        userRepository.save(user); // DB 업데이트
     }
 }
