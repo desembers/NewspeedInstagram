@@ -30,6 +30,7 @@ public class NewsFeedController {
 
     @GetMapping("/newsFeeds")           //기간별 조회
     public ResponseEntity<Page<NewsFeedGetResponse>> getNewsFeedsByPeriod(
+            @Auth AuthUser authUser,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
             @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
@@ -37,7 +38,7 @@ public class NewsFeedController {
         LocalDateTime startDate = start != null ? start : LocalDateTime.MIN;
         LocalDateTime endDate = end != null ? end : LocalDateTime.now();
 
-        Page<NewsFeedGetResponse> result = newsFeedService.getNewsFeedsByPeriod(startDate, endDate, pageable);
+        Page<NewsFeedGetResponse> result = newsFeedService.getNewsFeedsByPeriod(authUser, startDate, endDate, pageable);
         return ResponseEntity.ok(result);
     }
 

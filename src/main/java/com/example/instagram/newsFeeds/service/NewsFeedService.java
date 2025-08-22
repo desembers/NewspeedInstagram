@@ -7,12 +7,13 @@ import com.example.instagram.newsFeeds.entity.NewsFeed;
 import com.example.instagram.user.entity.User;
 import com.example.instagram.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import com.example.instagram.auth.dto.AuthUser;
 
 @Service
@@ -39,8 +40,14 @@ public class NewsFeedService {
     }
 
     @Transactional(readOnly = true)                     //기간별 조회
-    public Page<NewsFeedGetResponse> getNewsFeedsByPeriod(LocalDateTime start, LocalDateTime end, Pageable pageable){
-        Page<NewsFeed> newsFeeds = newsFeedRepository.findByUpdatedAtBetweenAndDeletedFalse(start,end,pageable);
+    public Page<NewsFeedGetResponse> getNewsFeedsByPeriod(AuthUser authUser, LocalDateTime start, LocalDateTime end, Pageable pageable){
+        User user = userRepository.findById(authUser.getId()).orElseThrow(
+                () -> new UnauthorizedAccessException("존재하지 않는 유저아이디입니다.")
+        );
+        List<Follow> followings = followRepository.findAllByFromUser(user);
+        List<User> users = followings.stream().map(e -> e.getToUser()).toList();
+        users.add(user);
+        Page<NewsFeed> newsFeeds = newsFeedRepository.findByUpdatedAtBetweenAndDeletedFalseAndUserIn(start,end, users, pageable);
         return newsFeeds.map(newsFeed -> new NewsFeedGetResponse(
                 newsFeed.getId(),
                 newsFeed.getUser().getId(),
