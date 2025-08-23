@@ -28,21 +28,8 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.create(authUser.getId(), dto));
     }
 
-    ///  특정 유저의 프로필 조회
-    // 공개 프로필 조회는 userId 경로 변수로
-
-    /// version 1
-//    // GET /users/{userId}/profiles : 특정 유저의 프로필 조회
-//    @GetMapping("/users/{userId}/profiles")
-//    public ResponseEntity<ProfileResponseDto> findOne(
-//            @PathVariable Long userId
-//    ) {
-//        return ResponseEntity.ok(profileService.findByUserId(userId));
-//    }
-
-    /// version 2
     // GET /users/{userId}/profiles  특정 유저의 프로필 조회
-    @GetMapping("/{userId:0-9+}/profiles")
+    @GetMapping("/{userId}/profiles")
     public ResponseEntity<ProfileResponseDto> findProfile(          // 특정 유저의 프로필을 찾겠다!
             @PathVariable Long userId
     ) {
@@ -56,7 +43,6 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.findByUserId(authUser.getId()));
     }
 
-
     // PATCH /users/me/profiles : 내 프로필 수정
     // 일부 필드만 수정 가능하도록 PATCH 채택
     @PatchMapping("/me/profiles")
@@ -68,7 +54,7 @@ public class ProfileController {
     }
 
     // DELETE /users/me/profiles : 내 프로필 삭제
-        @DeleteMapping("/users/me/profiles")
+        @DeleteMapping("/me/profiles")
     public ResponseEntity<Void> deleteMyProfile(
             @Auth AuthUser authUser
     ) {

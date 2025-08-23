@@ -11,7 +11,7 @@ public class UserUpdateRequestDto {
 
     @NotBlank(message = "사용자 이름은 필수입니다.")
     @Size(min = 2, max = 30, message = "사용자 이름은 2~30자입니다.")
-    private String username;
+    private String userName;
 
     @NotBlank(message = "이메일은 필수입니다.")
     @Email(message = "이메일 형식이 올바르지 않습니다.")

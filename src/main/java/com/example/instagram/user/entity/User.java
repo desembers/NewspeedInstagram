@@ -74,16 +74,8 @@ public class User extends BaseEntity {                      // 생성/수정 시
      * 편의 메서드: 프로필 제거(고아 제거 트리거)
      */
     public void removeProfile() {
-        setProfile(null); // orphanRemoval=true → profiles 행 삭제
+        setProfile(null);                       // orphanRemoval=true → profiles 행 삭제
     }
-
-
-    ///  follow
-    // 연관 엔티티 생성 시 식별자만 참조하고 싶을 때(조회 없이 프록시처럼 사용)
-//    private User(Long id) {
-//        this.id = id; }
-//    public static User fromUserId(Long id) {
-//        return new User(id); }
 
     // 변경 로직을 엔티티 내부로 캡슐화(Setter 남용 방지)
     public void update(String username,
