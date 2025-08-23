@@ -33,24 +33,23 @@ public class FollowController {
     }
 
     //팔로잉
-    @GetMapping("following")
+    @GetMapping("/following")
     public ResponseEntity<List<FollowResponse>> getFollowingList(
             @Auth AuthUser authUser) {
         return ResponseEntity.ok(followService.followings(authUser.getId()));
     }
 
     //팔로워
-    @GetMapping("followers")
+    @GetMapping("/followers")
     public ResponseEntity<List<FollowResponse>> getFollowerList(
             @Auth AuthUser authUser) {
         return ResponseEntity.ok(followService.followers(authUser.getId()));
     }
 
-
     //언팔
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFollow(@Auth AuthUser authUser, @PathVariable Long id){
-            followService.deleteFollow(authUser, id);
-            return ResponseEntity.noContent().build();
-        }
+    public ResponseEntity<Void> deleteFollow(@Auth AuthUser authUser, @PathVariable Long id) {
+        followService.deleteFollow(authUser, id);
+        return ResponseEntity.noContent().build();
+    }
 }
