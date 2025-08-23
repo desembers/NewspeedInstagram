@@ -16,6 +16,11 @@
  |POST|auth/withdraw|회원탈퇴|  |{”password”: String}|없음|200 OK, 401 UNAUTHORIZED (비밀번호 오류)|
  
  ### 2. 프로필
+ |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
+|---|---|---|---|---|---|---|
+|POST|/users/me/profiles|프로필 생성|없음|{”displayName”: String, ”bio”: String, ”website”: String, ”birthdate” : String}|{”userId”: Long, ”displayName” : String, ”bio” : String, ”website” : String, ”birthdate” : LocalDate, ”createdAt” : LocalDateTime, "updatedAt” : LocalDateTime} | 200 OK|
+|GET|/users/{userId}/profiles|프로필 조회|path : Long userId|없음|{”userId”: Long, ”displayName” : String, ”bio” : String, ”website” : String, ”birthdate” : LocalDate, ”createdAt” : LocalDateTime, ”updatedAt” : LocalDateTime}|200 OK|
+|PATCH|/users/me/profiles|프로필 수정|없음|{”displayName”: String, ”bio”: String}, ”website”: String, ”birthdate” : String}|{”userId”: Long, ”displayName” : String, ”bio” : String, ”website” : String, ”birthdate” : LocalDate, ”createdAt” : LocalDateTime, ”updatedAt” : LocalDateTime}|200 OK|
 
  ### 3. 뉴스피드
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
