@@ -24,7 +24,7 @@ public class FollowService {
 
     @Transactional
     public FollowResponse follow(Long fromUserId, Long toUserId) {
-        
+
         if (fromUserId.equals(toUserId)) {
             throw new IllegalArgumentException("본인의 계정은 팔로우 할 수 없습니다");
         }
@@ -61,9 +61,9 @@ public class FollowService {
         );
         List<Follow> follows = followRepository.findAllByFromUser(user);
         List<FollowResponse> result = new ArrayList<>();
-        for(int i = 0; i < follows.size(); i++) {
+        for (int i = 0; i < follows.size(); i++) {
             Follow follow = follows.get(i);
-            FollowResponse followResponse = new FollowResponse(follow.getId(),follow.getToUser().getId(), follow.getToUser().getUserName());
+            FollowResponse followResponse = new FollowResponse(follow.getId(), follow.getToUser().getId(), follow.getToUser().getUserName());
             result.add(followResponse);
         }
         return result;
@@ -75,9 +75,9 @@ public class FollowService {
         );
         List<Follow> follows = followRepository.findAllByToUser(user);
         List<FollowResponse> result = new ArrayList<>();
-        for(int i = 0; i < follows.size(); i++) {
+        for (int i = 0; i < follows.size(); i++) {
             Follow follow = follows.get(i);
-            FollowResponse followResponse = new FollowResponse(follow.getId(),follow.getFromUser().getId(), follow.getFromUser().getUserName());
+            FollowResponse followResponse = new FollowResponse(follow.getId(), follow.getFromUser().getId(), follow.getFromUser().getUserName());
             result.add(followResponse);
         }
         return result;

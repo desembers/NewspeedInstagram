@@ -13,6 +13,5 @@ public class FollowResponse {
         this.id = id;
         this.userId = userId;
         this.userName = userName;
-
     }
 }
