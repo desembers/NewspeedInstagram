@@ -7,6 +7,9 @@
 
 ## API 명세서
  ### 1-1. 회원가입
+  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
+ |---|---|---|---|---|---|---|
+ 
  ### 1-2. 로그인
  ### 1-3. 로그아웃
  ### 1-4. 회원탈퇴
