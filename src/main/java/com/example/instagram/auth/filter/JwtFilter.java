@@ -6,9 +6,7 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.PatternMatchUtils;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
@@ -44,16 +42,31 @@ public class JwtFilter implements Filter {
             String authorization = httpRequest.getHeader("Authorization");
             //"Bearer ..."
 
-            if (authorization == null || !authorization.startsWith("Bearer ")) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 해주세요.");
+
+//            if (authorization == null || !authorization.startsWith("Bearer ")) {
+//                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 해주세요.");
+//            }
+
+            if (authorization == null || !authorization.startsWith("Bearer ") || authorization.length() <= 7) {
+                httpResponse.setContentType("application/json; charset=UTF-8");
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                httpResponse.getWriter().write("로그인 해주세요.");
+                return; // 여기서 바로 종료
             }
 
             // 인증을 처리해서 token이 있는 경우
             String accessToken = authorization.substring(7);
 
             // 토큰 유효성 체크 (db에 저장된 만료된 토큰인지 확인)
-            if (!tokenValidCheckService.isValid(accessToken)) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "만료되었거나 유효하지 않은 토근입니다.");
+//            if (!tokenValidCheckService.isValid(accessToken)) {
+//                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "만료되었거나 유효하지 않은 토큰입니다.");
+//            }
+
+            if (accessToken.isEmpty() || !tokenValidCheckService.isValid(accessToken)) {
+                httpResponse.setContentType("application/json; charset=UTF-8");
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                httpResponse.getWriter().write("만료되었거나 유효하지 않은 토큰입니다.");
+                return; // 여기서 바로 종료
             }
 
             Claims claims = jwtTokenProvider.getClaims(accessToken);

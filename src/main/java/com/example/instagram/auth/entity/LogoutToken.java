@@ -27,5 +27,4 @@ public class LogoutToken extends BaseEntity {
     public static LogoutToken create(String token, LocalDateTime expiredAt) {
         return new LogoutToken(token, expiredAt);
     }
-
 }

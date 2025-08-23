@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     // 유저 목록 조회(관리/테스트 용)
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<UserResponseDto>> findAll() {
         return ResponseEntity.ok(userService.findAll());
     }

@@ -72,13 +72,14 @@ public class ProfileService {
             throw new InValidPasswordException("동일한 비밀번호로 수정하였습니다.");
         }
 
+        // ProfileUpdateRequestDto에서 비밀번호 필드값 추가 및 검증 요망
         //비밀번호 입력해주지 않으면 안전하게 false값(NPE방지)
         if(StringUtils.isBlank(profile.getUser().getPassword())) {
             throw new InValidPasswordException("비밀번호를 입력하지 않았습니다.");
         }
 
         //비밀번호 입력 형식 최소 8자 이상, 영문 + 숫자 + 특수문자 포함
-        if(profile.getUser().getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$")) {
+        if(profile.getUser().getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$")) {
             throw new InValidPasswordFormatException("비밀번호 형식에 맞지 않습니다.");
         }
         return toDto(profile);

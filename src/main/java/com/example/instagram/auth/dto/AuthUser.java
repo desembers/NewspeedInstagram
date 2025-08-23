@@ -15,4 +15,4 @@ public class AuthUser {
  * @RequiredArgsConstructor 이 들어가는 경우 필요한 의존성
  * build.gradle에 lombok의 compileOnly + annotationProcessor가 있어야 함.
  * annotationProcessor 'org.projectlombok:lombok'
- * */
+ */

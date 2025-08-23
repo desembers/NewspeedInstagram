@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class ProfileSaveRequestDto {
+
     @Size(max = 50, message = "닉네임은 최대 50자입니다.")        // DB 길이 제한과 일치화
     private String displayName;
 

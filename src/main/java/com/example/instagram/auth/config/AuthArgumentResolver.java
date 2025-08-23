@@ -27,9 +27,9 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
             ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory)
-        throws Exception {
-        HttpServletRequest httpServletRequest = (HttpServletRequest)webRequest.getNativeRequest();
-        Long userId = (Long)httpServletRequest.getAttribute("userId");
+            throws Exception {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
+        Long userId = (Long) httpServletRequest.getAttribute("userId");
         if (userId != null) {
             return new AuthUser(userId);
         }
