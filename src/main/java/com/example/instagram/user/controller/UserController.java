@@ -2,9 +2,6 @@ package com.example.instagram.user.controller;
 
 import com.example.instagram.auth.annotation.Auth;
 import com.example.instagram.auth.dto.AuthUser;
-import com.example.instagram.common.consts.Const;
-import com.example.instagram.profile.dto.response.ProfileResponseDto;
-import com.example.instagram.profile.service.ProfileService;
 import com.example.instagram.user.dto.request.UserUpdateRequestDto;
 import com.example.instagram.user.dto.response.UserResponseDto;
 import com.example.instagram.user.service.UserService;
@@ -21,15 +18,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final ProfileService profileService;
-
-//    /// 회원가입 USERS 리소스 생성
-//    /// 사용자 인증 회원가입 - "/auth/signup"
-//    @PostMapping("/signup")
-//    public ResponseEntity<UserResponseDto> signup(
-//            @Valid @RequestBody UserSaveRequestDto dto) {         // @Valid: DTO의 Bean Validation을 트리거
-//        return ResponseEntity.ok(userService.save(dto));
-//    }
 
     // 유저 목록 조회(관리/테스트 용)
     @GetMapping()
@@ -37,39 +25,28 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    // 개별 유저 상세
-    @GetMapping("/{userId}")
+    // 내 정보 조회
+    @GetMapping("/me")
     public ResponseEntity<UserResponseDto> findOne(
-            @PathVariable Long userId
+            @Auth AuthUser authUser
     ) {
-        return ResponseEntity.ok(userService.findOne(userId));
+        return ResponseEntity.ok(userService.findOne(authUser.getId()));
     }
 
-    /// 프로필 조회: GET /users/{usersId}/profiles
-    @GetMapping("/{userId}/profiles")
-    public ResponseEntity<ProfileResponseDto> findProfile(
+    // 특정 사용자 조회
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponseDto> findSomeOne(
             @PathVariable Long userId
     ) {
-        return ResponseEntity.ok(profileService.findByUserId(userId));
+        return ResponseEntity.ok(userService.findSomeOne(userId));
     }
 
     // 본인 정보 수정(전체 교체 의미로 PUT 선택)
-    @PutMapping("/me")
+    @PatchMapping("/me")
     public ResponseEntity<UserResponseDto> update(
             @Auth AuthUser authUser,
             @Valid @RequestBody UserUpdateRequestDto dto
     ) {
         return ResponseEntity.ok(userService.update(authUser.getId(), dto));
     }
-
-//    // 본인 계정 삭제
-//    @DeleteMapping("/me")
-//    public ResponseEntity<Void> delete(
-//
-//            // 세션에 저장된 로그인 사용자 식별자 사용
-//            @SessionAttribute(name = Const.LOGIN_USER) Long userId
-//    ) {
-//        userService.deleteById(userId);
-//        return ResponseEntity.ok().build();
-//    }
 }

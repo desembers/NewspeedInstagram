@@ -46,7 +46,6 @@ public class ProfileService {
         if(!profile.getUser().getPassword().equals(user.getPassword())) {
             throw new InValidException("비밀번호가 일치하지 않습니다.");
         }
-
         return toDto(profile);
     }
 
@@ -82,7 +81,6 @@ public class ProfileService {
         if(profile.getUser().getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$")) {
             throw new InValidPasswordFormatException("비밀번호 형식에 맞지 않습니다.");
         }
-
         return toDto(profile);
     }
 
