@@ -10,27 +10,38 @@
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
  |---|---|---|---|---|---|---|
  |POST|/auth/signup|회원가입||{”email”: String, ”password”: String, ”userName”: String}|{ "id": Long, "userName": "String", "email": "String"}| 200 OK, 409 CONFLICT (비밀번호 오류), 400 BAD REQUEST (필드값 공란)|
- |
+ |POST|/auth/login|로그인|   |{”email”: String,”password”: String}|{”id”: Long, ”email”: String, ”accessToken”: String}|200 OK, 404 NOT FOUND (없는 계정), 400 BAD REQUEST  (필드값 공란), 401 UNAUTHORIZED  (비밀 번호 오류)|
+ |POST|auth/logout|로그아웃|   |없음 | 없음| 200 OK, 401 UNAUTHORIZED (로그인 없이 로그아웃 시), 401 UNAUTHORIZED (토큰 만료 시)|
+ |POST|auth/withdraw|회원탈퇴|  |{”password”: String}|없음|200 OK, 401 UNAUTHORIZED (비밀번호 오류)|
  
  ### 2. 프로필
- 
+
  ### 3. 뉴스피드
+ |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
+|---|---|---|---|---|---|---|
+ |POST|/newsfeeds|뉴스피드 생성 | |{”content” : string}|{”id” : long , “authorId” : long, “content” : String, “createdAt” : localDateTime, “updatedAt : localDateTIme}| 200 OK|
+ |GET|/newsFeeds?start=YYYY-MM-DD&end=YYYY-MM-DD&page=0&size=10&sort=updatedAt,desc|뉴스피드 조회|Query: page (int, default: 1) , size (int, default: 10), start(date), end(date), sort(updatedAt, DESC)|없음|{”totalPage”: long, “content”:[{”id” : long , “authorId” : long, “content” : String, “createdAt” : localDateTime, “updatedAt : localDateTIme}]} |200 OK|
+|PATCH|/newsfeeds/{newsfeedId}|뉴스피드 수정 | path : Long newsfeedId | {”content” : String}|{”id” : long , “authorId” :long, “content” : String, “createdAt” : localDateTime, “updatedAt : localDateTIme}|200 OK, 400 BAD REQUEST(유저아이디와 작성자 아이디 불일치)|
+|DELETE|/newsfeeds/{newsfeedId}|뉴스피드 삭제|path : Long newsfeedId|없음|없음|200 OK|
  
  ### 4. 팔로우
+ |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
+|---|---|---|---|---|---|---|
+|POST|/follows/{followedId}|팔로우생성|path : Long followedId|없음|{”followedId” : Id}|200 OK|
+|GET|/follows|팔로우 조회|없음|없음|{”follows” : [{”followedId” :  Id,”followedId” :  Id,”followedId” : String,… ]}|200 OK
  
  ### 5. 코멘트
  
 ## ERD 명세서
 
-
 ## 테이블 명세서
 ### 1-1. 엔티티 - 속성 요약표
 | 엔티티 | 속성(제약/인덱스)|
 |---|---|
-| 회원 users | id(PK), userName (UK), email (UK), password_hash, created_At, modified_At |
-| 프로필 profiles | id(PK = users.Id, FK), nickName(displayName), bio, website, birthdate, created_At, modified_At |
-| 뉴스피드 newfeeds | id(PK), author_id(Fk → users.Id, IDX), content, created_At, modified_At | 
-| 팔로우 follows | follow(FK → users.id. IDX) |
+| 회원 users | id(PK), userName (UK), email (UK), password_hash, created_At, updated_At |
+| 프로필 profiles | id(PK = users.Id, FK), nickName(displayName), bio, website, birthdate, created_At, updated_At |
+| 뉴스피드 newfeeds | id(PK), author_id(Fk → users.Id, IDX), content, created_At, updated_At | 
+| 팔로우 follows | from_user(FK → users.id. IDX), to_user, created_At |
 ### 1-2. 엔티티표
 |사용자 Users	|컬럼	|제약	|설명|
 |------------|----|-----|--|
@@ -63,8 +74,8 @@
 
 |친구관리 follows	|컬럼	|제약	|설명|
 |------------|----|-----|--|
-|팔로우 하는 사람	|follower	|FK → users.id. IDX,| NOT NULL	|
-|팔로우 받는 사람	|followed	|FK → users.id. IDX,| NOT NULL	|
+|팔로우 하는 사람	|from_user	|FK → users.id. IDX,| NOT NULL	|
+|팔로우 받는 사람	|to_user	|FK → users.id. IDX,| NOT NULL	|
 
 ## 패키지
 ```
