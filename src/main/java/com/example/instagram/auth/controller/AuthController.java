@@ -9,19 +9,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
 
     // 회원가입
-    @PostMapping("/auth/signup")
+    @PostMapping("/signup")
     public ResponseEntity<SignupResponse> signup(
             @Valid @RequestBody SignupRequest request, BindingResult result
     ) {
@@ -34,7 +32,7 @@ public class AuthController {
     }
 
     // 로그인
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
             @Valid @RequestBody LoginRequest request
     ) {
@@ -43,7 +41,7 @@ public class AuthController {
     }
 
     // 로그아웃
-    @PostMapping("/auth/logout")
+    @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         String auth = request.getHeader("Authorization");
         authService.logout(auth);
@@ -51,7 +49,7 @@ public class AuthController {
     }
 
     // 회원탈퇴
-    @DeleteMapping("/auth/withdraw")
+    @DeleteMapping("/withdraw")
     public ResponseEntity<Void> withdraw(
             @Auth AuthUser authUser,    // 토큰에서 추된 사용자 ID를 자동으로 주입받음
             @Valid @RequestBody WithdrawRequest request
