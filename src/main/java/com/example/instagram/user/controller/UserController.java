@@ -41,7 +41,7 @@ public class UserController {
         return ResponseEntity.ok(userService.findSomeOne(userId));
     }
 
-    // 본인 정보 수정(전체 교체 의미로 PUT 선택)
+    // 본인 정보 수정(일부 교체 의미로 Patch 선택)
     @PatchMapping("/me")
     public ResponseEntity<UserResponseDto> update(
             @Auth AuthUser authUser,
