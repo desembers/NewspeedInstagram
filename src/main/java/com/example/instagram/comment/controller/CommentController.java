@@ -17,45 +17,52 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
 
-      private final CommentService commentService;
+    private final CommentService commentService;
 
-      @PostMapping("/newsFeeds/{feedId}/comments")
-      public ResponseEntity<CommentResponse> save(
-              @Auth AuthUser authUser,
-              @PathVariable Long feedId,
-              @RequestBody CommentSaveRequestDto requestDto
-              ) {
-          return ResponseEntity.ok(commentService.save(authUser.getId(), feedId , requestDto));
-      }
+    @PostMapping("/newsFeeds/{feedId}/comments")
+    public ResponseEntity<CommentResponse> save(
+            @Auth AuthUser authUser,
+            @PathVariable Long feedId,
+            @RequestBody CommentSaveRequestDto requestDto
+    ) {
+        return ResponseEntity.ok(commentService.save(authUser.getId(), feedId, requestDto));
+    }
 
-      @GetMapping("/users/{userId}/comments")
-      public ResponseEntity<List<CommentResponse>> findId(
-              @PathVariable long userId
-      )  {
-          return ResponseEntity.ok(commentService.findByUserId(userId));
-      }
+    @GetMapping("/users/{userId}/comments")
+    public ResponseEntity<List<CommentResponse>> findId(
+            @PathVariable long userId
+    ) {
+        return ResponseEntity.ok(commentService.findByUserId(userId));
+    }
 
-      @GetMapping("/newsFeeds/{newsFeedId}/comments")
-      public ResponseEntity<List<CommentResponse>> findByNewsFeedId(
-              @PathVariable Long newsFeedId
-      ) {
-            return ResponseEntity.ok(commentService.findByNewsFeedId(newsFeedId));
-      }
+    @GetMapping("/comments/{commentId}")
+    public ResponseEntity<CommentResponse> findOne(
+            @PathVariable long commentId
+    ) {
+        return ResponseEntity.ok(commentService.findOne(commentId));
+    }
 
-      @PutMapping("/newsFeeds/comments/{commentId}")
-      public ResponseEntity<CommentResponse> update(
-              @Auth AuthUser authUser,
-              @PathVariable long commentId,
-              @RequestBody CommentUpdateRequestDto requestDto
-      ) {
-          return ResponseEntity.ok(commentService.update(authUser.getId(), commentId, requestDto));
-      }
+    @GetMapping("/newsFeeds/{newsFeedId}/comments")
+    public ResponseEntity<List<CommentResponse>> findByNewsFeedId(
+            @PathVariable Long newsFeedId
+    ) {
+        return ResponseEntity.ok(commentService.findByNewsFeedId(newsFeedId));
+    }
 
-      @DeleteMapping("/newsFeeds/comments/{commentId}")
-      public void delete(
-              @Auth AuthUser authUser,
-              @PathVariable long commentId
-      ) {
-            commentService.delete(authUser.getId(), commentId);
-      }
+    @PutMapping("/newsFeeds/comments/{commentId}")
+    public ResponseEntity<CommentResponse> update(
+            @Auth AuthUser authUser,
+            @PathVariable long commentId,
+            @RequestBody CommentUpdateRequestDto requestDto
+    ) {
+        return ResponseEntity.ok(commentService.update(authUser.getId(), commentId, requestDto));
+    }
+
+    @DeleteMapping("/newsFeeds/comments/{commentId}")
+    public void delete(
+            @Auth AuthUser authUser,
+            @PathVariable long commentId
+    ) {
+        commentService.delete(authUser.getId(), commentId);
+    }
 }

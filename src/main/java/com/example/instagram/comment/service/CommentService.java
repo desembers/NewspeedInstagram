@@ -7,7 +7,6 @@ import com.example.instagram.comment.entity.Comment;
 import com.example.instagram.comment.repository.CommentRepository;
 import com.example.instagram.newsFeeds.Repository.NewsFeedRepository;
 import com.example.instagram.newsFeeds.entity.NewsFeed;
-import com.example.instagram.profile.repository.ProfileRepository;
 import com.example.instagram.user.entity.User;
 import com.example.instagram.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -123,5 +122,4 @@ public class CommentService {
         comment.softDelete(); // deleted = true
         commentRepository.save(comment); // DB 업데이트
     }
-
 }
