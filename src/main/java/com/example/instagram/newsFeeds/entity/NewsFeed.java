@@ -11,12 +11,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NewsFeed extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     public NewsFeed(String content, User user) {
@@ -32,8 +33,8 @@ public class NewsFeed extends BaseEntity {
         return newsFeed;
     }
 
-    public void updateNewsFeed(String content){
-        this.content=content;
+    public void updateNewsFeed(String content) {
+        this.content = content;
     }
 
     /* Soft Delete 이므로 FK 관계 고려할 필요 X

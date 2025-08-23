@@ -1,6 +1,7 @@
 package com.example.instagram.newsFeeds.dto;
 
 import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 @Getter

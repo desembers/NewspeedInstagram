@@ -19,5 +19,4 @@ public class NewsFeedSaveResponse {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
 }

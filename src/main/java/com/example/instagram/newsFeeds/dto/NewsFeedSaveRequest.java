@@ -3,6 +3,6 @@ package com.example.instagram.newsFeeds.dto;
 import lombok.Getter;
 
 @Getter
-public class NewsFeedSaveRequest{
+public class NewsFeedSaveRequest {
     private String content;
 }
