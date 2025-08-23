@@ -4,6 +4,7 @@
  회원가입을 통해 생성된 유저가 게시물을 생성,조회,수정,삭제하고 친구 관계(Follow)를 맺은 유저의 게시물을 조회하며 게시물에 코멘트를 생성,수정,삭제할 수 있는 서비스.
  
 ## 와이어프레임
+<img width="1429" height="1332" alt="Image" src="https://github.com/user-attachments/assets/e42f600e-3f3f-4bf1-a88b-f8666390b4ce" />
 
 ## API 명세서
  ### 1. 사용자
