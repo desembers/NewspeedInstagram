@@ -10,24 +10,24 @@
  ### 1. 사용자
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
  |---|---|---|---|---|---|---|
- |POST|/auth/signup|회원가입||{”email”: String, ”password”: String, ”userName”: String}|{ "id": Long, "userName": "String", "email": "String"}| 200 OK, 409 CONFLICT (비밀번호 오류), 400 BAD REQUEST (필드값 공란)|
- |POST|/auth/login|로그인|   |{”email”: String,”password”: String}|{”id”: Long, ”email”: String, ”accessToken”: String}|200 OK, 404 NOT FOUND (없는 계정), 400 BAD REQUEST  (필드값 공란), 401 UNAUTHORIZED  (비밀 번호 오류)|
- |POST|auth/logout|로그아웃|   |없음 | 없음| 200 OK, 401 UNAUTHORIZED (로그인 없이 로그아웃 시), 401 UNAUTHORIZED (토큰 만료 시)|
- |POST|auth/withdraw|회원탈퇴|  |{”password”: String}|없음|200 OK, 401 UNAUTHORIZED (비밀번호 오류)|
+ |POST|/auth/signup|회원가입||{”email”: String,<br>”password”: String,<br>”userName”: String}|{ "id": Long,<br>"userName": "String",<br>"email": "String"}| 200 OK,<br>409 CONFLICT (비밀번호 오류),<br>400 BAD REQUEST (필드값 공란)|
+ |POST|/auth/login|로그인|   |{”email”: String,<br>”password”: String}|{”id”: Long,<br>”email”: String,<br>”accessToken”: String}|200 OK,<br>404 NOT FOUND (없는 계정),<br>400 BAD REQUEST  (필드값 공란),<br>401 UNAUTHORIZED  (비밀 번호 오류)|
+ |POST|auth/logout|로그아웃|   |없음 | 없음| 200 OK,<br>401 UNAUTHORIZED (로그인 없이 로그아웃 시),<br>401 UNAUTHORIZED (토큰 만료 시)|
+ |POST|auth/withdraw|회원탈퇴|  |{”password”: String}|없음|200 OK,<br>401 UNAUTHORIZED (비밀번호 오류)|
  
  ### 2. 프로필
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
 |---|---|---|---|---|---|---|
-|POST|/users/me/profiles|프로필 생성|없음|{”displayName”: String, ”bio”: String, ”website”: String, ”birthdate” : String}|{”userId”: Long, ”displayName” : String, ”bio” : String, ”website” : String, ”birthdate” : LocalDate, ”createdAt” : LocalDateTime, "updatedAt” : LocalDateTime} | 200 OK|
-|GET|/users/{userId}/profiles|프로필 조회|path : Long userId|없음|{”userId”: Long, ”displayName” : String, ”bio” : String, ”website” : String, ”birthdate” : LocalDate, ”createdAt” : LocalDateTime, ”updatedAt” : LocalDateTime}|200 OK|
-|PATCH|/users/me/profiles|프로필 수정|없음|{”displayName”: String, ”bio”: String}, ”website”: String, ”birthdate” : String}|{”userId”: Long, ”displayName” : String, ”bio” : String, ”website” : String, ”birthdate” : LocalDate, ”createdAt” : LocalDateTime, ”updatedAt” : LocalDateTime}|200 OK|
+|POST|/users/me/profiles|프로필 생성|없음|{”displayName”: String,<br>”bio”: String,<br>”website”: String,<br>”birthdate” : String}|{”userId”: Long,<br>”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : LocalDate, <br>”createdAt” : LocalDateTime,<br>"updatedAt” : LocalDateTime} | 200 OK|
+|GET|/users/{userId}/profiles|프로필 조회|path : Long userId|없음|{”userId”: Long,<br>”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : LocalDate,<br>”createdAt” : LocalDateTime,<br>”updatedAt” : LocalDateTime}|200 OK|
+|PATCH|/users/me/profiles|프로필 수정|없음|{”displayName”: String,<br>”bio”: String,<br>”website”: String,<br>”birthdate” : String}|{”userId”: Long<br>”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : LocalDate,<br>”createdAt” : LocalDateTime,<br>”updatedAt” : LocalDateTime}|200 OK|
 
  ### 3. 뉴스피드
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
 |---|---|---|---|---|---|---|
- |POST|/newsfeeds|뉴스피드 생성 | |{”content” : string}|{”id” : long , “authorId” : long, “content” : String, “createdAt” : localDateTime, “updatedAt : localDateTIme}| 200 OK|
- |GET|/newsFeeds?start=YYYY-MM-DD&end=YYYY-MM-DD&page=0&size=10&sort=updatedAt,desc|뉴스피드 조회|Query: page (int, default: 1) , size (int, default: 10), start(date), end(date), sort(updatedAt, DESC)|없음|{”totalPage”: long, “content”:[{”id” : long , “authorId” : long, “content” : String, “createdAt” : localDateTime, “updatedAt : localDateTIme}]} |200 OK|
-|PATCH|/newsfeeds/{newsfeedId}|뉴스피드 수정 | path : Long newsfeedId | {”content” : String}|{”id” : long , “authorId” :long, “content” : String, “createdAt” : localDateTime, “updatedAt : localDateTIme}|200 OK, 400 BAD REQUEST(유저아이디와 작성자 아이디 불일치)|
+ |POST|/newsfeeds|뉴스피드 생성 | |{”content” : string}|{”id” : long ,<br>“authorId” : long,<br>“content” : String,<br>“createdAt” : localDateTime,<br>“updatedAt : localDateTIme}| 200 OK|
+ |GET|/newsFeeds?start=YYYY-MM-DD&end=YYYY-MM-DD&page=0&size=10&sort=updatedAt,desc|뉴스피드 조회|Query: page (int, default: 1)<br>size (int, default: 10)<br>start(date)<br>end(date)<br>sort(updatedAt, DESC)|없음|{”totalPage”: long,<br>“content”:[{”id” : long ,<br>“authorId” : long,<br>“content” : String,<br>“createdAt” : localDateTime,<br>“updatedAt : localDateTIme}]} |200 OK|
+|PATCH|/newsfeeds/{newsfeedId}|뉴스피드 수정 | path : Long newsfeedId | {”content” : String}|{”id” : long ,<br>“authorId” :long,<br>“content” : String,<br>“createdAt” : localDateTime,<br>“updatedAt : localDateTIme}|200 OK,<br>400 BAD REQUEST(유저아이디와 작성자 아이디 불일치)|
 |DELETE|/newsfeeds/{newsfeedId}|뉴스피드 삭제|path : Long newsfeedId|없음|없음|200 OK|
  
  ### 4. 팔로우
