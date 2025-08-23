@@ -17,24 +17,25 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/newsFeeds")
 public class NewsFeedController {
     private final NewsFeedService newsFeedService;
 
-    @PostMapping("/newsFeeds")
+    @PostMapping
     public ResponseEntity<NewsFeedSaveResponse> saveNewsFeed(
             @RequestBody NewsFeedSaveRequest request,
             @Auth AuthUser authUser // Security에서 로그인한 사용자
-    ){
+    ) {
         return ResponseEntity.ok(newsFeedService.save(request, authUser.getId()));    // AuthUser 객체를 생성하고 @Auth 어노테이션으로 주입
     }
 
-    @GetMapping("/newsFeeds")           //기간별 조회
+    @GetMapping         //기간별 조회
     public ResponseEntity<Page<NewsFeedGetResponse>> getNewsFeedsByPeriod(
             @Auth AuthUser authUser,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
             @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
-    ){
+    ) {
         LocalDateTime startDate = start != null ? start : LocalDateTime.MIN;
         LocalDateTime endDate = end != null ? end : LocalDateTime.now();
 
@@ -42,19 +43,19 @@ public class NewsFeedController {
         return ResponseEntity.ok(result);
     }
 
-    @PatchMapping("/newsFeeds/{newsFeedId}")
+    @PatchMapping("/{newsFeedId}")
     public ResponseEntity<NewsFeedPatchResponse> updateNewsFeed(
             @RequestBody NewsFeedPatchRequest request,
             @PathVariable Long newsFeedId,
             @Auth AuthUser authUser
-    ){
-        return ResponseEntity.ok(newsFeedService.updateNewsFeed(newsFeedId,request,authUser));
+    ) {
+        return ResponseEntity.ok(newsFeedService.updateNewsFeed(newsFeedId, request, authUser));
     }
 
-    @DeleteMapping("/newsfeeds/{newsFeedId}")
+    @DeleteMapping("/{newsFeedId}")
     public void deleteNewsFeed(
             @PathVariable Long newsFeedId
-    ){
+    ) {
         newsFeedService.deleteNewsFeed(newsFeedId);
     }
 }
