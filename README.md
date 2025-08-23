@@ -6,30 +6,19 @@
 ## 와이어프레임
 
 ## API 명세서
- ### 1-1. 회원가입
-  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
+ ### 1. 사용자
+ |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
  |---|---|---|---|---|---|---|
+ |POST|/auth/signup|회원가입||{”email”: String, ”password”: String, ”userName”: String}|{ "id": Long, "userName": "String", "email": "String"}| 200 OK, 409 CONFLICT (비밀번호 오류), 400 BAD REQUEST (필드값 공란)|
+ |
  
- ### 1-2. 로그인
- ### 1-3. 로그아웃
- ### 1-4. 회원탈퇴
+ ### 2. 프로필
  
- ### 2-1. 프로필 생성
- ### 2-2. 프로필 조회
- ### 2-3. 프로필 수정
+ ### 3. 뉴스피드
  
- ### 3-1. 뉴스피드 생성
- ### 3-2. 뉴스피드 조회
- ### 3-3. 뉴스피드 수정
- ### 3-4. 뉴스피드 삭제
+ ### 4. 팔로우
  
- ### 4-1. 팔로우 생성
- ### 4-2. 팔로우 조회
- 
- ### 5-1. 코멘트 생성
- ### 5-2. 코멘트 조회
- ### 5-3. 코멘트 수정
- ### 5-4. 코멘트 삭제
+ ### 5. 코멘트
  
 ## ERD 명세서
 
