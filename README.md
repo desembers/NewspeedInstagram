@@ -1,7 +1,13 @@
 # READ ME
 
 ## 뉴스피드 서비스 설명
- 회원가입을 통해 생성된 유저가 게시물을 생성,조회,수정,삭제하고 친구 관계(Follow)를 맺은 유저의 게시물을 조회하며 게시물에 코멘트를 생성,수정,삭제할 수 있는 서비스.
+회원가입을 통해 생성된 사용자가 뉴스피드를 작성(생성·조회·수정·삭제)할 수 있으며, 친구 관계(Follow)를 맺은 사용자의 게시물도 조회할 수 있습니다. 또한 게시물에 댓글을 작성하고 수정·삭제할 수 있어 사용자 간의 소통이 가능합니다.
+
+## 주요 기능
+1. 사용자 관리: JWT 인증/인가, 회원가입·로그인·로그아웃·회원탈퇴, 프로필 조회/수정, 비밀번호 변경
+2. 뉴스피드: CRUD, 전체/기간별 조회, 페이징 지원
+3. 친구 관리: 팔로우/언팔로우, 팔로워·팔로잉 목록 조회
+4. 예외 처리: 전역 예외 처리 및 민감 동작 검증
  
 ## 와이어프레임
 <img width="1429" height="1332" alt="Image" src="https://github.com/user-attachments/assets/e42f600e-3f3f-4bf1-a88b-f8666390b4ce" />
@@ -48,6 +54,7 @@
 | 프로필 profiles | id(PK = users.Id, FK), nickName(displayName), bio, website, birthdate, created_At, updated_At |
 | 뉴스피드 newfeeds | id(PK), author_id(Fk → users.Id, IDX), content, created_At, updated_At | 
 | 팔로우 follows | from_user(FK → users.id. IDX), to_user, created_At |
+
 ### 1-2. 엔티티표
 |사용자 Users	|컬럼	|제약	|설명|
 |------------|----|-----|--|
