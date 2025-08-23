@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -42,7 +41,6 @@ public class Follow {
         if (fromUser.getId().equals(toUser.getId())) {
             throw new IllegalArgumentException("자신의 계정을 팔로우 할 수 없습니다.");
         }
-
         this.fromUser = fromUser; // 팔로우보내는 사람
         this.toUser = toUser; //팔로우 받는 사람
     }
