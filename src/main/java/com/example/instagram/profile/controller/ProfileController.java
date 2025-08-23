@@ -44,9 +44,9 @@ public class ProfileController {
     // GET /users/{userId}/profiles  특정 유저의 프로필 조회
     @GetMapping("/{userId:0-9+}/profiles")
     public ResponseEntity<ProfileResponseDto> findProfile(          // 특정 유저의 프로필을 찾겠다!
-            @PathVariable Long usersId
+            @PathVariable Long userId
     ) {
-        return ResponseEntity.ok(profileService.findByUserId(usersId));
+        return ResponseEntity.ok(profileService.findByUserId(userId));
     }
 
     @GetMapping("/me/profiles")
