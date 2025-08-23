@@ -28,11 +28,11 @@ public class CommentController {
           return ResponseEntity.ok(commentService.save(authUser.getId(), feedId , requestDto));
       }
 
-      @GetMapping("/users/{userid}/comments")
+      @GetMapping("/users/{userId}/comments")
       public ResponseEntity<List<CommentResponse>> findId(
-              @PathVariable long userid
+              @PathVariable long userId
       )  {
-          return ResponseEntity.ok(commentService.findByUserId(userid));
+          return ResponseEntity.ok(commentService.findByUserId(userId));
       }
 
       @GetMapping("/newsFeeds/{newsFeedId}/comments")
@@ -42,13 +42,13 @@ public class CommentController {
             return ResponseEntity.ok(commentService.findByNewsFeedId(newsFeedId));
       }
 
-      @PutMapping("/newsFeeds/comments/{commentid}")
+      @PutMapping("/newsFeeds/comments/{commentId}")
       public ResponseEntity<CommentResponse> update(
               @Auth AuthUser authUser,
-              @PathVariable long commentid,
+              @PathVariable long commentId,
               @RequestBody CommentUpdateRequestDto requestDto
       ) {
-          return ResponseEntity.ok(commentService.update(authUser.getId(), commentid, requestDto));
+          return ResponseEntity.ok(commentService.update(authUser.getId(), commentId, requestDto));
       }
 
       @DeleteMapping("/newsFeeds/comments/{commentId}")
@@ -58,5 +58,4 @@ public class CommentController {
       ) {
             commentService.delete(authUser.getId(), commentId);
       }
-
 }

@@ -2,7 +2,6 @@ package com.example.instagram.comment.entity;
 
 import com.example.instagram.common.entity.BaseEntity;
 import com.example.instagram.newsFeeds.entity.NewsFeed;
-import com.example.instagram.profile.entity.Profile;
 import com.example.instagram.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -35,6 +34,4 @@ public class Comment extends BaseEntity {
     public void update(String text) {
         this.text = text;
     }
-
-
 }
