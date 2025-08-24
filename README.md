@@ -13,6 +13,8 @@
 <img width="1429" height="1332" alt="Image" src="https://github.com/user-attachments/assets/e42f600e-3f3f-4bf1-a88b-f8666390b4ce" />
 
 ## API 명세서
+<img width="1501" height="896" alt="Image" src="https://github.com/user-attachments/assets/4e1b9b1f-6db9-44d9-8b47-2619376c32a9" />
+
  ### 1. 사용자
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
  |---|---|---|---|---|---|---|
