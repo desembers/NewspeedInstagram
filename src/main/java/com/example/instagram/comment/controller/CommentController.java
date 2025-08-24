@@ -20,7 +20,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/newsFeeds/{feedId}/comments")
+    @PostMapping("/newsFeeds/{newsFeedId}/comments")
     public ResponseEntity<CommentResponse> save(
             @Auth AuthUser authUser,
             @PathVariable Long feedId,
