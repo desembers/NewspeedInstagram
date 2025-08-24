@@ -50,10 +50,10 @@
  ### 5. 코멘트
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
 |---|---|---|---|---|---|---|
-|POST|/newsfeeds/{feedId}/comments|댓글생성| |{”text” : String}|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
+|POST|/newsfeeds/{newsfeedId}/comments|댓글생성| |{”text” : String}|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
 |GET|/newsfeeds/{newsfeedId}/comments|댓글 조회| |없음|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
 |GET|comments/{commentId}|코멘트 단건 조회| |없음 |{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
-|GET|/newsFeeds/1/comments|뉴스피드의 코멘트 조회| |없음|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
+|GET|/newsFeeds/{newsfeedId}/comments|뉴스피드의 코멘트 조회| |없음|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
 |PUT|/newsfeeds/comments/{commentId}|코멘트 수정| |{”text” : String}|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
 |DELETE|/newsFeeds/comments/{commentId}|코멘트 삭제| |없음|없음|200 OK|
  
