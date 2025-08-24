@@ -56,66 +56,7 @@
 |DELETE|/newsFeeds/comments/{commentId}|코멘트 삭제| |없음|없음|200 OK|
  
 ## ERD 명세서
-```mermaid
-classDiagram
-direction BT
-class comment {
-   bit(1) deleted
-   datetime(6) created_at
-   bigint newsfeed_id
-   datetime(6) updated_at
-   bigint user_id
-   varchar(255) text
-   bigint id
-}
-class follows {
-   datetime(6) created_at
-   bigint from_user_id
-   bigint to_user_id
-   bigint id
-}
-class logout_token {
-   bit(1) deleted
-   datetime(6) created_at
-   datetime(6) expired_at
-   datetime(6) updated_at
-   varchar(255) token
-}
-class news_feed {
-   bit(1) deleted
-   datetime(6) created_at
-   datetime(6) updated_at
-   bigint user_id
-   varchar(255) content
-   bigint id
-}
-class profiles {
-   date birthdate
-   bit(1) deleted
-   datetime(6) created_at
-   datetime(6) updated_at
-   varchar(50) display_name
-   varchar(255) website
-   longtext content
-   bigint user_id
-}
-class users {
-   bit(1) deleted
-   datetime(6) created_at
-   datetime(6) updated_at
-   varchar(30) user_name
-   varchar(100) password
-   varchar(255) email
-   bigint id
-}
-
-comment  -->  news_feed : newsfeed_id:id
-comment  -->  users : user_id:id
-follows  -->  users : to_user_id:id
-follows  -->  users : from_user_id:id
-news_feed  -->  users : user_id:id
-profiles  -->  users : user_id:id
-```
+<img width="1248" height="718" alt="Image" src="https://github.com/user-attachments/assets/74583020-296f-4ac0-a19d-dc3f23df33a8" />
 
 ## 테이블 명세서
 ### 1-1. 엔티티 - 속성 요약표
