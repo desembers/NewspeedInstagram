@@ -1,11 +1,15 @@
 package com.example.instagram.newsFeeds.entity;
 
+import com.example.instagram.comment.entity.Comment;
 import com.example.instagram.common.entity.BaseEntity;
 import com.example.instagram.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,6 +23,9 @@ public class NewsFeed extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
+
+    @OneToMany(mappedBy = "newsFeed", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     public NewsFeed(String content, User user) {
         this.content = content;

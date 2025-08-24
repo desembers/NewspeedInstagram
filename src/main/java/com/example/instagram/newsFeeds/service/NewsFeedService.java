@@ -1,5 +1,7 @@
 package com.example.instagram.newsFeeds.service;
 
+import com.example.instagram.comment.dto.response.CommentResponse;
+import com.example.instagram.comment.repository.CommentRepository;
 import com.example.instagram.common.exception.UnauthorizedAccessException;
 import com.example.instagram.follow.entity.Follow;
 import com.example.instagram.follow.repository.FollowRepository;
@@ -10,12 +12,14 @@ import com.example.instagram.user.entity.User;
 import com.example.instagram.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.instagram.auth.dto.AuthUser;
 
@@ -26,6 +30,7 @@ public class NewsFeedService {
     private final NewsFeedRepository newsFeedRepository;
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional // 뉴스피드 생성
     public NewsFeedSaveResponse save(NewsFeedSaveRequest request, Long userId){
@@ -51,14 +56,30 @@ public class NewsFeedService {
         List<Follow> followings = followRepository.findAllByFromUser(user);
         List<User> users = new ArrayList<>(followings.stream().map(e -> e.getToUser()).toList());
         users.add(user);
-        Page<NewsFeed> newsFeeds = newsFeedRepository.findByUpdatedAtBetweenAndDeletedFalseAndUserIn(start,end, users, pageable);
-        return newsFeeds.map(newsFeed -> new NewsFeedGetResponse(
-                newsFeed.getId(),
-                newsFeed.getUser().getId(),
-                newsFeed.getContent(),
-                newsFeed.getCreatedAt(),
-                newsFeed.getUpdatedAt()
-        ));
+        List<NewsFeed> newsFeeds = newsFeedRepository.findByUpdatedAtBetweenAndDeletedFalseAndUserInWithComments(start,end, users);
+
+        int startIdx = (int) pageable.getOffset();
+        int endIdx = Math.min(startIdx+pageable.getPageSize(), newsFeeds.size());
+        List<NewsFeed> pageNewsFeeds =newsFeeds.subList(startIdx,endIdx);
+
+        List<NewsFeedGetResponse> content = pageNewsFeeds.stream()
+                .map(nf -> new NewsFeedGetResponse(
+                        nf.getId(),
+                        nf.getUser().getId(),
+                        nf.getContent(),
+                        nf.getComments().stream()
+                                        .map(c -> new CommentResponse(
+                                                c.getId(),
+                                                c.getUser().getId(),
+                                                c.getNewsFeed().getId(),
+                                                c.getText(),
+                                                c.getCreatedAt(),
+                                                c.getUpdatedAt()
+                                        )).collect(Collectors.toList()),
+                        nf.getCreatedAt(),
+                        nf.getUpdatedAt()
+                )).collect(Collectors.toList());
+        return new PageImpl<>(content, pageable, newsFeeds.size());
     }
 
     @Transactional
