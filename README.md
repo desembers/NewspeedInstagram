@@ -73,8 +73,7 @@
 |------------|----|-----|--|
 |Id	|Id	|PK	|사용자 |식별자|
 |이름	|userName	|UK, Not Null	|사용자 이름|
-|회원 |이메일	email	|UK, Not Null	|사용자 아이디는 이메일 형식이어야 합니다.
-영문, 숫자 권장 - 예외처리?|
+|회원 |이메일	email	|UK, Not Null	|사용자 아이디는 이메일 형식이어야 합니다.영문, 숫자 권장 - 예외처리?|
 |비밀번호	|password	|Not Null	|Bcrypt 등 해시|
 |가입일	|created_At	|Not Null	|생성 시각|
 |수정일	|updated_At	|Not Null	|수정 시각|
