@@ -14,13 +14,13 @@
 
 ## API 명세서
 
- ### 1. 사용자
- |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
- |---|---|---|---|---|---|---|
- |POST|/auth/signup|회원가입||{”email”: String,<br>”password”: String,<br>”userName”: String}|{ "id": Long,<br>"userName": "String",<br>"email": "String"}| 200 OK,<br>409 CONFLICT (비밀번호 오류),<br>400 BAD REQUEST (필드값 공란)|
- |POST|/auth/login|로그인|   |{”email”: String,<br>”password”: String}|{”id”: Long,<br>”email”: String,<br>”accessToken”: String}|200 OK,<br>404 NOT FOUND (없는 계정),<br>400 BAD REQUEST  (필드값 공란),<br>401 UNAUTHORIZED  (비밀 번호 오류)|
- |POST|/auth/logout|로그아웃|   |없음 | 없음| 200 OK,<br>401 UNAUTHORIZED (로그인 없이 로그아웃 시),<br>401 UNAUTHORIZED (토큰 만료 시)|
- |POST|/auth/withdraw|회원탈퇴|  |{”password”: String}|없음|200 OK,<br>401 UNAUTHORIZED (비밀번호 오류)|
+ ### 1. 사용자 인증
+ |Method	|Endpoint	|Description|Request Body	|Response	|Status Code|
+ |---|---|---|---|---|---|
+ |POST|/auth/signup|회원가입|{”email”: String,<br>”password”: String,<br>”userName”: String}|{ "id": Long,<br>"userName": "String",<br>"email": "String"}| 200 OK,<br>409 CONFLICT (비밀번호 오류),<br>400 BAD REQUEST (필드값 공란)|
+ |POST|/auth/login|로그인|{”email”: String,<br>”password”: String}|{”id”: Long,<br>”email”: String,<br>”accessToken”: String}|200 OK,<br>404 NOT FOUND (없는 계정),<br>400 BAD REQUEST  (필드값 공란),<br>401 UNAUTHORIZED  (비밀 번호 오류)|
+ |POST|/auth/logout|로그아웃|없음 | 없음| 200 OK,<br>401 UNAUTHORIZED (로그인 없이 로그아웃 시),<br>401 UNAUTHORIZED (토큰 만료 시)|
+ |POST|/auth/withdraw|회원탈퇴|{”password”: String}|없음|200 OK,<br>401 UNAUTHORIZED (비밀번호 오류)|
  
  ### 2. 프로필
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
