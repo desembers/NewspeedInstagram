@@ -6,8 +6,10 @@ import com.example.instagram.user.dto.response.UserResponseDto;
 import com.example.instagram.user.entity.User;
 import com.example.instagram.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,21 +33,21 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponseDto findOne(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."));     // 에러 코드 404
         return toDto(user);
     }
 
     @Transactional(readOnly = true)
     public UserResponseDto findSomeOne(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."));     // 에러 코드 404
         return toDto(user);
     }
 
     @Transactional
     public UserResponseDto update(Long userId, UserUpdateRequestDto dto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."));     // 에러 코드 404
 
         String encoded = passwordEncoder.encode(dto.getPassword());
         user.update(                                                // 엔티티 메서드로 변경 캡슐화
