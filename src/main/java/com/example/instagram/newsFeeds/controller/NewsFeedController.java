@@ -45,7 +45,7 @@ public class NewsFeedController {
         return ResponseEntity.ok(result);
     }
 
-    @PatchMapping("/{newsFeedId}")
+    @PatchMapping("/{newsFeedId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<NewsFeedPatchResponse> updateNewsFeed(
             @Valid @RequestBody NewsFeedPatchRequest request,
             @PathVariable Long newsFeedId,
@@ -54,7 +54,7 @@ public class NewsFeedController {
         return ResponseEntity.ok(newsFeedService.updateNewsFeed(newsFeedId, request, authUser));
     }
 
-    @DeleteMapping("/{newsFeedId}")
+    @DeleteMapping("/{newsFeedId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<Void> deleteNewsFeed(
             @PathVariable Long newsFeedId,
             @Auth AuthUser authUser

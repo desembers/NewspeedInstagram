@@ -34,7 +34,7 @@ public class UserController {
     }
 
     // 특정 사용자 조회
-    @GetMapping("/{userId}")
+    @GetMapping("/{userId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<UserResponseDto> findSomeOne(
             @PathVariable Long userId
     ) {

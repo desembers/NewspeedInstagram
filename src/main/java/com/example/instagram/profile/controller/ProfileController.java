@@ -30,7 +30,7 @@ public class ProfileController {
     }
 
     // GET /users/{userId}/profiles  특정 유저의 프로필 조회
-    @GetMapping("/{userId}/profiles")
+    @GetMapping("/{userId:\\d+}/profiles")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<ProfileResponseDto> findProfile(          // 특정 유저의 프로필을 찾겠다!
             @PathVariable Long userId
     ) {
