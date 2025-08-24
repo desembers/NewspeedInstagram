@@ -62,7 +62,7 @@
 ### 1-1. 엔티티 - 속성 요약표
 | 엔티티 | 속성(제약/인덱스)|
 |---|---|
-| 회원 users | id(PK), userName, email (UK), password_hash, created_At, updated_At |
+| 회원 users | id(PK), userName, email (UK), password, created_At, updated_At |
 | 프로필 profiles | id(PK = users.Id, FK), nickName(displayName), bio, website, birthdate, created_At, updated_At |
 | 뉴스피드 newfeeds | id(PK), author_id(Fk → users.Id, IDX), content, comment, created_At, updated_At | 
 | 팔로우 follows | from_user(FK → users.id. IDX), to_user, created_At |
