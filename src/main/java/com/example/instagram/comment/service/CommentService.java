@@ -116,7 +116,7 @@ public class CommentService {
     @Transactional
     public void delete(long commentId, long userId) {
         Comment comment = commentRepository.findByIdAndDeletedFalse(commentId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 댓글에 존재하지 않습니다."));
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 댓글이 존재하지 않습니다."));
 
         if (!Objects.equals(comment.getUser().getId(), userId)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "본인이 작성한 댓글만 삭제할 수 있습니다.");

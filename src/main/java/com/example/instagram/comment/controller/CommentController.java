@@ -23,10 +23,10 @@ public class CommentController {
     @PostMapping("/newsFeeds/{newsFeedId}/comments")
     public ResponseEntity<CommentResponse> save(
             @Auth AuthUser authUser,
-            @PathVariable Long feedId,
+            @PathVariable Long newsFeedId,
             @Valid @RequestBody CommentSaveRequestDto requestDto
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.save(authUser.getId(), feedId, requestDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.save(authUser.getId(), newsFeedId, requestDto));
     }
 
     @GetMapping("/users/{userId}/comments")
@@ -56,7 +56,7 @@ public class CommentController {
             @PathVariable long commentId,
             @Valid @RequestBody CommentUpdateRequestDto requestDto
     ) {
-        return ResponseEntity.ok(commentService.update(authUser.getId(), commentId, requestDto));
+        return ResponseEntity.ok(commentService.update(commentId, authUser.getId(), requestDto));
     }
 
     @DeleteMapping("/newsFeeds/comments/{commentId}")
@@ -64,7 +64,7 @@ public class CommentController {
             @Auth AuthUser authUser,
             @PathVariable long commentId
     ) {
-        commentService.delete(authUser.getId(), commentId);
+        commentService.delete(commentId, authUser.getId());
         return ResponseEntity.noContent().build();    // 코드 204
     }
 }
