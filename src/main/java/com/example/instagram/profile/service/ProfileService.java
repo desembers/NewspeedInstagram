@@ -39,11 +39,6 @@ public class ProfileService {
                 parseDate(dto.getBirthdate())
         );
         profileRepository.save(profile);
-
-        //비밀번호가 일치하지 않으면 다시 로그인해주세요 (브라우저가 임의로 비밀번호 치는것 방지)
-        if (!profile.getUser().getPassword().equals(user.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");     // 에러 코드 401
-        }
         return toDto(profile);
     }
 

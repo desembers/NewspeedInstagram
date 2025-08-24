@@ -17,5 +17,6 @@ public class ProfileUpdateRequestDto {
     private String website;
 
     ///  문자열도 주의해보기 @Pattern
+    @Pattern(regexp = "^$|^\\d{4}-\\d{2}-\\d{2}$", message = "생년월일 입력 시, yyyy-MM-dd 형식이어야 합니다.")
     private String birthdate;
 }
