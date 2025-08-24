@@ -1,7 +1,6 @@
 package com.example.instagram.newsFeeds.service;
 
 import com.example.instagram.comment.dto.response.CommentResponse;
-import com.example.instagram.comment.repository.CommentRepository;
 import com.example.instagram.common.exception.UnauthorizedAccessException;
 import com.example.instagram.follow.entity.Follow;
 import com.example.instagram.follow.repository.FollowRepository;
@@ -30,7 +29,6 @@ public class NewsFeedService {
     private final NewsFeedRepository newsFeedRepository;
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
-    private final CommentRepository commentRepository;
 
     @Transactional // 뉴스피드 생성
     public NewsFeedSaveResponse save(NewsFeedSaveRequest request, Long userId){

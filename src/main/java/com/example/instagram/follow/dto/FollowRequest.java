@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class FollowRequest {
 
-    private Long id;
+    private Long toUserId;
 }

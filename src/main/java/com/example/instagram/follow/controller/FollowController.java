@@ -28,7 +28,7 @@ public class FollowController {
             @Auth AuthUser authUser,
             @Valid @RequestBody FollowRequest dto
     ) {
-        FollowResponse followResponse = followService.follow(authUser.getId(), dto.getId());
+        FollowResponse followResponse = followService.follow(authUser.getId(), dto.getToUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(followResponse);
     }
 
