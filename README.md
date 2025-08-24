@@ -39,12 +39,83 @@
  ### 4. 팔로우
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
 |---|---|---|---|---|---|---|
-|POST|/follows/{followedId}|팔로우생성|path : Long followedId|없음|{”followedId” : Id}|200 OK|
-|GET|/follows|팔로우 조회|없음|없음|{”follows” : [{”followedId” :  Id,”followedId” :  Id,”followedId” : String,… ]}|200 OK
+|POST|/follow/{followedId}|팔로우생성|path : Long followedId|없음|{”followedId” : Id}|200 OK|
+|GET|/follow/following|팔로우 조회|없음|없음|{”follows” : [{”followedId” :  Id,”followedId” :  Id,”followedId” : String,… ]}|200 OK|
+|GET|/follow/fllowers|팔로워 조회|없음|없음|{”followers” : [{”followedId” :  Id,”followedId” :  Id,”followedId” : String,… ]}|200 OK|
+|DELETE|follow/{followId}|언팔로우|path : Long followId|없음|없음|200 Ok|
+
  
  ### 5. 코멘트
+ |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
+|---|---|---|---|---|---|---|
+|POST|/newsfeeds/{feedId}/comments|댓글생성| |{”text” : String}|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
+|GET|/newsfeeds/{newsfeedId}/comments|댓글 조회| |없음|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
+|GET|comments/{commentId}|코멘트 단건 조회| |없음 |{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
+|GET|/newsFeeds/1/comments|뉴스피드의 코멘트 조회| |없음|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
+|PUT|/newsfeeds/comments/{commentId}|코멘트 수정| |{”text” : String}|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
+|DELETE|/newsFeeds/comments/{commentId}|코멘트 삭제| |없음|없음|200 OK|
  
 ## ERD 명세서
+```mermaid
+classDiagram
+direction BT
+class comment {
+   bit(1) deleted
+   datetime(6) created_at
+   bigint newsfeed_id
+   datetime(6) updated_at
+   bigint user_id
+   varchar(255) text
+   bigint id
+}
+class follows {
+   datetime(6) created_at
+   bigint from_user_id
+   bigint to_user_id
+   bigint id
+}
+class logout_token {
+   bit(1) deleted
+   datetime(6) created_at
+   datetime(6) expired_at
+   datetime(6) updated_at
+   varchar(255) token
+}
+class news_feed {
+   bit(1) deleted
+   datetime(6) created_at
+   datetime(6) updated_at
+   bigint user_id
+   varchar(255) content
+   bigint id
+}
+class profiles {
+   date birthdate
+   bit(1) deleted
+   datetime(6) created_at
+   datetime(6) updated_at
+   varchar(50) display_name
+   varchar(255) website
+   longtext content
+   bigint user_id
+}
+class users {
+   bit(1) deleted
+   datetime(6) created_at
+   datetime(6) updated_at
+   varchar(30) user_name
+   varchar(100) password
+   varchar(255) email
+   bigint id
+}
+
+comment  -->  news_feed : newsfeed_id:id
+comment  -->  users : user_id:id
+follows  -->  users : to_user_id:id
+follows  -->  users : from_user_id:id
+news_feed  -->  users : user_id:id
+profiles  -->  users : user_id:id
+```
 
 ## 테이블 명세서
 ### 1-1. 엔티티 - 속성 요약표
