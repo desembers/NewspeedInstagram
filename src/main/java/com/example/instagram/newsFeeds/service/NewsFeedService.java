@@ -106,10 +106,9 @@ public class NewsFeedService {
     public void deleteNewsFeed(Long newsFeedId){
         NewsFeed newsFeed = newsFeedRepository.findByIdAndDeletedFalse(newsFeedId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
-
-        // Soft Delete
-        newsFeed.softDelete();      // deleted = true
-        newsFeedRepository.save(newsFeed); // DB 업데이트
+         //Soft Delete
+       newsFeed.softDelete();      // deleted = true
+       newsFeedRepository.save(newsFeed); // DB 업데이트
 
         /* Soft Delete 이므로 FK 관계 고려할 필요 X
         // FK 관계 고려: 필요 시 연관 엔티티 null 처리

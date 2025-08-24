@@ -17,7 +17,8 @@ public interface NewsFeedRepository extends JpaRepository<NewsFeed, Long> {
     @Query(value = "SELECT DISTINCT n FROM NewsFeed n " +
             "LEFT JOIN FETCH n.comments c " +
             "LEFT JOIN FETCH c.user " +
-            "WHERE n.deleted =false AND n.updatedAt BETWEEN :start AND :end AND n.user In (:users) " +
+            "WHERE n.deleted =false AND (c.deleted = false OR c.id IS NULL) " +
+            "AND n.updatedAt BETWEEN :start AND :end AND n.user In (:users) " +
             "ORDER BY n.updatedAt DESC"
     )
     List<NewsFeed> findByUpdatedAtBetweenAndDeletedFalseAndUserInWithComments(
