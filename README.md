@@ -59,7 +59,6 @@
 ## ERD 명세서
 <img width="1501" height="896" alt="Image" src="https://github.com/user-attachments/assets/4e1b9b1f-6db9-44d9-8b47-2619376c32a9" />
 
-
 ## 테이블 명세서
 ### 1-1. 엔티티 - 속성 요약표
 | 엔티티 | 속성(제약/인덱스)|
@@ -166,7 +165,25 @@ instagram
     │  │
     │  └─service
     │          CommentService.java
-    │
+    ├─follow
+    │  ├─controller
+    │  │      followController.java
+    │  │
+    │  ├─dto
+    │  │      followRequest.java
+    │  │      followResponse.java
+    │  │
+    │  ├─exception
+    │  │      DuplicatedFollowException
+    │  │ 
+    │  ├─entity
+    │  │      follow.java
+    │  │
+    │  ├─Repository
+    │  │      followRepository.java
+    │  │
+    │  └─service
+    │          followService.java
     ├─common
     │  ├─advice
     │  │      GlobalExceptionHandler.java
