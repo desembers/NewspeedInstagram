@@ -64,7 +64,7 @@
 |---|---|
 | 회원 users | id(PK), userName, email (UK), password_hash, created_At, updated_At |
 | 프로필 profiles | id(PK = users.Id, FK), nickName(displayName), bio, website, birthdate, created_At, updated_At |
-| 뉴스피드 newfeeds | id(PK), author_id(Fk → users.Id, IDX), content, created_At, updated_At | 
+| 뉴스피드 newfeeds | id(PK), author_id(Fk → users.Id, IDX), content, comment, created_At, updated_At | 
 | 팔로우 follows | from_user(FK → users.id. IDX), to_user, created_At |
 
 ### 1-2. 엔티티표
@@ -93,6 +93,7 @@
 |게시글 ID	|id	|PK, AI|	게시글 ID|
 |작성자	|user_id	|FK → users.id. IDX,| NOT NULL|	작성자|
 |본문	|content|		|본문|
+|댓글 |comment|  |댓글|
 |작성일	|created_At	|IDX, NOT NULL	|작성 시각|
 |수정일	|updated-At	|NOT NULL	|수정 시각|
 
