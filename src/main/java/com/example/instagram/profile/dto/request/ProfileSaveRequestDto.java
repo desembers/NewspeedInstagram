@@ -16,5 +16,6 @@ public class ProfileSaveRequestDto {
     @Pattern(regexp = "^$|^https?://.+", message = "웹사이트는 http(s):// 로 시작해야 합니다.")
     private String website;                                   // 링크 안전성과 표준화(스키마 누락 방지)
 
+    @Pattern(regexp = "^$|^\\d{4}-\\d{2}-\\d{2}$", message = "생년월일 입력 시, yyyy-MM-dd 형식이어야 합니다.")
     private String birthdate;                                 // ISO-8601 문자열(yyyy-MM-dd)로 받기 → 컨트롤러에서 LocalDate로 파싱되도록 유지
 }

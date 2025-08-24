@@ -47,9 +47,9 @@ public class FollowController {
     }
 
     //언팔
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFollow(@Auth AuthUser authUser, @PathVariable Long id) {
-        followService.deleteFollow(authUser, id);
+    @DeleteMapping("/{unfollowId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
+    public ResponseEntity<Void> deleteFollow(@Auth AuthUser authUser, @PathVariable Long unfollowId) {
+        followService.deleteFollow(authUser, unfollowId);
         return ResponseEntity.noContent().build();
     }
 }

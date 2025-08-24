@@ -28,7 +28,7 @@ public class AuthController {
         }
 
         SignupResponse response = authService.signup(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);    // HTTP 코드 201
     }
 
     // 로그인
@@ -45,7 +45,7 @@ public class AuthController {
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         String auth = request.getHeader("Authorization");
         authService.logout(auth);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();    // 코드 204
     }
 
     // 회원탈퇴
@@ -55,6 +55,6 @@ public class AuthController {
             @Valid @RequestBody WithdrawRequest request
     ) {
         authService.withdraw(authUser.getId(), request);    // authUser.getId()를 통해 인증된 사용자 ID를 서비스로 전달
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();    // HTTP 코드 204
     }
 }

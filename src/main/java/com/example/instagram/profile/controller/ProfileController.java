@@ -6,9 +6,10 @@ import com.example.instagram.profile.dto.request.ProfileSaveRequestDto;
 import com.example.instagram.profile.dto.request.ProfileUpdateRequestDto;
 import com.example.instagram.profile.dto.response.ProfileResponseDto;
 import com.example.instagram.profile.service.ProfileService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,13 +24,13 @@ public class ProfileController {
     @PostMapping("/me/profiles")
     public ResponseEntity<ProfileResponseDto> create(
             @Auth AuthUser authUser,
-            @Validated @RequestBody ProfileSaveRequestDto dto
+            @Valid @RequestBody ProfileSaveRequestDto dto
     ) {
-        return ResponseEntity.ok(profileService.create(authUser.getId(), dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(profileService.create(authUser.getId(), dto));
     }
 
     // GET /users/{userId}/profiles  특정 유저의 프로필 조회
-    @GetMapping("/{userId}/profiles")
+    @GetMapping("/{userId:\\d+}/profiles")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<ProfileResponseDto> findProfile(          // 특정 유저의 프로필을 찾겠다!
             @PathVariable Long userId
     ) {
@@ -48,13 +49,13 @@ public class ProfileController {
     @PatchMapping("/me/profiles")
     public ResponseEntity<ProfileResponseDto> update(
             @Auth AuthUser authUser,
-            @Validated @RequestBody ProfileUpdateRequestDto dto
+            @Valid @RequestBody ProfileUpdateRequestDto dto
     ) {
         return ResponseEntity.ok(profileService.update(authUser.getId(), dto));
     }
 
     // DELETE /users/me/profiles : 내 프로필 삭제
-        @DeleteMapping("/me/profiles")
+    @DeleteMapping("/me/profiles")
     public ResponseEntity<Void> deleteMyProfile(
             @Auth AuthUser authUser
     ) {

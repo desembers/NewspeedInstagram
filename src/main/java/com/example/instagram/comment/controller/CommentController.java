@@ -6,8 +6,9 @@ import com.example.instagram.comment.dto.request.CommentSaveRequestDto;
 import com.example.instagram.comment.dto.request.CommentUpdateRequestDto;
 import com.example.instagram.comment.dto.response.CommentResponse;
 import com.example.instagram.comment.service.CommentService;
-import com.example.instagram.newsFeeds.dto.NewsFeedGetResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,50 +20,51 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/newsFeeds/{feedId}/comments")
+    @PostMapping("/newsFeeds/{newsFeedId:\\d+}/comments")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<CommentResponse> save(
             @Auth AuthUser authUser,
-            @PathVariable Long feedId,
-            @RequestBody CommentSaveRequestDto requestDto
+            @PathVariable Long newsFeedId,
+            @Valid @RequestBody CommentSaveRequestDto requestDto
     ) {
-        return ResponseEntity.ok(commentService.save(authUser.getId(), feedId, requestDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.save(authUser.getId(), newsFeedId, requestDto));
     }
 
-    @GetMapping("/users/{userId}/comments")
+    @GetMapping("/users/{userId:\\d+}/comments")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<List<CommentResponse>> findId(
             @PathVariable long userId
     ) {
         return ResponseEntity.ok(commentService.findByUserId(userId));
     }
 
-    @GetMapping("/comments/{commentId}")
+    @GetMapping("/comments/{commentId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<CommentResponse> findOne(
             @PathVariable long commentId
     ) {
         return ResponseEntity.ok(commentService.findOne(commentId));
     }
 
-    @GetMapping("/newsFeeds/{newsFeedId}/comments")
+    @GetMapping("/newsFeeds/{newsFeedId:\\d+}/comments")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<List<CommentResponse>> findByNewsFeedId(
             @PathVariable Long newsFeedId
     ) {
         return ResponseEntity.ok(commentService.findByNewsFeedId(newsFeedId));
     }
 
-    @PutMapping("/newsFeeds/comments/{commentId}")
+    @PutMapping("/newsFeeds/comments/{commentId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<CommentResponse> update(
             @Auth AuthUser authUser,
             @PathVariable long commentId,
-            @RequestBody CommentUpdateRequestDto requestDto
+            @Valid @RequestBody CommentUpdateRequestDto requestDto
     ) {
-        return ResponseEntity.ok(commentService.update(authUser.getId(), commentId, requestDto));
+        return ResponseEntity.ok(commentService.update(commentId, authUser.getId(), requestDto));
     }
 
-    @DeleteMapping("/newsFeeds/comments/{commentId}")
-    public void delete(
+    @DeleteMapping("/newsFeeds/comments/{commentId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
+    public ResponseEntity<Void> delete(
             @Auth AuthUser authUser,
             @PathVariable long commentId
     ) {
-        commentService.delete(authUser.getId(), commentId);
+        commentService.delete(commentId, authUser.getId());
+        return ResponseEntity.noContent().build();    // 코드 204
     }
 }
