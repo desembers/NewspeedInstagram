@@ -4,6 +4,7 @@ import com.example.instagram.auth.annotation.Auth;
 import com.example.instagram.auth.dto.AuthUser;
 import com.example.instagram.newsFeeds.dto.*;
 import com.example.instagram.newsFeeds.service.NewsFeedService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public class NewsFeedController {
 
     @PostMapping
     public ResponseEntity<NewsFeedSaveResponse> saveNewsFeed(
-            @RequestBody NewsFeedSaveRequest request,
+            @Valid @RequestBody NewsFeedSaveRequest request,
             @Auth AuthUser authUser // Security에서 로그인한 사용자
     ) {
         return ResponseEntity.ok(newsFeedService.save(request, authUser.getId()));    // AuthUser 객체를 생성하고 @Auth 어노테이션으로 주입
@@ -45,7 +46,7 @@ public class NewsFeedController {
 
     @PatchMapping("/{newsFeedId}")
     public ResponseEntity<NewsFeedPatchResponse> updateNewsFeed(
-            @RequestBody NewsFeedPatchRequest request,
+            @Valid @RequestBody NewsFeedPatchRequest request,
             @PathVariable Long newsFeedId,
             @Auth AuthUser authUser
     ) {
@@ -53,9 +54,11 @@ public class NewsFeedController {
     }
 
     @DeleteMapping("/{newsFeedId}")
-    public void deleteNewsFeed(
-            @PathVariable Long newsFeedId
+    public ResponseEntity<Void> deleteNewsFeed(
+            @PathVariable Long newsFeedId,
+            @Auth AuthUser authUser
     ) {
-        newsFeedService.deleteNewsFeed(newsFeedId);
+        newsFeedService.deleteNewsFeed(newsFeedId, authUser);
+        return ResponseEntity.noContent().build();
     }
 }
