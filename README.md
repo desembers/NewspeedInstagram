@@ -13,7 +13,6 @@
 <img width="1429" height="1332" alt="Image" src="https://github.com/user-attachments/assets/e42f600e-3f3f-4bf1-a88b-f8666390b4ce" />
 
 ## API 명세서
-<img width="1501" height="896" alt="Image" src="https://github.com/user-attachments/assets/4e1b9b1f-6db9-44d9-8b47-2619376c32a9" />
 
  ### 1. 사용자
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
@@ -58,7 +57,7 @@
 |DELETE|/newsFeeds/comments/{commentId}|코멘트 삭제| |없음|없음|200 OK|
  
 ## ERD 명세서
-![Blank document](https://github.com/user-attachments/assets/1caf41f5-0d19-427e-837a-5714058ad50a)
+<img width="1501" height="896" alt="Image" src="https://github.com/user-attachments/assets/4e1b9b1f-6db9-44d9-8b47-2619376c32a9" />
 
 
 ## 테이블 명세서
@@ -100,10 +99,12 @@
 |수정일	|updated-At	|NOT NULL	|수정 시각|
 
 
-|친구관리 follows	|컬럼	|제약	|설명|
-|------------|----|-----|--|
-|팔로우 하는 사람	|from_user	|FK → users.id. IDX,| NOT NULL	|
-|팔로우 받는 사람	|to_user	|FK → users.id. IDX,| NOT NULL	|
+| 친구관리 follows | 컬럼 | 제약 | 설명 |
+| --- | --- | --- | --- |
+| 팔로우 하는 사람 | to_user_id | FK → users.id. IDX, NOT NULL |  |
+| 팔로우 받는 사람 | from_user_id | FK → users.id. IDX, NOT NULL |  |
+| 작성일 | created_At |  |  |
+| ID | id |  |  |
 
 ## 패키지
 ```
