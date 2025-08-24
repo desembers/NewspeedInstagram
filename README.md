@@ -56,7 +56,8 @@
 |DELETE|/newsFeeds/comments/{commentId}|코멘트 삭제| |없음|없음|200 OK|
  
 ## ERD 명세서
-<img width="1248" height="718" alt="Image" src="https://github.com/user-attachments/assets/74583020-296f-4ac0-a19d-dc3f23df33a8" />
+![Blank document](https://github.com/user-attachments/assets/1caf41f5-0d19-427e-837a-5714058ad50a)
+
 
 ## 테이블 명세서
 ### 1-1. 엔티티 - 속성 요약표
