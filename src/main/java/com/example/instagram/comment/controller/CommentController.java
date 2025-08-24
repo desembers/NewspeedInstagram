@@ -26,8 +26,7 @@ public class CommentController {
             @PathVariable Long feedId,
             @Valid @RequestBody CommentSaveRequestDto requestDto
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(commentService.save(authUser.getId(), feedId, requestDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.save(authUser.getId(), feedId, requestDto));
     }
 
     @GetMapping("/users/{userId}/comments")

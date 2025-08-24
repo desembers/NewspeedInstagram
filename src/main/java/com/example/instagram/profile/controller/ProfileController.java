@@ -8,6 +8,7 @@ import com.example.instagram.profile.dto.response.ProfileResponseDto;
 import com.example.instagram.profile.service.ProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class ProfileController {
             @Auth AuthUser authUser,
             @Valid @RequestBody ProfileSaveRequestDto dto
     ) {
-        return ResponseEntity.ok(profileService.create(authUser.getId(), dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(profileService.create(authUser.getId(), dto));
     }
 
     // GET /users/{userId}/profiles  특정 유저의 프로필 조회
