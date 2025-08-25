@@ -38,8 +38,8 @@
 |---|---|---|---|---|---|---|---|
  |POST|/newsfeeds|뉴스피드 생성 |token|{”content” : String}|{”id” : long ,<br>“authorId” : long,<br>“content” : String,<br>“createdAt” : localDateTime,<br>“updatedAt : localDateTIme}| 201 CREATED|400 BAD REQUEST,<br>401 UNAUTHORIZED|
  |GET|/newsfeeds<br>?start=YYYY-MM-DD<br>&end=YYYY-MM-DD<br>&page=0&size=10<br>&sort=updatedAt,desc|뉴스피드 조회|Query : page (int, default: 1)<br>size (int, default: 10)<br>start(date)<br>end(date)<br>sort(updatedAt, DESC)|token|{<br>"content" : [<br>{"id" : long,<br>"authorId" : long,<br>"content" : String,<br>"comments" : [”id” : long, “userId” : long, “newsFeedId” : long, “text” : String, “createdAt” : LocalDateTime, “updatedAt” : LocalDateTime],<br>"createdAt" : LocalDateTime,<br>"updatedAt" : LocalDateTime}<br>],<br>"page": {<br>"size" : long<br>"number" : long,<br>"totalElements" : long,<br>"totalPages" : long<br>}<br>}|200 OK|401 UNAUTHORIZED|
-|PATCH|/newsfeeds/{newsFeedId}|뉴스피드 수정 | path : Long newsFeedId,<br>token | {”content” : String}|{”id” : long ,<br>“authorId” : long,<br>“content” : String,<br>“createdAt” : localDateTime,<br>“updatedAt : localDateTIme}|200 OK|400 BAD REQUEST,<br>401 UNAUTHORIZED,<br>404 NOT FOUND|
-|DELETE|/newsfeeds/{newsFeedId}|뉴스피드 삭제|path : Long newsFeedId,<br>token|없음|없음|204 noContent|401 UNAUTHORIZED,<br>404 NOT FOUND|
+|PATCH|/newsfeeds/{newsfeedId}|뉴스피드 수정 | path : Long newsFeedId,<br>token | {”content” : String}|{”id” : long ,<br>“authorId” : long,<br>“content” : String,<br>“createdAt” : localDateTime,<br>“updatedAt : localDateTIme}|200 OK|400 BAD REQUEST,<br>401 UNAUTHORIZED,<br>404 NOT FOUND|
+|DELETE|/newsfeeds/{newsfeedId}|뉴스피드 삭제|path : Long newsFeedId,<br>token|없음|없음|204 noContent|401 UNAUTHORIZED,<br>404 NOT FOUND|
  
  ### 4. 팔로우
  |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|Error Codes|
