@@ -12,6 +12,9 @@
 ## 와이어프레임
 <img width="1429" height="1332" alt="Image" src="https://github.com/user-attachments/assets/e42f600e-3f3f-4bf1-a88b-f8666390b4ce" />
 
+## 플로우차트
+<img width="2531" height="1091" alt="Image" src="https://github.com/user-attachments/assets/7396cdf5-41a7-40a0-8cf7-a8daed465118" />
+
 ## API 명세서
 
  ### 1. 사용자 인증
