@@ -20,7 +20,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/newsFeeds/{newsFeedId:\\d+}/comments")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
+    @PostMapping("/newsfeeds/{newsFeedId:\\d+}/comments")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<CommentResponse> save(
             @Auth AuthUser authUser,
             @PathVariable Long newsFeedId,
@@ -43,14 +43,14 @@ public class CommentController {
         return ResponseEntity.ok(commentService.findOne(commentId));
     }
 
-    @GetMapping("/newsFeeds/{newsFeedId:\\d+}/comments")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
+    @GetMapping("/newsfeeds/{newsFeedId:\\d+}/comments")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<List<CommentResponse>> findByNewsFeedId(
             @PathVariable Long newsFeedId
     ) {
         return ResponseEntity.ok(commentService.findByNewsFeedId(newsFeedId));
     }
 
-    @PutMapping("/newsFeeds/comments/{commentId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
+    @PutMapping("/newsfeeds/comments/{commentId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<CommentResponse> update(
             @Auth AuthUser authUser,
             @PathVariable long commentId,
@@ -59,7 +59,7 @@ public class CommentController {
         return ResponseEntity.ok(commentService.update(commentId, authUser.getId(), requestDto));
     }
 
-    @DeleteMapping("/newsFeeds/comments/{commentId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
+    @DeleteMapping("/newsfeeds/comments/{commentId:\\d+}")    // 숫자가 아닐 시, HTTP 에러 코드 404 자동 반환
     public ResponseEntity<Void> delete(
             @Auth AuthUser authUser,
             @PathVariable long commentId
