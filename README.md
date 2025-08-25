@@ -1,16 +1,15 @@
-# READ ME
-
 ## 뉴스피드 서비스 설명
 회원가입을 통해 생성된 사용자가 뉴스피드를 작성(생성·조회·수정·삭제)할 수 있으며, 친구 관계(Follow)를 맺은 사용자의 게시물도 조회할 수 있습니다. 또한 게시물에 댓글을 작성하고 수정·삭제할 수 있어 사용자 간의 소통이 가능합니다.
 
 ## 주요 기능
-1. 사용자 관리: JWT 인증/인가, 회원가입·로그인·로그아웃·회원탈퇴, 프로필 조회/수정, 비밀번호 변경
-2. 뉴스피드: CRUD, 전체/기간별 조회, 페이징 지원
-3. 친구 관리: 팔로우/언팔로우, 팔로워·팔로잉 목록 조회
-4. 예외 처리: 전역 예외 처리 및 민감 동작 검증
- 
+1. 사용자 관리: JWT 인증·인가, 회원가입·로그인·로그아웃·회원탈퇴
+2. 프로필: CRUD 
+3. 뉴스피드: CRUD, 전체·기간별 조회, 페이징 지원
+4. 친구 관리: 팔로우·언팔로우, 팔로워·팔로잉 목록 조회
+5. 댓글: 댓글 작성, 조회, 수정, 삭제
+
 ## 와이어프레임
-<img width="1272" height="1289" alt="Image" src="https://github.com/user-attachments/assets/9599e8be-e429-4223-8503-a374ce3eec56" />
+<img width="1429" height="1332" alt="Image" src="https://github.com/user-attachments/assets/e42f600e-3f3f-4bf1-a88b-f8666390b4ce" />
 
 ## 플로우차트
 <img width="2531" height="1091" alt="Image" src="https://github.com/user-attachments/assets/7396cdf5-41a7-40a0-8cf7-a8daed465118" />
@@ -18,50 +17,51 @@
 ## API 명세서
 
  ### 1. 사용자 인증
- |Method	|Endpoint	|Description|Request Body	|Response	|Status Code|
- |---|---|---|---|---|---|
- |POST|/auth/signup|회원가입|{”email”: String,<br>”password”: String,<br>”userName”: String}|{ "id": Long,<br>"userName": "String",<br>"email": "String"}| 200 OK,<br>409 CONFLICT (비밀번호 오류),<br>400 BAD REQUEST (필드값 공란)|
- |POST|/auth/login|로그인|{”email”: String,<br>”password”: String}|{”id”: Long,<br>”email”: String,<br>”accessToken”: String}|200 OK,<br>404 NOT FOUND (없는 계정),<br>400 BAD REQUEST  (필드값 공란),<br>401 UNAUTHORIZED  (비밀 번호 오류)|
- |POST|/auth/logout|로그아웃|없음 | 없음| 200 OK,<br>401 UNAUTHORIZED (로그인 없이 로그아웃 시),<br>401 UNAUTHORIZED (토큰 만료 시)|
- |POST|/auth/withdraw|회원탈퇴|{”password”: String}|없음|200 OK,<br>401 UNAUTHORIZED (비밀번호 오류)|
+ |Method	|Endpoint	|Description|Request Body	|Response	|Status Code|Error Codes|
+ |---|---|---|---|---|---|---|
+ |POST|/auth/signup|회원가입|{”userName” : String,<br>”email” : String,<br>”password”: String}|{ "id" : Long,<br>"userName" : "String",<br>"email" : "String"}| 201 CREATED|400 BAD REQUEST,<br>409 CONFLICT|
+ |POST|/auth/login|로그인|{”email” : String,<br>”password” : String}|{”id” : Long,<br>”email” : String,<br>”accessToken” : String}|200 OK|400 BAD REQUEST,<br>401 UNAUTHORIZED,<br>404 NOT FOUND|
+ |POST|/auth/logout|로그아웃|없음 | 없음| 204 noContent |401 UNAUTHORIZED|
+ |DELETE|/auth/withdraw|회원탈퇴|{”password” : String}|없음|204 noContent|400 BAD REQUEST,<br>401 UNAUTHORIZED,<br>404 NOT FOUND|
  
  ### 2. 프로필
- |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
-|---|---|---|---|---|---|---|
-|POST|/users/me/profiles|프로필 생성|없음|{”displayName”: String,<br>”bio”: String,<br>”website”: String,<br>”birthdate” : String}|{”userId”: Long,<br>”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : LocalDate, <br>”createdAt” : LocalDateTime,<br>"updatedAt” : LocalDateTime} | 200 OK|
-|GET|/users/{userId}/profiles|프로필 조회|path : Long userId|없음|{”userId”: Long,<br>”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : LocalDate,<br>”createdAt” : LocalDateTime,<br>”updatedAt” : LocalDateTime}|200 OK|
-|PATCH|/users/me/profiles|프로필 수정|없음|{”displayName”: String,<br>”bio”: String,<br>”website”: String,<br>”birthdate” : String}|{”userId”: Long<br>”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : LocalDate,<br>”createdAt” : LocalDateTime,<br>”updatedAt” : LocalDateTime}|200 OK|
+ |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|Error Codes|
+|---|---|---|---|---|---|---|---|
+|POST|/users/me/profiles|프로필 생성|token|{”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : String}|{”userId” : Long,<br>”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : LocalDate, <br>”createdAt” : LocalDateTime,<br>"updatedAt” : LocalDateTime} | 201 CREATED|404 NOT FOUND,<br>409 CONFLICT|
+|GET|/users/{userId}/profiles|프로필 조회|path : Long userId|없음|{”userId” : Long,<br>”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : LocalDate,<br>”createdAt” : LocalDateTime,<br>”updatedAt” : LocalDateTime}|200 OK|404 NOT FOUND|
+|GET|/users/me/profiles|프로필 조회|token|없음|{”userId” : Long,<br>”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : LocalDate,<br>”createdAt” : LocalDateTime,<br>”updatedAt” : LocalDateTime}|200 OK|404 NOT FOUND|
+|PATCH|/users/me/profiles|프로필 수정|token|{”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : String}|{”userId” : Long<br>”displayName” : String,<br>”bio” : String,<br>”website” : String,<br>”birthdate” : LocalDate,<br>”createdAt” : LocalDateTime,<br>”updatedAt” : LocalDateTime}|200 OK|404 NOT FOUND|
+|DELETE|/users/me/profiles|프로필 삭제|token|없음|없음|204 noContent|404 NOT FOUND|
 
  ### 3. 뉴스피드
- |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
-|---|---|---|---|---|---|---|
- |POST|/newsfeeds|뉴스피드 생성 | |{”content” : string}|{”id” : long ,<br>“authorId” : long,<br>“content” : String,<br>“createdAt” : localDateTime,<br>“updatedAt : localDateTIme}| 200 OK|
- |GET|/newsFeeds<br>?start=YYYY-MM-DD<br>&end=YYYY-MM-DD<br>&page=0&size=10<br>&sort=updatedAt,desc|뉴스피드 조회|Query: page (int, default: 1)<br>size (int, default: 10)<br>start(date)<br>end(date)<br>sort(updatedAt, DESC)|없음|{<br>"content": [<br>{"id": long,<br>"authorId": long,<br>"content": String,<br>"comments": [”id”:long, “userId”:long, “newsFeedId” : long, “text” : String, “createdAt” : LocalDateTime, “updatedAt” : LocalDateTime],<br>"createdAt": LocalDateTime,<br>"updatedAt": LocalDateTime}<br>],<br>"page": {<br>"size": long<br>"number": long,<br>"totalElements": long,<br>"totalPages": long<br>}<br>}|200 OK|
-|PATCH|/newsfeeds/{newsfeedId}|뉴스피드 수정 | path : Long newsfeedId | {”content” : String}|{”id” : long ,<br>“authorId” :long,<br>“content” : String,<br>“createdAt” : localDateTime,<br>“updatedAt : localDateTIme}|200 OK,<br>400 BAD REQUEST(유저아이디와 작성자 아이디 불일치)|
-|DELETE|/newsfeeds/{newsfeedId}|뉴스피드 삭제|path : Long newsfeedId|없음|없음|200 OK|
+ |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|Error Codes|
+|---|---|---|---|---|---|---|---|
+ |POST|/newsfeeds|뉴스피드 생성 |token|{”content” : String}|{”id” : long ,<br>“authorId” : long,<br>“content” : String,<br>“createdAt” : localDateTime,<br>“updatedAt : localDateTIme}| 201 CREATED|400 BAD REQUEST,<br>401 UNAUTHORIZED|
+ |GET|/newsfeeds<br>?start=YYYY-MM-DD<br>&end=YYYY-MM-DD<br>&page=0&size=10<br>&sort=updatedAt,desc|뉴스피드 조회|Query : page (int, default: 1)<br>size (int, default: 10)<br>start(date)<br>end(date)<br>sort(updatedAt, DESC)|token|{<br>"content" : [<br>{"id" : long,<br>"authorId" : long,<br>"content" : String,<br>"comments" : [”id” : long, “userId” : long, “newsFeedId” : long, “text” : String, “createdAt” : LocalDateTime, “updatedAt” : LocalDateTime],<br>"createdAt" : LocalDateTime,<br>"updatedAt" : LocalDateTime}<br>],<br>"page": {<br>"size" : long<br>"number" : long,<br>"totalElements" : long,<br>"totalPages" : long<br>}<br>}|200 OK|401 UNAUTHORIZED|
+|PATCH|/newsfeeds/{newsFeedId}|뉴스피드 수정 | path : Long newsFeedId,<br>token | {”content” : String}|{”id” : long ,<br>“authorId” : long,<br>“content” : String,<br>“createdAt” : localDateTime,<br>“updatedAt : localDateTIme}|200 OK|400 BAD REQUEST,<br>401 UNAUTHORIZED,<br>404 NOT FOUND|
+|DELETE|/newsfeeds/{newsFeedId}|뉴스피드 삭제|path : Long newsFeedId,<br>token|없음|없음|204 noContent|401 UNAUTHORIZED,<br>404 NOT FOUND|
  
  ### 4. 팔로우
- |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
-|---|---|---|---|---|---|---|
-|POST|/follow/{followedId}|팔로우생성|path : Long followedId|없음|{”followedId” : Id}|200 OK|
-|GET|/follow/following|팔로우 조회|없음|없음|{”follows” : [{”followedId” :  Id,”followedId” :  Id,”followedId” : String,… ]}|200 OK|
-|GET|/follow/fllowers|팔로워 조회|없음|없음|{”followers” : [{”followedId” :  Id,”followedId” :  Id,”followedId” : String,… ]}|200 OK|
-|DELETE|follow/{followId}|언팔로우|path : Long followId|없음|없음|200 Ok|
+ |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|Error Codes|
+|---|---|---|---|---|---|---|---|
+|POST|/follow/{followedId}|팔로우 생성|token|{"toUserId" : Long}|{”followedId” : Id}|201 CREATED|400 BAD REQUEST,<br>404 NOT FOUND|
+|GET|/follow/following|팔로우 조회|token|{"toUserId" : Long}|{”id” : Long,<br>"userId" : Long,<br>"userName" : String}|200 OK|404 NOT FOUND|
+|GET|/follow/fllowers|팔로워 조회|token|{"toUserId" : Long}|{”id” : Long,<br>"userId" : Long,<br>"userName" : String}|200 OK|404 NOT FOUND|
+|DELETE|follow/{followId}|언팔로우|token,<br>path : Long unfollowId|{"toUserId" : Long}|없음|204 noContent|401 UNAUTHORIZED,<br>404 NOT FOUND|
 
  
- ### 5. 코멘트
- |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|
-|---|---|---|---|---|---|---|
-|POST|/newsfeeds/{newsfeedId}/comments|댓글생성| |{”text” : String}|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
-|GET|/newsfeeds/{newsfeedId}/comments|댓글 조회| |없음|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
-|GET|/comments/{commentId}|코멘트 단건 조회| |없음 |{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
-|GET|/newsFeeds/{newsfeedId}/comments|뉴스피드의 코멘트 조회| |없음|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
-|PUT|/newsfeeds/comments/{commentId}|코멘트 수정| |{”text” : String}|{”id” : long,<br>“userId” : long,<br>“newsfeed”: long,<br>“text” :String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|
-|DELETE|/newsFeeds/comments/{commentId}|코멘트 삭제| |없음|없음|200 OK|
+ ### 5. 댓글
+ |Method	|Endpoint	|Description	|Parameters	|Request Body	|Response	|Status Code|Error Codes|
+|---|---|---|---|---|---|---|---|
+|POST|/newsfeeds/{newsfeedId}/comments|댓글 생성|token,<br>path : Long newsFeedId|{”text” : String}|{”id” : long,<br>“userId” : long,<br>“newsfeed” : long,<br>“text” : String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|201 CREATED|404 NOT FOUND|
+|GET|/newsfeeds/{newsfeedId}/comments|댓글 조회|path : Long userId|없음|{”id” : long,<br>“userId” : long,<br>“newsfeed” : long,<br>“text” : String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|404 NOT FOUND|
+|GET|/comments/{commentId}|댓글 단건 조회|path : Long commentId|없음 |{”id” : long,<br>“userId” : long,<br>“newsfeed” : long,<br>“text” : String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|404 NOT FOUND|
+|GET|/newsfeeds/{newsfeedId}/comments|뉴스피드의 댓글 조회|path : Long newsFeedId |없음|{”id” : long,<br>“userId” : long,<br>“newsfeed” : long,<br>“text” : String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|404 NOT FOUND|
+|PUT|/newsfeeds/comments/{commentId}|댓글 수정|token,<br>path : Long commentId|{”text” : String}|{”id” : long,<br>“userId” : long,<br>“newsfeed” : long,<br>“text” : String,<br>“LocalDateTime” : createdAt,<br>“LocalDateTime” : updatedAt}|200 OK|401 UNAUTHORIZED,<br>404 NOT FOUND|
+|DELETE|/newsFeeds/comments/{commentId}|댓글 삭제|token,<br>path : Long commentId|없음|204 noContent|401 UNAUTHORIZED,<br>404 NOT FOUND|
  
 ## ERD 명세서
-<img width="1501" height="896" alt="sdsfargartyhaerh" src="https://github.com/user-attachments/assets/57128993-eed0-4f45-ac49-559597bc95f4" />
-
+<img width="1501" height="896" alt="Image" src="https://github.com/user-attachments/assets/4e1b9b1f-6db9-44d9-8b47-2619376c32a9" />
 
 ## 테이블 명세서
 ### 1-1. 엔티티 - 속성 요약표
@@ -109,7 +109,7 @@
 | 작성일 | created_At |  |  |
 | ID | id |  |  |
 
-## 패키지
+## 디렉토리 구조
 ```
 instagram
     │  apitest.http
@@ -176,9 +176,6 @@ instagram
     │  ├─dto
     │  │      followRequest.java
     │  │      followResponse.java
-    │  │
-    │  ├─exception
-    │  │      DuplicatedFollowException
     │  │ 
     │  ├─entity
     │  │      follow.java
